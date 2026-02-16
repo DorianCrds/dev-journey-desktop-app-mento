@@ -29,7 +29,7 @@ class TagRepository:
         if not fields:
             return None
 
-        query = """
+        query = f"""
             UPDATE tags
             SET {', '.join(fields)}
             WHERE id = ?
