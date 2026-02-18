@@ -84,7 +84,7 @@ The application is designed to be:
 ```bash
 .
 ├── app/                    # Application entry point
-├── ui/                     # UI components and views (PySide6)
+├── ui/                     # UI main_components and views (PySide6)
 ├── domain/                 # Core data models (Notion, Category, Tag)
 ├── persistence/            # SQLite database access and queries
 ├── assets/                 # Static assets (icons, styles, etc.)
