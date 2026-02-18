@@ -1,6 +1,8 @@
 # app/views/dashboard_view.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
 
+from app.views.sub_components.custom_text import CustomViewTitleLabel
+
 
 class DashboardView(QWidget):
     def __init__(self):
@@ -11,6 +13,6 @@ class DashboardView(QWidget):
     def _setup_ui(self):
         self._main_v_layout = QVBoxLayout(self)
 
-        self._view_label = QLabel("Dashboard view")
+        self._view_label = CustomViewTitleLabel("Dashboard view")
         self._main_v_layout.addWidget(self._view_label)
         self._main_v_layout.addStretch()

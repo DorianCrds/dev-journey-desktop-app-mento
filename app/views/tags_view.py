@@ -1,6 +1,8 @@
 # app/views/tags_view.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
 
+from app.views.sub_components.custom_text import CustomViewTitleLabel
+
 
 class TagsView(QWidget):
     def __init__(self):
@@ -11,6 +13,6 @@ class TagsView(QWidget):
     def _setup_ui(self):
         self._main_v_layout = QVBoxLayout(self)
 
-        self._view_label = QLabel("Tags view")
+        self._view_label = CustomViewTitleLabel("Tags view")
         self._main_v_layout.addWidget(self._view_label)
         self._main_v_layout.addStretch()
