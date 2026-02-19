@@ -2,8 +2,8 @@
 
 
 class Notion:
-    STATUS_TO_LEARN = "to_learn"
-    STATUS_ACQUIRED = "acquired"
+    STATUS_TO_LEARN = "À apprendre"
+    STATUS_ACQUIRED = "Acquise"
 
     def __init__(
         self,
