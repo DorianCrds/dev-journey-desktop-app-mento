@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
     def _setup_ui(self):
         self.setObjectName("main_window")
         self.setWindowTitle("Mento")
-        self.resize(1050, 750)
+        self.resize(1400, 900)
         self.setMinimumWidth(900)
         self.setMinimumHeight(700)
 
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self._main_layout.addWidget(self.body)
 
         self._main_layout.setStretch(0, 1)
-        self._main_layout.setStretch(1, 4)
+        self._main_layout.setStretch(1, 6)
 
         # self.setStyleSheet("""
         #     #central_widget {

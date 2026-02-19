@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QStackedWidget
 from app.views.categories_view import CategoriesView
 from app.views.dashboard_view import DashboardView
 from app.views.infos_view import InfosView
-from app.views.notions_view import NotionsView
+from app.views.notions.notions_view import NotionsView
 from app.views.settings_view import SettingsView
 from app.views.tags_view import TagsView
 
@@ -46,4 +46,4 @@ class CustomBody(QStackedWidget):
         self.settings_view = SettingsView()
         self.addWidget(self.settings_view)
 
-        self.setCurrentIndex(0)
+        self.setCurrentIndex(1)
