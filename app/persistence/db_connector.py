@@ -40,18 +40,18 @@ class DbConnector:
             cursor.close()
 
     def execute(self, query: str, params: tuple = ()) -> int:
-        with self._cursor(self) as cursor:
+        with self._cursor() as cursor:
             cursor.execute(query, params)
             return cursor.lastrowid
 
     def fetch_one(self, query: str, params: tuple = ()) -> dict:
-        with self._cursor(self) as cursor:
+        with self._cursor() as cursor:
             cursor.execute(query, params)
             row = cursor.fetchone()
             return dict(row) if row else None
 
     def fetch_all(self, query: str, params: tuple = ()) -> list[dict]:
-        with self._cursor(self) as cursor:
+        with self._cursor() as cursor:
             cursor.execute(query, params)
             rows = cursor.fetchall()
             return [dict(row) for row in rows]
