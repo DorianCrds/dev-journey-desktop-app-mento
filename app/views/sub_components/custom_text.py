@@ -26,3 +26,17 @@ class CustomPrimaryContentLabel(QLabel):
                 font-weight: bold;
             }
         """)
+
+class CustomFormErrorLabel(QLabel):
+    def __init__(self, text: str):
+        super().__init__(text)
+        self.setObjectName("form_error_label")
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+        self.setStyleSheet("""
+            #form_error_label {
+                color: #e5484d;
+                font-size: 9pt;
+                padding-left: 4px;
+            }
+        """)

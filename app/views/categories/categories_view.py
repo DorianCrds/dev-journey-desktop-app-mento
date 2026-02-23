@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QWidget, QSizePolicy, QVBoxLayout, QGridLayout, QL
     QFormLayout, QHBoxLayout
 
 from app.views.sub_components.custom_buttons import CustomToolButton
-from app.views.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel
+from app.views.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel, CustomFormErrorLabel
 
 
 class CategoriesView(QWidget):
@@ -42,12 +42,6 @@ class CategoriesView(QWidget):
             
             #categories_form_widget QLabel {
                 font-size: 10pt;
-            }
-            
-            #form_error_label {
-                color: #e5484d;
-                font-size: 9pt;
-                padding-left: 4px;
             }
         """)
 
@@ -112,15 +106,13 @@ class CategoriesView(QWidget):
         self.form_title_input = QLineEdit(placeholderText="Category name")
         self.form_title_input.setMaximumWidth(350)
 
-        self.form_title_error = QLabel("")
-        self.form_title_error.setObjectName("form_error_label")
+        self.form_title_error = CustomFormErrorLabel("")
         self.form_title_error.hide()
 
         self.form_description_input = QTextEdit(placeholderText="Category description")
         self.form_description_input.setMaximumSize(350, 250)
 
-        self.form_description_error = QLabel("")
-        self.form_description_error.setObjectName("form_error_label")
+        self.form_description_error = CustomFormErrorLabel("")
         self.form_description_error.hide()
 
         self.form_button = CustomToolButton("Save category")

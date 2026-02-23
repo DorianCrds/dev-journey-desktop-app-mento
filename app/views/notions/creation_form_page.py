@@ -1,7 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QLineEdit, QTextEdit
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QLineEdit, QTextEdit, QLabel
 
 from app.views.sub_components.custom_buttons import CustomToolButton
+from app.views.sub_components.custom_text import CustomFormErrorLabel
 
 
 class CreationFormPage(QWidget):
@@ -54,16 +55,27 @@ class CreationFormPage(QWidget):
 
         self._form_layout = QFormLayout(self._form_widget)
 
-        self.title_input = QLineEdit()
+        self.title_input = QLineEdit(placeholderText="Notion's name")
+
+        self.form_title_error = CustomFormErrorLabel("")
+        self.form_title_error.hide()
+
         self.category_input = QComboBox()
-        self.context_input = QTextEdit()
+        self.category_input.setPlaceholderText("Choose a category")
+        self.category_input.setCurrentIndex(0)
+        self.form_category_error = CustomFormErrorLabel("")
+        self.form_category_error.hide()
+
+        self.context_input = QTextEdit(placeholderText="Use case or situation related to this notion")
         self.context_input.setMaximumHeight(200)
-        self.description_input = QTextEdit()
+        self.description_input = QTextEdit(placeholderText="If acquired only : anything you have learned about this notion")
         self.description_input.setMaximumHeight(200)
         self.save_button = CustomToolButton("Create Notion")
 
         self._form_layout.addRow("Title :", self.title_input)
+        self._form_layout.addRow("", self.form_title_error)
         self._form_layout.addRow("Category :", self.category_input)
+        self._form_layout.addRow("", self.form_category_error)
         self._form_layout.addRow("Context :", self.context_input)
         self._form_layout.addRow("Description :", self.description_input)
         self._form_layout.addRow("", self.save_button)

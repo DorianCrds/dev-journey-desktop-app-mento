@@ -23,13 +23,14 @@ class MainPresenter:
         notion_repo = NotionRepository(db)
         notion_service = NotionService(notion_repo)
 
+        category_repo = CategoryRepository(db)
+        category_service = CategoryService(category_repo)
+
         self._notion_presenter = NotionPresenter(
             view=self._view.body.notions_view,
             notion_service=notion_service,
+            categories_service=category_service
         )
-
-        category_repo = CategoryRepository(db)
-        category_service = CategoryService(category_repo)
 
         self._category_presenter = CategoryPresenter(
             view=self._view.body.categories_view,
