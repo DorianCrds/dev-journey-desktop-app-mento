@@ -1,7 +1,7 @@
 # app/views/categories/categories_view.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QSizePolicy, QVBoxLayout, QGridLayout, QListWidget, QLabel, QLineEdit, QTextEdit, \
-    QFormLayout
+    QFormLayout, QHBoxLayout
 
 from app.views.sub_components.custom_buttons import CustomToolButton
 from app.views.sub_components.custom_text import CustomViewTitleLabel
@@ -22,7 +22,7 @@ class CategoriesView(QWidget):
                 background-color: rgba(0, 255, 0, 30);
             }
 
-            #categories_list_widget {
+            #list_container_widget {
                 border: 2px solid red;
                 border-radius: 6px;
                 background-color: rgba(255, 0, 0, 30);
@@ -34,7 +34,7 @@ class CategoriesView(QWidget):
                 background-color: rgba(0, 0, 255, 30);
             }
             
-            #categories_form_widget {
+            #categories_form_widget, #buttons_widget {
                 border: 2px solid green;
                 border-radius: 6px;
                 background-color: rgba(0, 255, 0, 30);
@@ -65,9 +65,29 @@ class CategoriesView(QWidget):
         self.content = QWidget()
         self._content_grid_layout = QGridLayout(self.content)
 
+        self._buttons_widget = QWidget()
+        self._buttons_widget.setObjectName("buttons_widget")
+        self._buttons_h_layout = QHBoxLayout(self._buttons_widget)
+
+        self.edit_button = CustomToolButton("~ Edit")
+        self._buttons_h_layout.addWidget(self.edit_button)
+
+        self.delete_button = CustomToolButton("- Remove")
+        self._buttons_h_layout.addWidget(self.delete_button)
+
+        self._buttons_h_layout.addStretch()
+
         self.list_widget = QListWidget()
+        self.list_widget.setSelectionMode(QListWidget.SingleSelection)
         self.list_widget.setObjectName("categories_list_widget")
-        self._content_grid_layout.addWidget(self.list_widget, 0, 0, 1, 1)
+
+        self._list_container_widget = QWidget()
+        self._list_container_widget.setObjectName("list_container_widget")
+        self._container_v_layout = QVBoxLayout(self._list_container_widget)
+        self._container_v_layout.addWidget(self._buttons_widget)
+        self._container_v_layout.addWidget(self.list_widget)
+
+        self._content_grid_layout.addWidget(self._list_container_widget, 0, 0, 1, 1)
 
         self.detail_widget = QWidget()
         self.detail_widget.setObjectName("categories_detail_widget")
