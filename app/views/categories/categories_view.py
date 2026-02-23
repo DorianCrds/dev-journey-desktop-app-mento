@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QWidget, QSizePolicy, QVBoxLayout, QGridLayout, QL
     QFormLayout, QHBoxLayout
 
 from app.views.sub_components.custom_buttons import CustomToolButton
-from app.views.sub_components.custom_text import CustomViewTitleLabel
+from app.views.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel
 
 
 class CategoriesView(QWidget):
@@ -38,10 +38,6 @@ class CategoriesView(QWidget):
                 border: 2px solid green;
                 border-radius: 6px;
                 background-color: rgba(0, 255, 0, 30);
-            }
-            
-            #name_title_label, #description_title_label {
-                font-size: 12pt;
             }
             
             #categories_form_widget QLabel {
@@ -78,7 +74,7 @@ class CategoriesView(QWidget):
         self._buttons_h_layout.addStretch()
 
         self.list_widget = QListWidget()
-        self.list_widget.setSelectionMode(QListWidget.SingleSelection)
+        self.list_widget.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
         self.list_widget.setObjectName("categories_list_widget")
 
         self._list_container_widget = QWidget()
@@ -93,12 +89,10 @@ class CategoriesView(QWidget):
         self.detail_widget.setObjectName("categories_detail_widget")
         self._detail_v_layout = QVBoxLayout(self.detail_widget)
 
-        self._detail_title_label = QLabel("Title")
-        self._detail_title_label.setObjectName("name_title_label")
+        self._detail_title_label = CustomPrimaryContentLabel("Title")
         self.detail_title_value = QLabel("")
 
-        self._detail_description_label = QLabel("Description")
-        self._detail_description_label.setObjectName("description_title_label")
+        self._detail_description_label = CustomPrimaryContentLabel("Description")
         self.detail_description_value = QLabel("")
 
         self._detail_v_layout.addWidget(self._detail_title_label)

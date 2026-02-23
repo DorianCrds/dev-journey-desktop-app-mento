@@ -1,9 +1,10 @@
 # app/presenters/notion_presenter.py
-from PySide6.QtCore import QItemSelectionModel
+from PySide6.QtCore import QItemSelectionModel, Qt
+from PySide6.QtWidgets import QListWidgetItem
 
 from app.domain.models.notion import Notion
 from app.services.notion_service import NotionService
-from app.views.notions.notions_table_model import NotionsTableModel
+from app.views.notions.notions_card import NotionCard
 from app.views.notions.notions_view import NotionsView
 
 
@@ -12,55 +13,62 @@ class NotionPresenter:
         self._view = view
         self._service = notion_service
 
-        self._table_model = NotionsTableModel()
-        self._view.list_page.table_view.setModel(self._table_model)
-
         self._connect_signals()
         self.load_notions()
 
     def _connect_signals(self) -> None:
-        self._view.list_page.add_button.clicked.connect(self._add_button_clicked)
+        self._view.list_widget.itemSelectionChanged.connect(self._on_selection_changed)
+
+        self._view.add_button.clicked.connect(self._add_button_clicked)
         self._view.form_page.back_button.clicked.connect(self._back_button_clicked)
 
-        selection_model = self._view.list_page.table_view.selectionModel()
-        selection_model.selectionChanged.connect(self._on_selection_changed)
-
     def load_notions(self) -> None:
+        self._view.list_widget.clear()
         notions = self._service.get_all_notions()
-        self._table_model.set_notions(notions)
 
-        if not notions:
+        for notion in notions:
+            self._add_card(notion)
+
+        if self._view.list_widget.count() > 0:
+            self._view.list_widget.setFocus()
+            self._view.list_widget.setCurrentRow(0)
+
+        self._view.edit_button.setEnabled(False)
+        self._view.delete_button.setEnabled(False)
+
+    def _add_card(self, notion: Notion):
+        item = QListWidgetItem()
+
+        item.setData(Qt.ItemDataRole.UserRole, notion)
+
+        card = NotionCard(notion)
+
+        item.setSizeHint(card.sizeHint())
+
+        self._view.list_widget.addItem(item)
+        self._view.list_widget.setItemWidget(item, card)
+
+    def _on_selection_changed(self):
+        selected_items = self._view.list_widget.selectedItems()
+
+        if not selected_items:
             return
 
-        table = self._view.list_page.table_view
-        index = self._table_model.index(0, 0)
+        self._view.delete_button.setEnabled(bool(selected_items))
+        self._view.edit_button.setEnabled(bool(selected_items))
 
-        table.selectionModel().select(index, QItemSelectionModel.SelectionFlag.Select)
+        item = selected_items[0]
 
-        table.setCurrentIndex(index)
-        table.setFocus()
-        table.scrollTo(index)
+        notion = item.data(Qt.ItemDataRole.UserRole)
+
+        self._view.detail_title_value.setText(notion.title)
+        self._view.detail_category_value.setText(str(notion.category_id))
+        self._view.detail_context_value.setText(notion.context)
+        self._view.detail_description_value.setText(notion.description)
+        self._view.detail_status_value.setText(notion.status)
 
     def _add_button_clicked(self) -> None:
         self._view.content.setCurrentIndex(1)
 
     def _back_button_clicked(self) -> None:
         self._view.content.setCurrentIndex(0)
-
-    def _on_selection_changed(self, selected, deselected):
-        indexes = selected.indexes()
-        if not indexes:
-            return
-
-        row = indexes[0].row()
-        notion = self._table_model.get_notion_at(row)
-
-        if notion:
-            self._display_notion_detail(notion)
-
-    def _display_notion_detail(self, notion: Notion):
-        self._view.list_page.title_input.setText(notion.title)
-        self._view.list_page.category_input.setText(str(notion.category_id))
-        self._view.list_page.status_input.setText(notion.status)
-        self._view.list_page.context_input.setText(notion.context)
-        self._view.list_page.description_input.setText(notion.description)

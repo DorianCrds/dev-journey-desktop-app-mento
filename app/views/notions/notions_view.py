@@ -1,10 +1,10 @@
 # app/views/notions_view.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy, QHBoxLayout, QLabel, QListWidget
 
 from app.views.notions.creation_form_page import CreationFormPage
-from app.views.notions.list_page import ListPage
-from app.views.sub_components.custom_text import CustomViewTitleLabel
+from app.views.sub_components.custom_buttons import CustomToolButton
+from app.views.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel
 
 
 class NotionsView(QWidget):
@@ -45,8 +45,70 @@ class NotionsView(QWidget):
         self.content = QStackedWidget()
         self.content.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
-        self.list_page = ListPage()
-        self.content.addWidget(self.list_page)
+        self._list_page = QWidget()
+        self._list_page_v_layout = QVBoxLayout(self._list_page)
+
+        self._header_widget = QWidget()
+        self._header_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+        self._header_h_layout = QHBoxLayout(self._header_widget)
+
+        self._header_h_layout.addStretch()
+
+        self.add_button = CustomToolButton("+ Add")
+        self._header_h_layout.addWidget(self.add_button)
+
+        self.edit_button = CustomToolButton("~ Edit")
+        self._header_h_layout.addWidget(self.edit_button)
+
+        self.delete_button = CustomToolButton("- Remove")
+        self._header_h_layout.addWidget(self.delete_button)
+
+        self._content_widget = QWidget()
+        self._content_h_layout = QHBoxLayout(self._content_widget)
+
+        self.list_widget = QListWidget()
+        self.list_widget.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
+        self.list_widget.setObjectName("notions_list_widget")
+
+        self.detail_widget = QWidget()
+        self.detail_widget.setObjectName("notions_detail_widget")
+        self._detail_v_layout = QVBoxLayout(self.detail_widget)
+
+        self._detail_title_label = CustomPrimaryContentLabel("Title")
+        self.detail_title_value = QLabel("")
+
+        self._detail_category_label = CustomPrimaryContentLabel("Category")
+        self.detail_category_value = QLabel("")
+
+        self._detail_context_label = CustomPrimaryContentLabel("Context")
+        self.detail_context_value = QLabel("")
+
+        self._detail_description_label = CustomPrimaryContentLabel("Description")
+        self.detail_description_value = QLabel("")
+
+        self._detail_status_label = CustomPrimaryContentLabel("Status")
+        self.detail_status_value = QLabel("")
+
+        self._detail_v_layout.addWidget(self._detail_title_label)
+        self._detail_v_layout.addWidget(self.detail_title_value)
+        self._detail_v_layout.addWidget(self._detail_category_label)
+        self._detail_v_layout.addWidget(self.detail_category_value)
+        self._detail_v_layout.addWidget(self._detail_context_label)
+        self._detail_v_layout.addWidget(self.detail_context_value)
+        self._detail_v_layout.addWidget(self._detail_description_label)
+        self._detail_v_layout.addWidget(self.detail_description_value)
+        self._detail_v_layout.addWidget(self._detail_status_label)
+        self._detail_v_layout.addWidget(self.detail_status_value)
+        self._detail_v_layout.addStretch()
+
+        self._content_h_layout.addWidget(self.list_widget)
+        self._content_h_layout.addWidget(self.detail_widget)
+
+        self._list_page_v_layout.addWidget(self._header_widget)
+        self._list_page_v_layout.addWidget(self._content_widget)
+
+        self.content.addWidget(self._list_page)
 
         self.form_page = CreationFormPage()
         self.content.addWidget(self.form_page)

@@ -13,3 +13,16 @@ class CustomViewTitleLabel(QLabel):
                 border: 1px solid green;
             }
         """)
+
+class CustomPrimaryContentLabel(QLabel):
+    def __init__(self, text: str):
+        super().__init__(text)
+        self.setObjectName("primary_content_label")
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+        self.setStyleSheet("""
+            #primary_content_label {
+                font-size: 12pt;
+                font-weight: bold;
+            }
+        """)
