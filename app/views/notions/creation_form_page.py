@@ -12,35 +12,68 @@ class CreationFormPage(QWidget):
 
         self._setup_ui()
 
+        self.setStyleSheet("""
+            #creation_form_page {
+                border: 2px solid red;
+            }
+            
+            #notion_form_header {
+                border: 2px solid orange;
+            }
+            
+            #notion_form_container {
+                border: 2px solid blue;
+            }
+            
+            #notion_form_widget {
+                border: 2px solid green;
+            }
+        """)
+
     def _setup_ui(self):
         self._main_v_layout = QVBoxLayout(self)
 
         self._header_widget = QWidget()
+        self._header_widget.setObjectName("notion_form_header")
         self._header_h_layout = QHBoxLayout(self._header_widget)
 
         self.back_button = CustomToolButton("< Back")
         self._header_h_layout.addWidget(self.back_button)
-
         self._header_h_layout.addStretch()
 
         self._main_v_layout.addWidget(self._header_widget)
 
+        self._form_container = QWidget()
+        self._form_container.setObjectName("notion_form_container")
+        self._form_container_layout = QHBoxLayout(self._form_container)
+
+        self._form_container_layout.addStretch()
+
         self._form_widget = QWidget()
+        self._form_widget.setObjectName("notion_form_widget")
+
         self._form_layout = QFormLayout(self._form_widget)
 
         self.title_input = QLineEdit()
         self.category_input = QComboBox()
         self.context_input = QTextEdit()
+        self.context_input.setMaximumHeight(200)
         self.description_input = QTextEdit()
+        self.description_input.setMaximumHeight(200)
+        self.save_button = CustomToolButton("Create Notion")
 
         self._form_layout.addRow("Title :", self.title_input)
         self._form_layout.addRow("Category :", self.category_input)
         self._form_layout.addRow("Context :", self.context_input)
         self._form_layout.addRow("Description :", self.description_input)
+        self._form_layout.addRow("", self.save_button)
 
-        self._main_v_layout.addWidget(self._form_widget)
+        self._form_container_layout.addWidget(self._form_widget)
+        self._form_container_layout.addStretch()
 
-        self.save_button = CustomToolButton("Create Notion")
+        self._form_container_layout.setStretch(0, 1)
+        self._form_container_layout.setStretch(1, 3)
+        self._form_container_layout.setStretch(2, 1)
 
-        self._main_v_layout.addWidget(self.save_button)
-
+        self._main_v_layout.addWidget(self._form_container)
+        self._main_v_layout.addStretch()

@@ -1,6 +1,7 @@
 # app/views/notions_view.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy, QHBoxLayout, QLabel, QListWidget
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy, QHBoxLayout, QLabel, QListWidget, \
+    QTextEdit
 
 from app.views.notions.creation_form_page import CreationFormPage
 from app.views.sub_components.custom_buttons import CustomToolButton
@@ -82,10 +83,12 @@ class NotionsView(QWidget):
         self.detail_category_value = QLabel("")
 
         self._detail_context_label = CustomPrimaryContentLabel("Context")
-        self.detail_context_value = QLabel("")
+        self.detail_context_value = QTextEdit("")
+        self.detail_context_value.setReadOnly(True)
 
         self._detail_description_label = CustomPrimaryContentLabel("Description")
-        self.detail_description_value = QLabel("")
+        self.detail_description_value = QTextEdit("")
+        self.detail_description_value.setReadOnly(True)
 
         self._detail_status_label = CustomPrimaryContentLabel("Status")
         self.detail_status_value = QLabel("")
@@ -104,6 +107,9 @@ class NotionsView(QWidget):
 
         self._content_h_layout.addWidget(self.list_widget)
         self._content_h_layout.addWidget(self.detail_widget)
+
+        self._content_h_layout.setStretch(0, 2)
+        self._content_h_layout.setStretch(1, 1)
 
         self._list_page_v_layout.addWidget(self._header_widget)
         self._list_page_v_layout.addWidget(self._content_widget)

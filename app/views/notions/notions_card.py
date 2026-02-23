@@ -19,3 +19,7 @@ class NotionCard(QWidget):
         self._main_h_layout.addWidget(self.title_label)
         self._main_h_layout.addWidget(self.category_label)
         self._main_h_layout.addWidget(self.status_label)
+
+        self._main_h_layout.setStretch(0, 3)
+        self._main_h_layout.setStretch(1, 2)
+        self._main_h_layout.setStretch(2, 1)
