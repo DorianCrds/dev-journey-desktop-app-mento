@@ -4,6 +4,7 @@ from typing import Optional
 from app.domain.models.notion import Notion
 from app.persistence.mappers.notion_mapper import dict_to_notion
 from app.persistence.repositories.notion_repository import NotionRepository
+from app.services.dto.notion_dto import NotionDTO
 
 
 class NotionService:
@@ -36,8 +37,9 @@ class NotionService:
             description=description,
         )
 
-        # 2. Persist using repository
-        notion_id = self._repo.create_notion(
+        # 2. Convert Domain -> DTO
+        dto = NotionDTO(
+            id=0,  # temporary, INSERT will ignore it
             title=notion.title,
             category_id=notion.category_id,
             context=notion.context,
@@ -45,7 +47,10 @@ class NotionService:
             status=notion.status,
         )
 
-        # 3. Rebuild entity with generated ID
+        # 3. Persist using DTO
+        notion_id = self._repo.create_notion(dto)
+
+        # 4. Rebuild entity with generated ID
         return Notion(
             notion_id=notion_id,
             title=notion.title,
@@ -56,8 +61,8 @@ class NotionService:
         )
 
     def update_notion(self, notion: Notion) -> None:
-        self._repo.update_notion(
-            notion_id=notion.id,
+        dto = NotionDTO(
+            id=notion.id,
             title=notion.title,
             category_id=notion.category_id,
             context=notion.context,
@@ -65,6 +70,7 @@ class NotionService:
             status=notion.status,
         )
 
+        self._repo.update_notion(dto)
+
     def delete_notion(self, notion_id: int) -> None:
         self._repo.delete_notion(notion_id)
-

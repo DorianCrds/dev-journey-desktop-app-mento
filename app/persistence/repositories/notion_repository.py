@@ -1,7 +1,6 @@
 # app/persistence/repositories/notion_repository.py
-from typing import Optional
-
 from app.persistence.db_connector import DbConnector
+from app.services.dto.notion_dto import NotionDTO
 
 
 class NotionRepository:
@@ -12,60 +11,39 @@ class NotionRepository:
         query = "SELECT * FROM notions"
         return self._db_connector.fetch_all(query)
 
-    def get_notion_by_id(self, notion_id: int) -> dict:
+    def get_notion_by_id(self, notion_id: int) -> dict | None:
         query = "SELECT * FROM notions WHERE id = ?"
         return self._db_connector.fetch_one(query, (notion_id,))
 
-    def create_notion(self, title: str, category_id: int, context: Optional[str], description: Optional[str], status: str) -> int:
+    def create_notion(self, dto: NotionDTO) -> int:
         query = """
             INSERT INTO notions (title, category_id, context, description, status)
             VALUES (?, ?, ?, ?, ?)
         """
-        return self._db_connector.execute(query,(title, category_id, context, description, status))
+        return self._db_connector.execute(query,(dto.title, dto.category_id, dto.context, dto.description, dto.status))
 
-    def update_notion(
-            self,
-            notion_id: int,
-            title: Optional[str] = None,
-            category_id: Optional[int] = None,
-            context: Optional[str] = None,
-            description: Optional[str] = None,
-            status: Optional[str] = None,
-    ) -> int | None:
-        fields = []
-        params = []
-
-        if title is not None:
-            fields.append("title = ?")
-            params.append(title)
-
-        if category_id is not None:
-            fields.append("category_id = ?")
-            params.append(category_id)
-
-        if context is not None:
-            fields.append("context = ?")
-            params.append(context)
-
-        if description is not None:
-            fields.append("description = ?")
-            params.append(description)
-
-        if status is not None:
-            fields.append("status = ?")
-            params.append(status)
-
-        if not fields:
-            return None
-
-        query = f"""
+    def update_notion(self, dto: NotionDTO) -> int | None:
+        query = """
             UPDATE notions
-            SET {', '.join(fields)}
+            SET title = ?,
+                category_id = ?,
+                context = ?,
+                description = ?,
+                status = ?
             WHERE id = ?
         """
-        params.append(notion_id)
 
-        return self._db_connector.execute(query, tuple(params))
+        return self._db_connector.execute(
+            query,
+            (
+                dto.title,
+                dto.category_id,
+                dto.context,
+                dto.description,
+                dto.status,
+                dto.id,
+            ),
+        )
 
     def delete_notion(self, notion_id: int) -> int:
         query = "DELETE FROM notions WHERE id = ?"
