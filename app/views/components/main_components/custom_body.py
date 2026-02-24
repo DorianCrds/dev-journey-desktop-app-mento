@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QStackedWidget
 from app.views.pages.categories.categories_view import CategoriesView
 from app.views.dashboard_view import DashboardView
 from app.views.infos_view import InfosView
-from app.views.pages.notions import NotionsView
+from app.views.pages.notions.notions_view import NotionsView
 from app.views.settings_view import SettingsView
 from app.views.pages.tags.tags_view import TagsView
 

@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QListWidgetItem, QMessageBox
 
 from app.domain.models.category import Category
 from app.services.category_service import CategoryService
-from app.views.pages.categories import CategoryCard
+from app.views.pages.categories.categories_card import CategoryCard
 from app.views.pages.categories.categories_view import CategoriesView
 
 
