@@ -1,7 +1,7 @@
-# app/views/tags_view.py
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
+# app/views/pages/tags_view.py
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from app.views.sub_components.custom_text import CustomViewTitleLabel
+from app.views.components.sub_components.custom_text import CustomViewTitleLabel
 
 
 class TagsView(QWidget):

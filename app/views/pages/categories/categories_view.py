@@ -1,10 +1,10 @@
-# app/views/categories/categories_view.py
+# app/views/pages/categories/categories_view.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QSizePolicy, QVBoxLayout, QGridLayout, QListWidget, QLabel, QLineEdit, QTextEdit, \
     QFormLayout, QHBoxLayout
 
-from app.views.sub_components.custom_buttons import CustomToolButton
-from app.views.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel, CustomFormErrorLabel
+from app.views.components.sub_components.custom_buttons import CustomToolButton
+from app.views.components.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel, CustomFormErrorLabel
 
 
 class CategoriesView(QWidget):

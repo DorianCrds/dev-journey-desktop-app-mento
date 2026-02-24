@@ -8,8 +8,8 @@ from app.domain.models.notion import Notion
 from app.services.category_service import CategoryService
 from app.services.dto.notion_dto import NotionReadDTO
 from app.services.notion_service import NotionService
-from app.views.notions.notions_card import NotionCard
-from app.views.notions.notions_view import NotionsView
+from app.views.pages.notions import NotionCard
+from app.views.pages.notions import NotionsView
 
 
 class FormMode(Enum):

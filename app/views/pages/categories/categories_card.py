@@ -1,4 +1,4 @@
-# app/views/categories/categories_card.py
+# app/views/pages/categories/categories_card.py
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel
 
 from app.domain.models.category import Category

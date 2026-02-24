@@ -1,7 +1,7 @@
 # app/views/settings_view.py
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from app.views.sub_components.custom_text import CustomViewTitleLabel
+from app.views.components.sub_components.custom_text import CustomViewTitleLabel
 
 
 class SettingsView(QWidget):

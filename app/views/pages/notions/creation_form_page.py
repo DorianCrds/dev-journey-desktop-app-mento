@@ -1,9 +1,9 @@
-# app/views/notions/creation_form_page.py
+# app/views/pages/notions/creation_form_page.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QLineEdit, QTextEdit, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QLineEdit, QTextEdit
 
-from app.views.sub_components.custom_buttons import CustomToolButton
-from app.views.sub_components.custom_text import CustomFormErrorLabel
+from app.views.components.sub_components.custom_buttons import CustomToolButton
+from app.views.components.sub_components.custom_text import CustomFormErrorLabel
 
 
 class CreationFormPage(QWidget):
