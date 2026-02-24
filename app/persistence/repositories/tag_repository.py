@@ -1,5 +1,6 @@
 # app/persistence/repositories/tag_repository.py
 from app.persistence.db_connector import DbConnector
+from app.services.dto.tag_dto import TagDTO
 
 
 class TagRepository:
@@ -14,30 +15,14 @@ class TagRepository:
         query = "SELECT * FROM tags WHERE id = ?"
         return self._db_connector.fetch_one(query, (tag_id,))
 
-    def create_tag(self, title: str) -> int:
+    def create_tag(self, dto: TagDTO) -> int:
         query = "INSERT INTO tags (title) VALUES (?)"
-        return self._db_connector.execute(query, (title,))
+        return self._db_connector.execute(query, (dto.title,))
 
-    def update_tag(self, tag_id: int, title: str) -> int | None:
-        fields = []
-        params = []
+    def update_tag(self, dto: TagDTO) -> int | None:
+        query = "UPDATE tags SET title = ? WHERE id = ?"
 
-        if title is not None:
-            fields.append("title = ?")
-            params.append(title)
-
-        if not fields:
-            return None
-
-        query = f"""
-            UPDATE tags
-            SET {', '.join(fields)}
-            WHERE id = ?
-        """
-
-        params.append(tag_id)
-
-        return self._db_connector.execute(query, tuple(params))
+        return self._db_connector.execute(query, (dto.title,))
 
     def delete_tag(self, tag_id: int) -> int:
         query = "DELETE FROM tags WHERE id = ?"

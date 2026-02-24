@@ -2,6 +2,7 @@
 from app.domain.models.tag import Tag
 from app.persistence.mappers.tag_mapper import dict_to_tag
 from app.persistence.repositories.tag_repository import TagRepository
+from app.services.dto.tag_dto import TagDTO
 
 
 class TagService:
@@ -24,7 +25,12 @@ class TagService:
             title=title,
         )
 
-        tag_id = self._repo.create_tag(tag.title)
+        dto = TagDTO(
+            id=0,
+            title=title,
+        )
+
+        tag_id = self._repo.create_tag(dto)
 
         return Tag(
             tag_id=tag_id,
