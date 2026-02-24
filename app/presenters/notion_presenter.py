@@ -2,11 +2,18 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QListWidgetItem
 
+from enum import Enum, auto
+
 from app.domain.models.notion import Notion
 from app.services.category_service import CategoryService
 from app.services.notion_service import NotionService
 from app.views.notions.notions_card import NotionCard
 from app.views.notions.notions_view import NotionsView
+
+
+class FormMode(Enum):
+    CREATE = auto()
+    EDIT = auto()
 
 
 class NotionPresenter:
@@ -15,6 +22,9 @@ class NotionPresenter:
         self._notions_service = notion_service
         self._categories_service = categories_service
 
+        self._form_mode = FormMode.CREATE
+        self._editing_notion: Notion | None = None
+
         self._connect_signals()
         self.load_notions()
 
@@ -22,11 +32,16 @@ class NotionPresenter:
         self._view.list_widget.itemSelectionChanged.connect(self._on_selection_changed)
 
         self._view.add_button.clicked.connect(self._on_add_button_clicked)
+        self._view.edit_button.clicked.connect(self._on_edit_button_clicked)
         self._view.form_page.back_button.clicked.connect(self._on_back_button_clicked)
         self._view.form_page.save_button.clicked.connect(self._on_form_button_clicked)
 
         self._view.form_page.title_input.textChanged.connect(self._validate_form)
         self._view.form_page.category_input.currentIndexChanged.connect(self._validate_form)
+
+    #########################################
+    ##### Notions list widget's methods #####
+    #########################################
 
     def load_notions(self) -> None:
         self._view.list_widget.clear()
@@ -73,8 +88,75 @@ class NotionPresenter:
         self._view.detail_description_value.setText(notion.description)
         self._view.detail_status_value.setText(notion.status)
 
-    def _on_add_button_clicked(self) -> None:
+    ###############################
+    ##### Buttons connections #####
+    ###############################
+
+    def _on_add_button_clicked(self):
+        self._open_form(FormMode.CREATE)
+
+    def _on_edit_button_clicked(self):
+        selected_item = self._view.list_widget.currentItem()
+        if not selected_item:
+            return
+
+        notion = selected_item.data(Qt.ItemDataRole.UserRole)
+        self._open_form(FormMode.EDIT, notion)
+
+    def _on_back_button_clicked(self) -> None:
+        self._reset_form()
+        self._view.content.setCurrentIndex(0)
+
+    def _on_form_button_clicked(self):
+        form = self._view.form_page
+
+        title = form.title_input.text().strip()
+        category = form.category_input.currentData()
+        context = form.context_input.toPlainText().strip()
+        description = form.description_input.toPlainText().strip()
+
+        if not self._validate_and_show_errors(title, category):
+            return
+
+        if self._form_mode == FormMode.CREATE:
+            self._notions_service.create_notion(
+                title,
+                category.id,
+                context,
+                description
+            )
+
+        elif self._form_mode == FormMode.EDIT and self._editing_notion:
+            self._editing_notion.update_title(title)
+            self._editing_notion.update_category(category.id)
+            self._editing_notion.update_context(context)
+            self._editing_notion.update_description(description)
+
+            self._notions_service.update_notion(self._editing_notion)
+
+        self._after_submit()
+
+    #################################
+    ##### Reusable Form methods #####
+    #################################
+
+    def _open_form(self, mode: FormMode, notion: Notion | None = None):
+        self._form_mode = mode
+        self._editing_notion = notion
+
         self._populate_form_combobox()
+
+        form = self._view.form_page
+
+        if mode == FormMode.CREATE:
+            form.save_button.setText("Create Notion")
+            self._reset_form_fields()
+
+        elif mode == FormMode.EDIT and notion:
+            form.save_button.setText("Update Notion")
+            self._fill_form_with_notion(notion)
+
+        self._validate_form()
         self._view.content.setCurrentIndex(1)
 
     def _populate_form_combobox(self):
@@ -90,6 +172,20 @@ class NotionPresenter:
 
         self._view.form_page.save_button.setEnabled(False)
 
+    def _fill_form_with_notion(self, notion: Notion):
+        form = self._view.form_page
+
+        form.title_input.setText(notion.title)
+        form.context_input.setText(notion.context or "")
+        form.description_input.setText(notion.description or "")
+
+        combo = form.category_input
+        for i in range(combo.count()):
+            category = combo.itemData(i)
+            if category and category.id == notion.category_id:
+                combo.setCurrentIndex(i)
+                break
+
     def _validate_form(self):
         form = self._view.form_page
 
@@ -98,40 +194,25 @@ class NotionPresenter:
 
         form.save_button.setEnabled(title_valid and category_valid)
 
-    def _on_back_button_clicked(self) -> None:
-        self._reset_form()
-        self._view.content.setCurrentIndex(0)
+    def _validate_and_show_errors(self, title, category) -> bool:
+        form = self._view.form_page
 
-    def _on_form_button_clicked(self):
-        title = self._view.form_page.title_input.text().strip()
-        category = self._view.form_page.category_input.currentData()
-        context = self._view.form_page.context_input.toPlainText().strip()
-        description = self._view.form_page.description_input.toPlainText().strip()
+        form.form_title_error.hide()
+        form.form_category_error.hide()
 
-        self._view.form_page.form_title_error.hide()
-
-        has_error = False
+        valid = True
 
         if not title:
-            self._view.form_page.form_title_error.setText("Title is required.")
-            self._view.form_page.form_title_error.show()
-            has_error = True
+            form.form_title_error.setText("Title is required.")
+            form.form_title_error.show()
+            valid = False
 
         if category is None:
-            self._view.form_page.form_category_error.setText("Select an existing category.")
-            self._view.form_page.form_category_error.show()
-            has_error = True
+            form.form_category_error.setText("Select an existing category.")
+            form.form_category_error.show()
+            valid = False
 
-        if has_error:
-            return
-
-        self._notions_service.create_notion(title, category.id, context, description)
-
-        self._reset_form()
-
-        self.load_notions()
-
-        self._on_back_button_clicked()
+        return valid
 
     def _reset_form(self):
         form = self._view.form_page
@@ -146,3 +227,22 @@ class NotionPresenter:
         form.form_category_error.hide()
 
         form.save_button.setEnabled(False)
+
+    def _after_submit(self):
+        self._form_mode = FormMode.CREATE
+        self._editing_notion = None
+
+        self._reset_form_fields()
+        self.load_notions()
+        self._view.content.setCurrentIndex(0)
+
+    def _reset_form_fields(self):
+        form = self._view.form_page
+
+        form.title_input.clear()
+        form.context_input.clear()
+        form.description_input.clear()
+        form.category_input.setCurrentIndex(0)
+
+        form.form_title_error.hide()
+        form.form_category_error.hide()

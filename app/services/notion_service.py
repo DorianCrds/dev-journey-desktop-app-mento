@@ -59,6 +59,7 @@ class NotionService:
         self._repo.update_notion(
             notion_id=notion.id,
             title=notion.title,
+            category_id=notion.category_id,
             context=notion.context,
             description=notion.description,
             status=notion.status,

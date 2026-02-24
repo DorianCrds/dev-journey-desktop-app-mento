@@ -27,6 +27,7 @@ class NotionRepository:
             self,
             notion_id: int,
             title: Optional[str] = None,
+            category_id: Optional[int] = None,
             context: Optional[str] = None,
             description: Optional[str] = None,
             status: Optional[str] = None,
@@ -37,6 +38,10 @@ class NotionRepository:
         if title is not None:
             fields.append("title = ?")
             params.append(title)
+
+        if category_id is not None:
+            fields.append("category_id = ?")
+            params.append(category_id)
 
         if context is not None:
             fields.append("context = ?")

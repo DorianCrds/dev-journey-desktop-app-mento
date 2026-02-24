@@ -65,6 +65,9 @@ class Notion:
     def update_context(self, context: str | None) -> None:
         self._context = context
 
+    def update_category(self, category_id: int) -> None:
+        self._category_id = category_id
+
     def update_description(self, description: str | None) -> None:
         self._description = description
 
