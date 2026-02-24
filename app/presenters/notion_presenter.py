@@ -1,6 +1,6 @@
 # app/presenters/notion_presenter.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem, QMessageBox
 
 from enum import Enum, auto
 
@@ -33,6 +33,7 @@ class NotionPresenter:
 
         self._view.add_button.clicked.connect(self._on_add_button_clicked)
         self._view.edit_button.clicked.connect(self._on_edit_button_clicked)
+        self._view.delete_button.clicked.connect(self._on_delete_button_clicked)
         self._view.form_page.back_button.clicked.connect(self._on_back_button_clicked)
         self._view.form_page.save_button.clicked.connect(self._on_form_button_clicked)
 
@@ -102,6 +103,24 @@ class NotionPresenter:
 
         notion = selected_item.data(Qt.ItemDataRole.UserRole)
         self._open_form(FormMode.EDIT, notion)
+
+    def _on_delete_button_clicked(self):
+        selected_item = self._view.list_widget.currentItem()
+
+        if not selected_item:
+            return
+
+        notion = selected_item.data(Qt.ItemDataRole.UserRole)
+
+        reply = QMessageBox.question(self._view, "Delete notion",
+                                     f"Are you sure you want to delete the notion:\n\n'{notion.title}' ?",
+                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                     QMessageBox.StandardButton.No)
+
+        if reply == QMessageBox.StandardButton.Yes:
+            self._notions_service.delete_notion(notion.id)
+
+            self.load_notions()
 
     def _on_back_button_clicked(self) -> None:
         self._reset_form()
