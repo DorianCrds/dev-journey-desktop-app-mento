@@ -11,3 +11,15 @@ class NotionDTO:
     context: Optional[str]
     description: Optional[str]
     status: str
+
+
+# Used to display readable category name for UI
+@dataclass
+class NotionReadDTO:
+    id: int
+    title: str
+    category_id: int
+    category_title: str
+    context: Optional[str]
+    description: Optional[str]
+    status: str

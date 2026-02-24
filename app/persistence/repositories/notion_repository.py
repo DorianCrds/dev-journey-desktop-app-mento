@@ -8,11 +8,22 @@ class NotionRepository:
         self._db_connector = db_connector
 
     def get_all_notions(self) -> list[dict]:
-        query = "SELECT * FROM notions"
+        query = """
+                SELECT n.*,
+                       c.title AS category_title
+                FROM notions n
+                JOIN categories c ON c.id = n.category_id
+                """
         return self._db_connector.fetch_all(query)
 
     def get_notion_by_id(self, notion_id: int) -> dict | None:
-        query = "SELECT * FROM notions WHERE id = ?"
+        query = """
+                SELECT n.*,
+                       c.title AS category_title
+                FROM notions n
+                JOIN categories c ON c.id = n.category_id
+                WHERE n.id = ?
+                """
         return self._db_connector.fetch_one(query, (notion_id,))
 
     def create_notion(self, dto: NotionDTO) -> int:

@@ -1,11 +1,11 @@
 # app/views/notions/notions_card.py
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel
 
-from app.domain.models.notion import Notion
+from app.services.dto.notion_dto import NotionReadDTO
 
 
 class NotionCard(QWidget):
-    def __init__(self, notion: Notion):
+    def __init__(self, notion: NotionReadDTO):
         super().__init__()
 
         self.notion = notion
@@ -13,7 +13,7 @@ class NotionCard(QWidget):
         self._main_h_layout = QHBoxLayout(self)
 
         self.title_label = QLabel(self.notion.title)
-        self.category_label = QLabel(str(self.notion.category_id))
+        self.category_label = QLabel(self.notion.category_title)
         self.status_label = QLabel(self.notion.status)
 
         self._main_h_layout.addWidget(self.title_label)

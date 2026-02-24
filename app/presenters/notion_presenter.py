@@ -6,6 +6,7 @@ from enum import Enum, auto
 
 from app.domain.models.notion import Notion
 from app.services.category_service import CategoryService
+from app.services.dto.notion_dto import NotionReadDTO
 from app.services.notion_service import NotionService
 from app.views.notions.notions_card import NotionCard
 from app.views.notions.notions_view import NotionsView
@@ -46,7 +47,7 @@ class NotionPresenter:
 
     def load_notions(self) -> None:
         self._view.list_widget.clear()
-        notions = self._notions_service.get_all_notions()
+        notions = self._notions_service.get_all_notions_for_display()
 
         for notion in notions:
             self._add_card(notion)
@@ -58,7 +59,7 @@ class NotionPresenter:
         self._view.edit_button.setEnabled(False)
         self._view.delete_button.setEnabled(False)
 
-    def _add_card(self, notion: Notion):
+    def _add_card(self, notion: NotionReadDTO):
         item = QListWidgetItem()
 
         item.setData(Qt.ItemDataRole.UserRole, notion)
@@ -79,14 +80,12 @@ class NotionPresenter:
         self._view.delete_button.setEnabled(bool(selected_items))
         self._view.edit_button.setEnabled(bool(selected_items))
 
-        item = selected_items[0]
-
-        notion = item.data(Qt.ItemDataRole.UserRole)
+        notion = selected_items[0].data(Qt.ItemDataRole.UserRole)
 
         self._view.detail_title_value.setText(notion.title)
-        self._view.detail_category_value.setText(str(notion.category_id))
-        self._view.detail_context_value.setText(notion.context)
-        self._view.detail_description_value.setText(notion.description)
+        self._view.detail_category_value.setText(notion.category_title)
+        self._view.detail_context_value.setText(notion.context or "")
+        self._view.detail_description_value.setText(notion.description or "")
         self._view.detail_status_value.setText(notion.status)
 
     ###############################
