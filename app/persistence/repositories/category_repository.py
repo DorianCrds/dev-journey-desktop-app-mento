@@ -1,7 +1,6 @@
 # app/persistence/repositories/category_repository.py
-from typing import Optional
-
 from app.persistence.db_connector import DbConnector
+from app.services.dto.category_dto import CategoryDTO
 
 
 class CategoryRepository:
@@ -16,37 +15,22 @@ class CategoryRepository:
         query = "SELECT * FROM categories WHERE id = ?"
         return self._db_connector.fetch_one(query,(category_id,))
 
-    def create_category(self, title: str, description: str) -> int:
+    def create_category(self, dto: CategoryDTO) -> int:
         query = """
             INSERT INTO categories (title, description)
             VALUES (?, ?)
         """
-        return self._db_connector.execute(query, (title, description))
+        return self._db_connector.execute(query, (dto.title, dto.description))
 
-    def update_category(self, category_id: int, title: Optional[str], description: Optional[str]) -> int | None:
-        fields = []
-        params = []
-
-        if title is not None:
-            fields.append("title = ?")
-            params.append(title)
-
-        if description is not None:
-            fields.append("description = ?")
-            params.append(description)
-
-        if not fields:
-            return None
-
-        query = f"""
+    def update_category(self, dto: CategoryDTO) -> int | None:
+        query = """
             UPDATE categories
-            SET {', '.join(fields)}
+            SET title = ?,
+                description = ?
             WHERE id = ?
         """
 
-        params.append(category_id)
-
-        return self._db_connector.execute(query, tuple(params))
+        return self._db_connector.execute(query, (dto.title, dto.description, dto.id))
 
     def delete_category(self, category_id: int) -> int:
         check_query = "SELECT COUNT(*) AS count FROM notions WHERE category_id = ?"

@@ -2,6 +2,7 @@
 from app.domain.models.category import Category
 from app.persistence.mappers.category_mapper import dict_to_category
 from app.persistence.repositories.category_repository import CategoryRepository
+from app.services.dto.category_dto import CategoryDTO
 
 
 class CategoryService:
@@ -25,10 +26,13 @@ class CategoryService:
             description=description,
         )
 
-        category_id = self._repo.create_category(
-            title=category.title,
-            description=category.description,
+        dto = CategoryDTO(
+            id=0,
+            title=title,
+            description=description,
         )
+
+        category_id = self._repo.create_category(dto)
 
         return Category(
             category_id=category_id,
@@ -37,11 +41,13 @@ class CategoryService:
         )
 
     def update_category(self, category: Category) -> None:
-        self._repo.update_category(
-            category_id=category.id,
+        dto = CategoryDTO(
+            id=category.id,
             title=category.title,
             description=category.description,
         )
+
+        self._repo.update_category(dto)
 
     def delete_category(self, category_id: int) -> None:
         self._repo.delete_category(category_id)
