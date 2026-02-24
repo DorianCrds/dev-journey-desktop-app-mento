@@ -68,9 +68,30 @@ class NotionsView(QWidget):
         self._content_widget = QWidget()
         self._content_h_layout = QHBoxLayout(self._content_widget)
 
+        self._list_container_widget = QWidget()
+        self._list_container_v_layout = QVBoxLayout(self._list_container_widget)
+
+        self._list_widget_header = QWidget()
+        self._list_widget_header_h_layout = QHBoxLayout(self._list_widget_header)
+
+        self._title_column_header = QLabel("Title")
+        self._category_column_header = QLabel("Category")
+        self._status_column_header = QLabel("Status")
+
+        self._list_widget_header_h_layout.addWidget(self._title_column_header)
+        self._list_widget_header_h_layout.addWidget(self._category_column_header)
+        self._list_widget_header_h_layout.addWidget(self._status_column_header)
+
+        self._list_widget_header_h_layout.setStretch(0, 3)
+        self._list_widget_header_h_layout.setStretch(1, 2)
+        self._list_widget_header_h_layout.setStretch(2, 1)
+
         self.list_widget = QListWidget()
         self.list_widget.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
         self.list_widget.setObjectName("notions_list_widget")
+
+        self._list_container_v_layout.addWidget(self._list_widget_header)
+        self._list_container_v_layout.addWidget(self.list_widget)
 
         self.detail_widget = QWidget()
         self.detail_widget.setObjectName("notions_detail_widget")
@@ -105,7 +126,7 @@ class NotionsView(QWidget):
         self._detail_v_layout.addWidget(self.detail_status_value)
         self._detail_v_layout.addStretch()
 
-        self._content_h_layout.addWidget(self.list_widget)
+        self._content_h_layout.addWidget(self._list_container_widget)
         self._content_h_layout.addWidget(self.detail_widget)
 
         self._content_h_layout.setStretch(0, 2)
