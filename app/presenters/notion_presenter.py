@@ -24,31 +24,31 @@ class NotionPresenter:
         self.load_notions()
 
     def _connect_signals(self) -> None:
-        self._view.list_widget.itemSelectionChanged.connect(self._on_selection_changed)
+        self._view.notions_custom_list_widget.list_widget.itemSelectionChanged.connect(self._on_selection_changed)
 
-        self._view.add_button.clicked.connect(self._on_add_button_clicked)
-        self._view.edit_button.clicked.connect(self._on_edit_button_clicked)
-        self._view.delete_button.clicked.connect(self._on_delete_button_clicked)
-        self._view.form_page.back_button.clicked.connect(self._on_back_button_clicked)
-        self._view.form_page.save_button.clicked.connect(self._on_form_button_clicked)
+        self._view.add_notion_button.clicked.connect(self._on_add_button_clicked)
+        self._view.edit_notion_button.clicked.connect(self._on_edit_button_clicked)
+        self._view.delete_notion_button.clicked.connect(self._on_delete_button_clicked)
+        self._view.notions_form_page.back_button.clicked.connect(self._on_back_button_clicked)
+        self._view.notions_form_page.save_button.clicked.connect(self._on_form_button_clicked)
 
-        self._view.form_page.title_input.textChanged.connect(self._validate_form)
-        self._view.form_page.category_input.currentIndexChanged.connect(self._validate_form)
+        self._view.notions_form_page.title_input.textChanged.connect(self._validate_form)
+        self._view.notions_form_page.category_input.currentIndexChanged.connect(self._validate_form)
 
     #########################################
     ##### Notions list widget's methods #####
     #########################################
 
     def load_notions(self) -> None:
-        self._view.list_widget.clear()
+        self._view.notions_custom_list_widget.list_widget.clear()
         notions = self._notions_service.get_all_notions_for_display()
 
         for notion in notions:
             self._add_card(notion)
 
-        if self._view.list_widget.count() > 0:
-            self._view.list_widget.setFocus()
-            self._view.list_widget.setCurrentRow(0)
+        if self._view.notions_custom_list_widget.list_widget.count() > 0:
+            self._view.notions_custom_list_widget.list_widget.setFocus()
+            self._view.notions_custom_list_widget.list_widget.setCurrentRow(0)
 
         self._update_details_and_options()
 
@@ -61,11 +61,11 @@ class NotionPresenter:
 
         item.setSizeHint(card.sizeHint())
 
-        self._view.list_widget.addItem(item)
-        self._view.list_widget.setItemWidget(item, card)
+        self._view.notions_custom_list_widget.list_widget.addItem(item)
+        self._view.notions_custom_list_widget.list_widget.setItemWidget(item, card)
 
     def _on_selection_changed(self) -> None:
-        selected_items = self._view.list_widget.selectedItems()
+        selected_items = self._view.notions_custom_list_widget.list_widget.selectedItems()
 
         if not selected_items:
             self._update_details_and_options()
@@ -73,24 +73,24 @@ class NotionPresenter:
 
         notion = selected_items[0].data(Qt.ItemDataRole.UserRole)
 
-        self._view.detail_title_value.setText(notion.title)
-        self._view.detail_category_value.setText(notion.category_title)
-        self._view.detail_context_value.setText(notion.context or "")
-        self._view.detail_description_value.setText(notion.description or "")
-        self._view.detail_status_value.setText(notion.status)
+        self._view.notions_detail_widget.title_value.setText(notion.title)
+        self._view.notions_detail_widget.category_value.setText(notion.category_title)
+        self._view.notions_detail_widget.context_value.setText(notion.context or "")
+        self._view.notions_detail_widget.description_value.setText(notion.description or "")
+        self._view.notions_detail_widget.status_value.setText(notion.status)
 
         self._update_details_and_options()
 
     def _update_details_and_options(self) -> None:
-        has_selection = bool(self._view.list_widget.selectedItems())
+        has_selection = bool(self._view.notions_custom_list_widget.list_widget.selectedItems())
         if not has_selection:
-            self._view.detail_title_value.setText("")
-            self._view.detail_category_value.setText("")
-            self._view.detail_context_value.setText("")
-            self._view.detail_description_value.setText("")
-            self._view.detail_status_value.setText("")
-        self._view.edit_button.setEnabled(has_selection)
-        self._view.delete_button.setEnabled(has_selection)
+            self._view.notions_detail_widget.title_value.setText("")
+            self._view.notions_detail_widget.category_value.setText("")
+            self._view.notions_detail_widget.context_value.setText("")
+            self._view.notions_detail_widget.description_value.setText("")
+            self._view.notions_detail_widget.status_value.setText("")
+        self._view.edit_notion_button.setEnabled(has_selection)
+        self._view.delete_notion_button.setEnabled(has_selection)
 
     ###############################
     ##### Buttons connections #####
@@ -100,7 +100,7 @@ class NotionPresenter:
         self._open_form(FormMode.CREATE)
 
     def _on_edit_button_clicked(self) -> None:
-        selected_item = self._view.list_widget.currentItem()
+        selected_item = self._view.notions_custom_list_widget.list_widget.currentItem()
         if not selected_item:
             return
 
@@ -108,7 +108,7 @@ class NotionPresenter:
         self._open_form(FormMode.EDIT, notion)
 
     def _on_delete_button_clicked(self) -> None:
-        selected_item = self._view.list_widget.currentItem()
+        selected_item = self._view.notions_custom_list_widget.list_widget.currentItem()
 
         if not selected_item:
             return
@@ -127,10 +127,10 @@ class NotionPresenter:
 
     def _on_back_button_clicked(self) -> None:
         self._reset_form()
-        self._view.content.setCurrentIndex(0)
+        self._view.notions_content_stacked_widget.setCurrentIndex(0)
 
     def _on_form_button_clicked(self) -> None:
-        form = self._view.form_page
+        form = self._view.notions_form_page
 
         title = form.title_input.text().strip()
         category = form.category_input.currentData()
@@ -168,7 +168,7 @@ class NotionPresenter:
 
         self._populate_form_combobox()
 
-        form = self._view.form_page
+        form = self._view.notions_form_page
 
         if mode == FormMode.CREATE:
             form.save_button.setText("Create Notion")
@@ -179,12 +179,12 @@ class NotionPresenter:
             self._fill_form_with_notion(notion)
 
         self._validate_form()
-        self._view.content.setCurrentIndex(1)
+        self._view.notions_content_stacked_widget.setCurrentIndex(1)
 
     def _populate_form_combobox(self) -> None:
         categories = self._categories_service.get_all_categories()
 
-        combo = self._view.form_page.category_input
+        combo = self._view.notions_form_page.category_input
         combo.clear()
 
         combo.addItem("Select a category...", None)
@@ -192,10 +192,10 @@ class NotionPresenter:
         for category in categories:
             combo.addItem(category.title, category)
 
-        self._view.form_page.save_button.setEnabled(False)
+        self._view.notions_form_page.save_button.setEnabled(False)
 
     def _fill_form_with_notion(self, notion: Notion) -> None:
-        form = self._view.form_page
+        form = self._view.notions_form_page
 
         form.title_input.setText(notion.title)
         form.context_input.setText(notion.context or "")
@@ -209,7 +209,7 @@ class NotionPresenter:
                 break
 
     def _validate_form(self) -> None:
-        form = self._view.form_page
+        form = self._view.notions_form_page
 
         title_valid = bool(form.title_input.text().strip())
         category_valid = form.category_input.currentData() is not None
@@ -217,7 +217,7 @@ class NotionPresenter:
         form.save_button.setEnabled(title_valid and category_valid)
 
     def _validate_and_show_errors(self, title, category) -> bool:
-        form = self._view.form_page
+        form = self._view.notions_form_page
 
         form.form_title_error.hide()
         form.form_category_error.hide()
@@ -237,7 +237,7 @@ class NotionPresenter:
         return valid
 
     def _reset_form(self) -> None:
-        form = self._view.form_page
+        form = self._view.notions_form_page
 
         form.title_input.clear()
         form.context_input.clear()
@@ -256,10 +256,10 @@ class NotionPresenter:
 
         self._reset_form_fields()
         self.load_notions()
-        self._view.content.setCurrentIndex(0)
+        self._view.notions_content_stacked_widget.setCurrentIndex(0)
 
     def _reset_form_fields(self) -> None:
-        form = self._view.form_page
+        form = self._view.notions_form_page
 
         form.title_input.clear()
         form.context_input.clear()

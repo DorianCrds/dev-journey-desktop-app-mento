@@ -22,7 +22,7 @@ class CategoriesView(QWidget):
                 background-color: rgba(0, 255, 0, 30);
             }
 
-            #list_container_widget {
+            #categories_list_container_widget {
                 border: 2px solid red;
                 border-radius: 6px;
                 background-color: rgba(255, 0, 0, 30);
@@ -34,7 +34,7 @@ class CategoriesView(QWidget):
                 background-color: rgba(0, 0, 255, 30);
             }
             
-            #categories_form_widget, #buttons_widget {
+            #categories_form_widget, #categories_header_buttons_widget {
                 border: 2px solid green;
                 border-radius: 6px;
                 background-color: rgba(0, 255, 0, 30);
@@ -45,92 +45,108 @@ class CategoriesView(QWidget):
             }
         """)
 
-    def _setupt_ui(self):
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self._main_v_layout = QVBoxLayout(self)
+    def _setupt_ui(self) -> None:
 
-        self._view_label = CustomViewTitleLabel("Categories view")
-        self._main_v_layout.addWidget(self._view_label)
+        #########################
+        ##### View's layout #####
+        #########################
 
-        self.content = QWidget()
-        self._content_grid_layout = QGridLayout(self.content)
+        self._categories_main_v_layout = QVBoxLayout(self)
 
-        self._buttons_widget = QWidget()
-        self._buttons_widget.setObjectName("buttons_widget")
-        self._buttons_h_layout = QHBoxLayout(self._buttons_widget)
+        self._categories_view_label = CustomViewTitleLabel("Categories view")
 
-        self.edit_button = CustomToolButton("~ Edit")
-        self._buttons_h_layout.addWidget(self.edit_button)
+        self.categories_content = QWidget()
+        self._categories_content_grid_layout = QGridLayout(self.categories_content)
 
-        self.delete_button = CustomToolButton("- Remove")
-        self._buttons_h_layout.addWidget(self.delete_button)
+        #######################
+        ##### List widget #####
+        #######################
 
-        self._buttons_h_layout.addStretch()
+        self._categories_header_buttons_widget = QWidget()
+        self._categories_header_buttons_widget.setObjectName("categories_header_buttons_widget")
+        self._categories_header_buttons_h_layout = QHBoxLayout(self._categories_header_buttons_widget)
 
-        self.list_widget = QListWidget()
-        self.list_widget.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
-        self.list_widget.setObjectName("categories_list_widget")
+        self.edit_category_button = CustomToolButton("~ Edit")
+        self._categories_header_buttons_h_layout.addWidget(self.edit_category_button)
 
-        self._list_container_widget = QWidget()
-        self._list_container_widget.setObjectName("list_container_widget")
-        self._container_v_layout = QVBoxLayout(self._list_container_widget)
-        self._container_v_layout.addWidget(self._buttons_widget)
-        self._container_v_layout.addWidget(self.list_widget)
+        self.delete_category_button = CustomToolButton("- Remove")
+        self._categories_header_buttons_h_layout.addWidget(self.delete_category_button)
 
-        self._content_grid_layout.addWidget(self._list_container_widget, 0, 0, 1, 1)
+        self._categories_header_buttons_h_layout.addStretch()
 
-        self.detail_widget = QWidget()
-        self.detail_widget.setObjectName("categories_detail_widget")
-        self._detail_v_layout = QVBoxLayout(self.detail_widget)
+        self.categories_list_widget = QListWidget()
+        self.categories_list_widget.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
+        self.categories_list_widget.setObjectName("categories_list_widget")
 
-        self._detail_title_label = CustomPrimaryContentLabel("Title")
-        self.detail_title_value = QLabel("")
+        self._categories_list_container_widget = QWidget()
+        self._categories_list_container_widget.setObjectName("categories_list_container_widget")
+        self._categories_container_v_layout = QVBoxLayout(self._categories_list_container_widget)
+        self._categories_container_v_layout.addWidget(self._categories_header_buttons_widget)
+        self._categories_container_v_layout.addWidget(self.categories_list_widget)
 
-        self._detail_description_label = CustomPrimaryContentLabel("Description")
-        self.detail_description_value = QLabel("")
+        ##########################
+        ##### Details Widget #####
+        ##########################
 
-        self._detail_v_layout.addWidget(self._detail_title_label)
-        self._detail_v_layout.addWidget(self.detail_title_value)
-        self._detail_v_layout.addWidget(self._detail_description_label)
-        self._detail_v_layout.addWidget(self.detail_description_value)
-        self._detail_v_layout.addStretch()
+        self.categories_detail_widget = QWidget()
+        self.categories_detail_widget.setObjectName("categories_detail_widget")
+        self._categories_detail_v_layout = QVBoxLayout(self.categories_detail_widget)
 
-        self._content_grid_layout.addWidget(self.detail_widget, 0, 1, 1, 1)
+        self._category_detail_title_label = CustomPrimaryContentLabel("Title")
+        self.category_detail_title_value = QLabel("")
 
-        self._form = QWidget()
-        self._form.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self._form.setObjectName("categories_form_widget")
+        self._category_detail_description_label = CustomPrimaryContentLabel("Description")
+        self.category_detail_description_value = QLabel("")
 
-        self._form_layout = QFormLayout(self._form)
+        self._categories_detail_v_layout.addWidget(self._category_detail_title_label)
+        self._categories_detail_v_layout.addWidget(self.category_detail_title_value)
+        self._categories_detail_v_layout.addWidget(self._category_detail_description_label)
+        self._categories_detail_v_layout.addWidget(self.category_detail_description_value)
+        self._categories_detail_v_layout.addStretch()
 
-        self.form_title_input = QLineEdit(placeholderText="Category name")
-        self.form_title_input.setMaximumWidth(350)
+        #######################
+        ##### Form Widget #####
+        #######################
 
-        self.form_title_error = CustomFormErrorLabel("")
-        self.form_title_error.hide()
+        self._categories_form = QWidget()
+        self._categories_form.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self._categories_form.setObjectName("categories_form_widget")
 
-        self.form_description_input = QTextEdit(placeholderText="Category description")
-        self.form_description_input.setMaximumSize(350, 250)
+        self._categories_form_layout = QFormLayout(self._categories_form)
 
-        self.form_description_error = CustomFormErrorLabel("")
-        self.form_description_error.hide()
+        self.form_categories_title_input = QLineEdit(placeholderText="Category name")
+        self.form_categories_title_input.setMaximumWidth(350)
 
-        self.form_button = CustomToolButton("Save category")
+        self.form_categories_title_error = CustomFormErrorLabel("")
+        self.form_categories_title_error.hide()
 
-        self._form_layout.addRow("Title ", self.form_title_input)
-        self._form_layout.addRow("", self.form_title_error)
+        self.form_categories_description_input = QTextEdit(placeholderText="Category description")
+        self.form_categories_description_input.setMaximumSize(350, 250)
 
-        self._form_layout.addRow("Description ", self.form_description_input)
-        self._form_layout.addRow("", self.form_description_error)
+        self.form_categories_description_error = CustomFormErrorLabel("")
+        self.form_categories_description_error.hide()
 
-        self._form_layout.addRow("", self.form_button)
+        self.categories_form_button = CustomToolButton("")
 
-        self._content_grid_layout.addWidget(self._form, 1, 0, 1, 2)
+        self._categories_form_layout.addRow("Title ", self.form_categories_title_input)
+        self._categories_form_layout.addRow("", self.form_categories_title_error)
+        self._categories_form_layout.addRow("Description ", self.form_categories_description_input)
+        self._categories_form_layout.addRow("", self.form_categories_description_error)
+        self._categories_form_layout.addRow("", self.categories_form_button)
 
-        self._content_grid_layout.setRowStretch(0, 1)
-        self._content_grid_layout.setRowStretch(1, 1)
+        #############################
+        ##### Adding to layouts #####
+        #############################
 
-        self._content_grid_layout.setColumnStretch(0, 1)
-        self._content_grid_layout.setColumnStretch(1, 1)
+        self._categories_content_grid_layout.addWidget(self._categories_list_container_widget, 0, 0, 1, 1)
+        self._categories_content_grid_layout.addWidget(self.categories_detail_widget, 0, 1, 1, 1)
+        self._categories_content_grid_layout.addWidget(self._categories_form, 1, 0, 1, 2)
 
-        self._main_v_layout.addWidget(self.content)
+        self._categories_content_grid_layout.setRowStretch(0, 1)
+        self._categories_content_grid_layout.setRowStretch(1, 1)
+
+        self._categories_content_grid_layout.setColumnStretch(0, 1)
+        self._categories_content_grid_layout.setColumnStretch(1, 1)
+
+        self._categories_main_v_layout.addWidget(self._categories_view_label)
+        self._categories_main_v_layout.addWidget(self.categories_content)

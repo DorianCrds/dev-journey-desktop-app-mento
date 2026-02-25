@@ -21,13 +21,13 @@ class TagPresenter:
         self.load_tags()
 
     def _connect_signals(self) -> None:
-        self._view.add_button.clicked.connect(self._on_add_button_clicked)
-        self._view.edit_button.clicked.connect(self._on_edit_button_clicked)
-        self._view.delete_button.clicked.connect(self._on_delete_button_clicked)
-        self._view.back_button.clicked.connect(self._on_back_button_clicked)
-        self._view.save_button.clicked.connect(self._on_form_button_clicked)
+        self._view.add_tag_button.clicked.connect(self._on_add_button_clicked)
+        self._view.edit_tag_button.clicked.connect(self._on_edit_button_clicked)
+        self._view.delete_tag_button.clicked.connect(self._on_delete_button_clicked)
+        self._view.tags_back_button.clicked.connect(self._on_back_button_clicked)
+        self._view.tags_form_button.clicked.connect(self._on_form_button_clicked)
 
-        self._view.list_widget.itemSelectionChanged.connect(self._on_selection_changed)
+        self._view.tags_list_widget.itemSelectionChanged.connect(self._on_selection_changed)
 
         self._view.tag_name_input.textChanged.connect(self._validate_form)
 
@@ -39,7 +39,7 @@ class TagPresenter:
         self._open_form(FormMode.CREATE)
 
     def _on_edit_button_clicked(self) -> None:
-        selected_item = self._view.list_widget.currentItem()
+        selected_item = self._view.tags_list_widget.currentItem()
         if not selected_item:
             return
 
@@ -47,7 +47,7 @@ class TagPresenter:
         self._open_form(FormMode.EDIT, tag)
 
     def _on_delete_button_clicked(self) -> None:
-        selected_item = self._view.list_widget.currentItem()
+        selected_item = self._view.tags_list_widget.currentItem()
         if not selected_item:
             return
 
@@ -65,9 +65,9 @@ class TagPresenter:
     def _on_back_button_clicked(self) -> None:
         self._view.tag_name_input.clear()
         self._view.form_tag_name_error.hide()
-        self._view.save_button.setEnabled(False)
+        self._view.tags_form_button.setEnabled(False)
 
-        self._view.stack_widget.setCurrentIndex(0)
+        self._view.tags_stacked_widget.setCurrentIndex(0)
 
     def _on_form_button_clicked(self) -> None:
         title = self._view.tag_name_input.text().strip()
@@ -92,15 +92,15 @@ class TagPresenter:
     #######################
 
     def load_tags(self) -> None:
-        self._view.list_widget.clear()
+        self._view.tags_list_widget.clear()
         tags = self._service.get_all_tags()
 
         for tag in tags:
             self._add_card(tag)
 
-        if self._view.list_widget.count() > 0:
-            self._view.list_widget.setFocus()
-            self._view.list_widget.setCurrentRow(0)
+        if self._view.tags_list_widget.count() > 0:
+            self._view.tags_list_widget.setFocus()
+            self._view.tags_list_widget.setCurrentRow(0)
 
         self._update_details_and_options()
 
@@ -113,11 +113,11 @@ class TagPresenter:
 
         item.setSizeHint(card.sizeHint())
 
-        self._view.list_widget.addItem(item)
-        self._view.list_widget.setItemWidget(item, card)
+        self._view.tags_list_widget.addItem(item)
+        self._view.tags_list_widget.setItemWidget(item, card)
 
     def _on_selection_changed(self) -> None:
-        selected_items = self._view.list_widget.selectedItems()
+        selected_items = self._view.tags_list_widget.selectedItems()
 
         if not selected_items:
             self._update_details_and_options()
@@ -130,11 +130,11 @@ class TagPresenter:
         self._update_details_and_options()
 
     def _update_details_and_options(self) -> None:
-        has_selection = bool(self._view.list_widget.selectedItems())
+        has_selection = bool(self._view.tags_list_widget.selectedItems())
         if not has_selection:
             self._view.value.setText("")
-        self._view.edit_button.setEnabled(has_selection)
-        self._view.delete_button.setEnabled(has_selection)
+        self._view.edit_tag_button.setEnabled(has_selection)
+        self._view.delete_tag_button.setEnabled(has_selection)
 
     #################################
     ##### Reusable Form methods #####
@@ -145,19 +145,19 @@ class TagPresenter:
         self._editing_tag = tag
 
         if mode == FormMode.CREATE:
-            self._view.save_button.setText("Create Tag")
+            self._view.tags_form_button.setText("Create Tag")
             self._reset_form_fields()
 
         elif mode == FormMode.EDIT and tag:
-            self._view.save_button.setText("Update Tag")
+            self._view.tags_form_button.setText("Update Tag")
             self._view.tag_name_input.setText(tag.title)
 
         self._validate_form()
-        self._view.stack_widget.setCurrentIndex(1)
+        self._view.tags_stacked_widget.setCurrentIndex(1)
 
     def _validate_form(self) -> None:
         title_valid = bool(self._view.tag_name_input.text().strip())
-        self._view.save_button.setEnabled(title_valid)
+        self._view.tags_form_button.setEnabled(title_valid)
 
     def _after_submit(self) -> None:
         self._form_mode = FormMode.CREATE
@@ -166,7 +166,7 @@ class TagPresenter:
         self._reset_form_fields()
 
         self.load_tags()
-        self._view.stack_widget.setCurrentIndex(0)
+        self._view.tags_stacked_widget.setCurrentIndex(0)
 
     def _reset_form_fields(self) -> None:
         self._view.tag_name_input.clear()

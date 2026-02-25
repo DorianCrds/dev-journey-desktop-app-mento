@@ -1,11 +1,12 @@
 # app/views/pages/notions_view.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy, QHBoxLayout, QLabel, QListWidget, \
-    QTextEdit
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy, QHBoxLayout
 
-from app.views.pages.notions.creation_form_page import CreationFormPage
+from app.views.pages.notions.notions_custom_list_widget import CustomNotionsListWidget
+from app.views.pages.notions.notions_details_widget import NotionsDetailsWidget
+from app.views.pages.notions.notions_form_page import NotionsFormPage
 from app.views.components.sub_components.custom_buttons import CustomToolButton
-from app.views.components.sub_components.custom_texts import CustomViewTitleLabel, CustomPrimaryContentLabel
+from app.views.components.sub_components.custom_texts import CustomViewTitleLabel
 
 
 class NotionsView(QWidget):
@@ -36,110 +37,78 @@ class NotionsView(QWidget):
             }
         """)
 
-    def _setup_ui(self):
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self._main_v_layout = QVBoxLayout(self)
+    def _setup_ui(self) -> None:
 
-        self._view_label = CustomViewTitleLabel("Notions view")
-        self._main_v_layout.addWidget(self._view_label)
+        #########################
+        ##### View's layout #####
+        #########################
 
-        self.content = QStackedWidget()
-        self.content.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self._notions_main_v_layout = QVBoxLayout(self)
 
-        self._list_page = QWidget()
-        self._list_page_v_layout = QVBoxLayout(self._list_page)
+        self._notions_view_label = CustomViewTitleLabel("Notions view")
 
-        self._header_widget = QWidget()
-        self._header_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.notions_content_stacked_widget = QStackedWidget()
+        self.notions_content_stacked_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
-        self._header_h_layout = QHBoxLayout(self._header_widget)
+        #####################
+        ##### List Page #####
+        #####################
 
-        self._header_h_layout.addStretch()
+        ### List Page Header layout
+        self._notions_list_page_header_buttons_widget = QWidget()
+        self._notions_list_page_header_buttons_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
 
-        self.add_button = CustomToolButton("+ Add")
-        self._header_h_layout.addWidget(self.add_button)
+        self._notions_list_page_header_h_layout = QHBoxLayout(self._notions_list_page_header_buttons_widget)
 
-        self.edit_button = CustomToolButton("~ Edit")
-        self._header_h_layout.addWidget(self.edit_button)
+        self.add_notion_button = CustomToolButton("+ Add")
+        self.edit_notion_button = CustomToolButton("~ Edit")
+        self.delete_notion_button = CustomToolButton("- Remove")
 
-        self.delete_button = CustomToolButton("- Remove")
-        self._header_h_layout.addWidget(self.delete_button)
+        self._notions_list_page_header_h_layout.addStretch()
+        self._notions_list_page_header_h_layout.addWidget(self.add_notion_button)
+        self._notions_list_page_header_h_layout.addWidget(self.edit_notion_button)
+        self._notions_list_page_header_h_layout.addWidget(self.delete_notion_button)
 
-        self._content_widget = QWidget()
-        self._content_h_layout = QHBoxLayout(self._content_widget)
+        ### List Page content widget (List Widget | Detail Widget)
+        self._notions_list_page_content_widget = QWidget()
+        self._notions_list_page_content_h_layout = QHBoxLayout(self._notions_list_page_content_widget)
 
-        self._list_container_widget = QWidget()
-        self._list_container_v_layout = QVBoxLayout(self._list_container_widget)
+        # Custom list widget (handmade header)
+        self.notions_custom_list_widget = CustomNotionsListWidget()
 
-        self._list_widget_header = QWidget()
-        self._list_widget_header_h_layout = QHBoxLayout(self._list_widget_header)
+        # Details widget
+        self.notions_detail_widget = NotionsDetailsWidget()
 
-        self._title_column_header = QLabel("Title")
-        self._category_column_header = QLabel("Category")
-        self._status_column_header = QLabel("Status")
+        # Content horizontal layout
+        self._notions_list_page_content_h_layout.addWidget(self.notions_custom_list_widget)
+        self._notions_list_page_content_h_layout.addWidget(self.notions_detail_widget)
 
-        self._list_widget_header_h_layout.addWidget(self._title_column_header)
-        self._list_widget_header_h_layout.addWidget(self._category_column_header)
-        self._list_widget_header_h_layout.addWidget(self._status_column_header)
+        self._notions_list_page_content_h_layout.setStretch(0, 2)
+        self._notions_list_page_content_h_layout.setStretch(1, 1)
 
-        self._list_widget_header_h_layout.setStretch(0, 3)
-        self._list_widget_header_h_layout.setStretch(1, 2)
-        self._list_widget_header_h_layout.setStretch(2, 1)
+        ### List Page main widget
+        self._notions_list_page = QWidget()
+        self._notions_list_page_v_layout = QVBoxLayout(self._notions_list_page)
 
-        self.list_widget = QListWidget()
-        self.list_widget.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
-        self.list_widget.setObjectName("notions_list_widget")
+        self._notions_list_page_v_layout.addWidget(self._notions_list_page_header_buttons_widget)
+        self._notions_list_page_v_layout.addWidget(self._notions_list_page_content_widget)
 
-        self._list_container_v_layout.addWidget(self._list_widget_header)
-        self._list_container_v_layout.addWidget(self.list_widget)
+        #####################
+        ##### Form Page #####
+        #####################
 
-        self.detail_widget = QWidget()
-        self.detail_widget.setObjectName("notions_detail_widget")
-        self._detail_v_layout = QVBoxLayout(self.detail_widget)
+        self.notions_form_page = NotionsFormPage()
 
-        self._detail_title_label = CustomPrimaryContentLabel("Title")
-        self.detail_title_value = QLabel("")
+        #############################
+        ##### Adding to layouts #####
+        #############################
 
-        self._detail_category_label = CustomPrimaryContentLabel("Category")
-        self.detail_category_value = QLabel("")
+        # Adding pages to stacked widget
+        self.notions_content_stacked_widget.addWidget(self._notions_list_page)
+        self.notions_content_stacked_widget.addWidget(self.notions_form_page)
 
-        self._detail_context_label = CustomPrimaryContentLabel("Context")
-        self.detail_context_value = QTextEdit("")
-        self.detail_context_value.setReadOnly(True)
+        self.notions_content_stacked_widget.setCurrentIndex(0)
 
-        self._detail_description_label = CustomPrimaryContentLabel("Description")
-        self.detail_description_value = QTextEdit("")
-        self.detail_description_value.setReadOnly(True)
-
-        self._detail_status_label = CustomPrimaryContentLabel("Status")
-        self.detail_status_value = QLabel("")
-
-        self._detail_v_layout.addWidget(self._detail_title_label)
-        self._detail_v_layout.addWidget(self.detail_title_value)
-        self._detail_v_layout.addWidget(self._detail_category_label)
-        self._detail_v_layout.addWidget(self.detail_category_value)
-        self._detail_v_layout.addWidget(self._detail_context_label)
-        self._detail_v_layout.addWidget(self.detail_context_value)
-        self._detail_v_layout.addWidget(self._detail_description_label)
-        self._detail_v_layout.addWidget(self.detail_description_value)
-        self._detail_v_layout.addWidget(self._detail_status_label)
-        self._detail_v_layout.addWidget(self.detail_status_value)
-        self._detail_v_layout.addStretch()
-
-        self._content_h_layout.addWidget(self._list_container_widget)
-        self._content_h_layout.addWidget(self.detail_widget)
-
-        self._content_h_layout.setStretch(0, 2)
-        self._content_h_layout.setStretch(1, 1)
-
-        self._list_page_v_layout.addWidget(self._header_widget)
-        self._list_page_v_layout.addWidget(self._content_widget)
-
-        self.content.addWidget(self._list_page)
-
-        self.form_page = CreationFormPage()
-        self.content.addWidget(self.form_page)
-
-        self._main_v_layout.addWidget(self.content)
-
-        self.content.setCurrentIndex(0)
+        # Adding Header and Content to Notions View
+        self._notions_main_v_layout.addWidget(self._notions_view_label)
+        self._notions_main_v_layout.addWidget(self.notions_content_stacked_widget)
