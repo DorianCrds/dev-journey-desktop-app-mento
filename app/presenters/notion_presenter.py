@@ -2,19 +2,13 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QListWidgetItem, QMessageBox
 
-from enum import Enum, auto
-
 from app.domain.models.notion import Notion
+from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
 from app.services.dto.notion_dto import NotionReadDTO
 from app.services.notion_service import NotionService
 from app.views.pages.notions.notions_card import NotionCard
 from app.views.pages.notions.notions_view import NotionsView
-
-
-class FormMode(Enum):
-    CREATE = auto()
-    EDIT = auto()
 
 
 class NotionPresenter:
@@ -56,10 +50,9 @@ class NotionPresenter:
             self._view.list_widget.setFocus()
             self._view.list_widget.setCurrentRow(0)
 
-        self._view.edit_button.setEnabled(False)
-        self._view.delete_button.setEnabled(False)
+        self._update_details_and_options()
 
-    def _add_card(self, notion: NotionReadDTO):
+    def _add_card(self, notion: NotionReadDTO) -> None:
         item = QListWidgetItem()
 
         item.setData(Qt.ItemDataRole.UserRole, notion)
@@ -71,14 +64,12 @@ class NotionPresenter:
         self._view.list_widget.addItem(item)
         self._view.list_widget.setItemWidget(item, card)
 
-    def _on_selection_changed(self):
+    def _on_selection_changed(self) -> None:
         selected_items = self._view.list_widget.selectedItems()
 
         if not selected_items:
+            self._update_details_and_options()
             return
-
-        self._view.delete_button.setEnabled(bool(selected_items))
-        self._view.edit_button.setEnabled(bool(selected_items))
 
         notion = selected_items[0].data(Qt.ItemDataRole.UserRole)
 
@@ -88,14 +79,27 @@ class NotionPresenter:
         self._view.detail_description_value.setText(notion.description or "")
         self._view.detail_status_value.setText(notion.status)
 
+        self._update_details_and_options()
+
+    def _update_details_and_options(self) -> None:
+        has_selection = bool(self._view.list_widget.selectedItems())
+        if not has_selection:
+            self._view.detail_title_value.setText("")
+            self._view.detail_category_value.setText("")
+            self._view.detail_context_value.setText("")
+            self._view.detail_description_value.setText("")
+            self._view.detail_status_value.setText("")
+        self._view.edit_button.setEnabled(has_selection)
+        self._view.delete_button.setEnabled(has_selection)
+
     ###############################
     ##### Buttons connections #####
     ###############################
 
-    def _on_add_button_clicked(self):
+    def _on_add_button_clicked(self) -> None:
         self._open_form(FormMode.CREATE)
 
-    def _on_edit_button_clicked(self):
+    def _on_edit_button_clicked(self) -> None:
         selected_item = self._view.list_widget.currentItem()
         if not selected_item:
             return
@@ -103,7 +107,7 @@ class NotionPresenter:
         notion = selected_item.data(Qt.ItemDataRole.UserRole)
         self._open_form(FormMode.EDIT, notion)
 
-    def _on_delete_button_clicked(self):
+    def _on_delete_button_clicked(self) -> None:
         selected_item = self._view.list_widget.currentItem()
 
         if not selected_item:
@@ -125,7 +129,7 @@ class NotionPresenter:
         self._reset_form()
         self._view.content.setCurrentIndex(0)
 
-    def _on_form_button_clicked(self):
+    def _on_form_button_clicked(self) -> None:
         form = self._view.form_page
 
         title = form.title_input.text().strip()
@@ -158,7 +162,7 @@ class NotionPresenter:
     ##### Reusable Form methods #####
     #################################
 
-    def _open_form(self, mode: FormMode, notion: Notion | None = None):
+    def _open_form(self, mode: FormMode, notion: Notion | None = None) -> None:
         self._form_mode = mode
         self._editing_notion = notion
 
@@ -177,7 +181,7 @@ class NotionPresenter:
         self._validate_form()
         self._view.content.setCurrentIndex(1)
 
-    def _populate_form_combobox(self):
+    def _populate_form_combobox(self) -> None:
         categories = self._categories_service.get_all_categories()
 
         combo = self._view.form_page.category_input
@@ -190,7 +194,7 @@ class NotionPresenter:
 
         self._view.form_page.save_button.setEnabled(False)
 
-    def _fill_form_with_notion(self, notion: Notion):
+    def _fill_form_with_notion(self, notion: Notion) -> None:
         form = self._view.form_page
 
         form.title_input.setText(notion.title)
@@ -204,7 +208,7 @@ class NotionPresenter:
                 combo.setCurrentIndex(i)
                 break
 
-    def _validate_form(self):
+    def _validate_form(self) -> None:
         form = self._view.form_page
 
         title_valid = bool(form.title_input.text().strip())
@@ -232,7 +236,7 @@ class NotionPresenter:
 
         return valid
 
-    def _reset_form(self):
+    def _reset_form(self) -> None:
         form = self._view.form_page
 
         form.title_input.clear()
@@ -246,7 +250,7 @@ class NotionPresenter:
 
         form.save_button.setEnabled(False)
 
-    def _after_submit(self):
+    def _after_submit(self) -> None:
         self._form_mode = FormMode.CREATE
         self._editing_notion = None
 
@@ -254,7 +258,7 @@ class NotionPresenter:
         self.load_notions()
         self._view.content.setCurrentIndex(0)
 
-    def _reset_form_fields(self):
+    def _reset_form_fields(self) -> None:
         form = self._view.form_page
 
         form.title_input.clear()
