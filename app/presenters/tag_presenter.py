@@ -123,7 +123,7 @@ class TagPresenter:
             self._update_details_and_options()
             return
 
-        tag = selected_items[0].item.data(Qt.ItemDataRole.UserRole)
+        tag = selected_items[0].data(Qt.ItemDataRole.UserRole)
 
         self._view.value.setText(tag.title)
 
