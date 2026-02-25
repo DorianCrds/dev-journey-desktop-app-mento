@@ -42,7 +42,7 @@ class CategoryPresenter:
         self._view.delete_button.setEnabled(False)
         self._view.edit_button.setEnabled(False)
 
-    def _add_card(self, category: Category):
+    def _add_card(self, category: Category) -> None:
         item = QListWidgetItem()
 
         item.setData(Qt.ItemDataRole.UserRole, category)
@@ -54,7 +54,7 @@ class CategoryPresenter:
         self._view.list_widget.addItem(item)
         self._view.list_widget.setItemWidget(item, card)
 
-    def _on_selection_changed(self):
+    def _on_selection_changed(self) -> None:
         selected_items = self._view.list_widget.selectedItems()
 
         if not selected_items:
@@ -70,7 +70,7 @@ class CategoryPresenter:
         self._view.detail_title_value.setText(category.title)
         self._view.detail_description_value.setText(category.description)
 
-    def _on_form_button_clicked(self):
+    def _on_form_button_clicked(self) -> None:
         title = self._view.form_title_input.text().strip()
         description = self._view.form_description_input.toPlainText().strip()
 
@@ -103,7 +103,7 @@ class CategoryPresenter:
 
         self.load_categories()
 
-    def _on_edit_button_clicked(self):
+    def _on_edit_button_clicked(self) -> None:
         selected_item = self._view.list_widget.currentItem()
 
         if not selected_item:
@@ -118,13 +118,13 @@ class CategoryPresenter:
 
         self._view.form_button.setText("Update category")
 
-    def _reset_form(self):
+    def _reset_form(self) -> None:
         self._editing_category = None
         self._view.form_title_input.clear()
         self._view.form_description_input.clear()
         self._view.form_button.setText("Save category")
 
-    def _on_delete_button_clicked(self):
+    def _on_delete_button_clicked(self) -> None:
         selected_item = self._view.list_widget.currentItem()
 
         if not selected_item:

@@ -45,7 +45,7 @@ class MainPresenter:
             tag_service=tag_service,
         )
 
-    def _setup_connections(self):
+    def _setup_connections(self) -> None:
         self._view.menu.dashboard_button.clicked.connect(self._dashboard_menu_button_clicked)
         self._view.menu.notions_button.clicked.connect(self._notions_menu_button_clicked)
         self._view.menu.categories_button.clicked.connect(self._categories_menu_button_clicked)
@@ -53,20 +53,20 @@ class MainPresenter:
         self._view.menu.infos_button.clicked.connect(self._infos_menu_button_clicked)
         self._view.menu.settings_button.clicked.connect(self._settings_menu_button_clicked)
 
-    def _dashboard_menu_button_clicked(self):
+    def _dashboard_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(0)
 
-    def _notions_menu_button_clicked(self):
+    def _notions_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(1)
 
-    def _categories_menu_button_clicked(self):
+    def _categories_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(2)
 
-    def _tags_menu_button_clicked(self):
+    def _tags_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(3)
 
-    def _infos_menu_button_clicked(self):
+    def _infos_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(4)
 
-    def _settings_menu_button_clicked(self):
+    def _settings_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(5)
