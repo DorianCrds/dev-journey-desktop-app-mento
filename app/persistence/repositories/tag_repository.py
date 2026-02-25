@@ -22,7 +22,7 @@ class TagRepository:
     def update_tag(self, dto: TagDTO) -> int | None:
         query = "UPDATE tags SET title = ? WHERE id = ?"
 
-        return self._db_connector.execute(query, (dto.title,))
+        return self._db_connector.execute(query, (dto.title, dto.id))
 
     def delete_tag(self, tag_id: int) -> int:
         query = "DELETE FROM tags WHERE id = ?"

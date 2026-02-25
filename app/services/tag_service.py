@@ -38,10 +38,8 @@ class TagService:
         )
 
     def update_tag(self, tag: Tag) -> None:
-        self._repo.update_tag(
-            tag_id=tag.id,
-            title=tag.title,
-        )
+        dto = TagDTO(id=tag.id, title=tag.title)
+        self._repo.update_tag(dto)
 
     def delete_tag(self, tag_id: int) -> None:
         self._repo.delete_tag(tag_id)
