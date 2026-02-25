@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy,
 
 from app.views.pages.notions.creation_form_page import CreationFormPage
 from app.views.components.sub_components.custom_buttons import CustomToolButton
-from app.views.components.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel
+from app.views.components.sub_components.custom_texts import CustomViewTitleLabel, CustomPrimaryContentLabel
 
 
 class NotionsView(QWidget):

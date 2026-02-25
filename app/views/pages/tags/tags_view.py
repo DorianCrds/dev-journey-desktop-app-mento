@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QS
     QSizePolicy
 
 from app.views.components.sub_components.custom_buttons import CustomToolButton
-from app.views.components.sub_components.custom_text import CustomViewTitleLabel, CustomPrimaryContentLabel, \
+from app.views.components.sub_components.custom_texts import CustomViewTitleLabel, CustomPrimaryContentLabel, \
     CustomFormErrorLabel
 
 

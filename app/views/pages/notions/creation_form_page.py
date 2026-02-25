@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QLineEdit, QTextEdit
 
 from app.views.components.sub_components.custom_buttons import CustomToolButton
-from app.views.components.sub_components.custom_text import CustomFormErrorLabel
+from app.views.components.sub_components.custom_texts import CustomFormErrorLabel
 
 
 class CreationFormPage(QWidget):

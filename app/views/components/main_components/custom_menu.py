@@ -1,3 +1,4 @@
+# app/views/components/main_components/custom_menu.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
@@ -27,7 +28,7 @@ class CustomMenu(QWidget):
             """
         )
 
-    def _setup_ui(self):
+    def _setup_ui(self) -> None:
         self.setObjectName("menu")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 

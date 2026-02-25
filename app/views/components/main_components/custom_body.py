@@ -1,3 +1,4 @@
+# app/views/components/main_components/custom_body.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QStackedWidget
 
@@ -24,7 +25,7 @@ class CustomBody(QStackedWidget):
             """
         )
 
-    def _setup_ui(self):
+    def _setup_ui(self) -> None:
         self.setObjectName("body")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
