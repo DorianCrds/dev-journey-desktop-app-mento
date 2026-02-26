@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from app.services.dto.tag_dto import TagDTO
+
 
 @dataclass
 class NotionDTO:
@@ -23,3 +25,4 @@ class NotionReadDTO:
     context: Optional[str]
     description: Optional[str]
     status: str
+    tags: list[TagDTO]

@@ -26,19 +26,20 @@ class MainPresenter:
         category_repo = CategoryRepository(db)
         category_service = CategoryService(category_repo)
 
+        tag_repo = TagRepository(db)
+        tag_service = TagService(tag_repo)
+
         self._notion_presenter = NotionPresenter(
             view=self._view.body.notions_view,
             notion_service=notion_service,
-            categories_service=category_service
+            category_service=category_service,
+            tag_service=tag_service,
         )
 
         self._category_presenter = CategoryPresenter(
             view=self._view.body.categories_view,
             category_service=category_service,
         )
-
-        tag_repo = TagRepository(db)
-        tag_service = TagService(tag_repo)
 
         self._tag_presenter = TagPresenter(
             view=self._view.body.tags_view,

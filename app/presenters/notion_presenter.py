@@ -1,24 +1,26 @@
 # app/presenters/notion_presenter.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QListWidgetItem, QMessageBox
+from PySide6.QtWidgets import QListWidgetItem, QMessageBox, QCheckBox, QLabel
 
-from app.domain.models.notion import Notion
 from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
 from app.services.dto.notion_dto import NotionReadDTO
+from app.services.dto.tag_dto import TagDTO
 from app.services.notion_service import NotionService
+from app.services.tag_service import TagService
 from app.views.pages.notions.notions_card import NotionCard
 from app.views.pages.notions.notions_view import NotionsView
 
 
 class NotionPresenter:
-    def __init__(self, view: NotionsView, notion_service: NotionService, categories_service: CategoryService):
+    def __init__(self, view: NotionsView, notion_service: NotionService, category_service: CategoryService, tag_service: TagService):
         self._view = view
-        self._notions_service = notion_service
-        self._categories_service = categories_service
+        self._notion_service = notion_service
+        self._category_service = category_service
+        self._tag_service = tag_service
 
         self._form_mode = FormMode.CREATE
-        self._editing_notion: Notion | None = None
+        self._editing_notion: NotionReadDTO | None = None
 
         self._connect_signals()
         self.load_notions()
@@ -41,24 +43,21 @@ class NotionPresenter:
 
     def load_notions(self) -> None:
         self._view.notions_custom_list_widget.list_widget.clear()
-        notions = self._notions_service.get_all_notions_for_display()
+        notions = self._notion_service.get_all_notions_for_display()
 
         for notion in notions:
             self._add_card(notion)
 
         if self._view.notions_custom_list_widget.list_widget.count() > 0:
-            self._view.notions_custom_list_widget.list_widget.setFocus()
             self._view.notions_custom_list_widget.list_widget.setCurrentRow(0)
 
         self._update_details_and_options()
 
     def _add_card(self, notion: NotionReadDTO) -> None:
         item = QListWidgetItem()
-
         item.setData(Qt.ItemDataRole.UserRole, notion)
 
         card = NotionCard(notion)
-
         item.setSizeHint(card.sizeHint())
 
         self._view.notions_custom_list_widget.list_widget.addItem(item)
@@ -71,7 +70,7 @@ class NotionPresenter:
             self._update_details_and_options()
             return
 
-        notion = selected_items[0].data(Qt.ItemDataRole.UserRole)
+        notion: NotionReadDTO = selected_items[0].data(Qt.ItemDataRole.UserRole)
 
         self._view.notions_detail_widget.title_value.setText(notion.title)
         self._view.notions_detail_widget.category_value.setText(notion.category_title)
@@ -79,16 +78,21 @@ class NotionPresenter:
         self._view.notions_detail_widget.description_value.setText(notion.description or "")
         self._view.notions_detail_widget.status_value.setText(notion.status)
 
+        self._set_details_tags(notion.tags)
+
         self._update_details_and_options()
 
     def _update_details_and_options(self) -> None:
         has_selection = bool(self._view.notions_custom_list_widget.list_widget.selectedItems())
         if not has_selection:
-            self._view.notions_detail_widget.title_value.setText("")
-            self._view.notions_detail_widget.category_value.setText("")
-            self._view.notions_detail_widget.context_value.setText("")
-            self._view.notions_detail_widget.description_value.setText("")
-            self._view.notions_detail_widget.status_value.setText("")
+            details = self._view.notions_detail_widget
+            details.title_value.setText("")
+            details.category_value.setText("")
+            details.context_value.setText("")
+            details.description_value.setText("")
+            details.status_value.setText("")
+            self._set_details_tags([])
+
         self._view.edit_notion_button.setEnabled(has_selection)
         self._view.delete_notion_button.setEnabled(has_selection)
 
@@ -121,7 +125,7 @@ class NotionPresenter:
                                      QMessageBox.StandardButton.No)
 
         if reply == QMessageBox.StandardButton.Yes:
-            self._notions_service.delete_notion(notion.id)
+            self._notion_service.delete_notion(notion.id)
 
             self.load_notions()
 
@@ -136,37 +140,92 @@ class NotionPresenter:
         category = form.category_input.currentData()
         context = form.context_input.toPlainText().strip()
         description = form.description_input.toPlainText().strip()
+        tag_ids = self._get_selected_tag_ids()
 
         if not self._validate_and_show_errors(title, category):
             return
 
         if self._form_mode == FormMode.CREATE:
-            self._notions_service.create_notion(
+            self._notion_service.create_notion(
                 title,
                 category.id,
                 context,
-                description
+                description,
+                tag_ids
             )
 
         elif self._form_mode == FormMode.EDIT and self._editing_notion:
-            self._editing_notion.update_title(title)
-            self._editing_notion.update_category(category.id)
-            self._editing_notion.update_context(context)
-            self._editing_notion.update_description(description)
-
-            self._notions_service.update_notion(self._editing_notion)
+            self._notion_service.update_notion(
+                self._editing_notion.id,
+                title,
+                category.id,
+                context,
+                description,
+                tag_ids,
+            )
 
         self._after_submit()
 
     #################################
-    ##### Reusable Form methods #####
+    ##### Details tags handling #####
     #################################
 
-    def _open_form(self, mode: FormMode, notion: Notion | None = None) -> None:
+    def _set_details_tags(self, tags: list[TagDTO]) -> None:
+        details = self._view.notions_detail_widget
+
+        for label in details.tag_labels:
+            label.deleteLater()
+        details.tag_labels.clear()
+
+        # Remove stretch temporarily
+        details.tags_layout.takeAt(details.tags_layout.count() - 1)
+
+        for tag in tags:
+            label = QLabel(tag.title)
+            details.tags_layout.addWidget(label)
+            details.tag_labels.append(label)
+
+        details.tags_layout.addStretch()
+
+    ##############################
+    ##### FORM TAGS HANDLING #####
+    ##############################
+
+    def _set_form_tags(self) -> None:
+        form = self._view.notions_form_page
+
+        for checkbox in form.tag_checkboxes:
+            checkbox.deleteLater()
+        form.tag_checkboxes.clear()
+
+        tags = self._tag_service.get_all_tags()
+
+        for tag in tags:
+            checkbox = QCheckBox(tag.title)
+            checkbox.setProperty("tag_id", tag.id)
+            form.tags_layout.addWidget(checkbox)
+            form.tag_checkboxes.append(checkbox)
+
+    def _get_selected_tag_ids(self) -> list[int]:
+        form = self._view.notions_form_page
+
+        return [checkbox.property("tag_id") for checkbox in form.tag_checkboxes if checkbox.isChecked()]
+
+    def _set_selected_tags(self, tag_ids: list[int]) -> None:
+        form = self._view.notions_form_page
+        for checkbox in form.tag_checkboxes:
+            checkbox.setChecked(checkbox.property("tag_id") in tag_ids)
+
+    #####################
+    ##### Form flow #####
+    #####################
+
+    def _open_form(self, mode: FormMode, notion: NotionReadDTO | None = None) -> None:
         self._form_mode = mode
         self._editing_notion = notion
 
         self._populate_form_combobox()
+        self._set_form_tags()
 
         form = self._view.notions_form_page
 
@@ -182,7 +241,7 @@ class NotionPresenter:
         self._view.notions_content_stacked_widget.setCurrentIndex(1)
 
     def _populate_form_combobox(self) -> None:
-        categories = self._categories_service.get_all_categories()
+        categories = self._category_service.get_all_categories()
 
         combo = self._view.notions_form_page.category_input
         combo.clear()
@@ -194,7 +253,7 @@ class NotionPresenter:
 
         self._view.notions_form_page.save_button.setEnabled(False)
 
-    def _fill_form_with_notion(self, notion: Notion) -> None:
+    def _fill_form_with_notion(self, notion: NotionReadDTO) -> None:
         form = self._view.notions_form_page
 
         form.title_input.setText(notion.title)
@@ -207,6 +266,9 @@ class NotionPresenter:
             if category and category.id == notion.category_id:
                 combo.setCurrentIndex(i)
                 break
+
+        tag_ids = [tag.id for tag in notion.tags]
+        self._set_selected_tags(tag_ids)
 
     def _validate_form(self) -> None:
         form = self._view.notions_form_page

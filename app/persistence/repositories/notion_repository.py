@@ -59,3 +59,24 @@ class NotionRepository:
     def delete_notion(self, notion_id: int) -> int:
         query = "DELETE FROM notions WHERE id = ?"
         return self._db_connector.execute(query, (notion_id,))
+
+    def get_tags_for_notion(self, notion_id: int) -> list[dict]:
+        query = """
+            SELECT t.*
+            FROM tags t
+            JOIN notions_tags nt ON nt.tag_id = t.id
+            WHERE nt.notion_id = ?
+        """
+        return self._db_connector.fetch_all(query, (notion_id,))
+
+    def set_tags_for_notion(self, notion_id: int, tag_ids: list[int]) -> None:
+        delete_query = "DELETE FROM notions_tags WHERE notion_id = ?"
+        self._db_connector.execute(delete_query, (notion_id,))
+
+        insert_query = """
+            INSERT INTO notions_tags (notion_id, tag_id)
+            VALUES (?, ?)
+        """
+
+        for tag_id in tag_ids:
+            self._db_connector.execute(insert_query, (notion_id, tag_id))

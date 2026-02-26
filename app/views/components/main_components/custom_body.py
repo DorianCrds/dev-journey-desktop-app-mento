@@ -47,4 +47,4 @@ class CustomBody(QStackedWidget):
         self.settings_view = SettingsView()
         self.addWidget(self.settings_view)
 
-        self.setCurrentIndex(3)
+        self.setCurrentIndex(0)
