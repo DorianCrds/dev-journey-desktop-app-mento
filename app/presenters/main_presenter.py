@@ -1,10 +1,13 @@
 # app/presenters/main_presenter.py
 from app.persistence.repositories.category_repository import CategoryRepository
+from app.persistence.repositories.dashboard_repository import DashboardRepository
 from app.persistence.repositories.tag_repository import TagRepository
 from app.presenters.category_presenter import CategoryPresenter
+from app.presenters.dashboard_presenter import DashboardPresenter
 from app.presenters.notion_presenter import NotionPresenter
 from app.presenters.tag_presenter import TagPresenter
 from app.services.category_service import CategoryService
+from app.services.dashboard_service import DashboardService
 from app.services.notion_service import NotionService
 from app.persistence.repositories.notion_repository import NotionRepository
 from app.persistence.db_connector import DbConnector
@@ -20,6 +23,9 @@ class MainPresenter:
 
         db = DbConnector()
 
+        dashboard_repo = DashboardRepository(db)
+        dashboard_service = DashboardService(dashboard_repo)
+
         notion_repo = NotionRepository(db)
         notion_service = NotionService(notion_repo)
 
@@ -28,6 +34,11 @@ class MainPresenter:
 
         tag_repo = TagRepository(db)
         tag_service = TagService(tag_repo)
+
+        self._dashboard_presenter = DashboardPresenter(
+            view=self._view.body.dashboard_view,
+            dashboard_service=dashboard_service
+        )
 
         self._notion_presenter = NotionPresenter(
             view=self._view.body.notions_view,
@@ -56,6 +67,7 @@ class MainPresenter:
 
     def _dashboard_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(0)
+        self._dashboard_presenter.load_datas()
 
     def _notions_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(1)
