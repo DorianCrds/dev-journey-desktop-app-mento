@@ -9,7 +9,6 @@ def dict_to_notion(notion_data: dict) -> Notion:
         category_id=notion_data["category_id"],
         context=notion_data["context"],
         description=notion_data["description"],
-        status=notion_data["status"],
     )
 
 

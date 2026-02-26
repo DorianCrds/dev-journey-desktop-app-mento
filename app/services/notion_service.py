@@ -84,7 +84,6 @@ class NotionService:
             category_id=notion.category_id,
             context=notion.context,
             description=notion.description,
-            status=notion.status,
         )
 
     def update_notion(
