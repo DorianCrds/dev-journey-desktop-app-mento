@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QListWidgetItem, QMessageBox
 from app.domain.models.tag import Tag
 from app.presenters.form_mode_enum import FormMode
 from app.services.tag_service import TagService
-from app.views.pages.tags.tags_card import TagCard
-from app.views.pages.tags.tags_view import TagsView
+from ui.views.pages.tags.tags_card import TagCard
+from ui.views.pages.tags.tags_view import TagsView
 
 
 class TagPresenter:

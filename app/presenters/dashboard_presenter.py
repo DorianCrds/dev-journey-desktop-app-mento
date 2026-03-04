@@ -12,8 +12,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QSizePolicy
 
 from app.services.dashboard_service import DashboardService
-from app.views.pages.dashboard.dashboard_view import DashboardView
-from app.views.pages.dashboard.stat_card import StatCard
+from ui.views.pages.dashboard.dashboard_view import DashboardView
+from ui.views.pages.dashboard.stat_card import StatCard
 
 
 class DashboardPresenter:

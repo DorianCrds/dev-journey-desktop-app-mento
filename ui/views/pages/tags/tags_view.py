@@ -2,8 +2,8 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QStackedWidget, QLabel, QLineEdit, \
     QSizePolicy
 
-from app.views.components.sub_components.custom_buttons import CustomToolButton
-from app.views.components.sub_components.custom_texts import CustomViewTitleLabel, CustomPrimaryContentLabel, \
+from ui.views.components.sub_components.custom_buttons import CustomToolButton
+from ui.views.components.sub_components.custom_texts import CustomViewTitleLabel, CustomPrimaryContentLabel, \
     CustomFormErrorLabel
 
 
