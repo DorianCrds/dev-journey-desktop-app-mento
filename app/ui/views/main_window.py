@@ -1,41 +1,37 @@
-# app/views/main_window.py
-from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
+# app/ui/views/main_window.py
+from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout
+from PySide6.QtCore import Qt
 
 from app.ui.views.components.main_components.custom_body import CustomBody
 from app.ui.views.components.main_components.custom_menu import CustomMenu
 
 
 class MainWindow(QMainWindow):
+    SIDEBAR_WIDTH = 240
+
     def __init__(self):
         super().__init__()
-
         self._setup_ui()
 
     def _setup_ui(self):
-        self.setObjectName("main_window")
+        self.setObjectName("MainWindow")
         self.setWindowTitle("Mento")
         self.resize(1400, 900)
-        self.setMinimumWidth(900)
-        self.setMinimumHeight(700)
+        self.setMinimumSize(1000, 700)
 
-        self._central_widget = QWidget()
-        self._central_widget.setObjectName("central_widget")
-        self._main_layout = QHBoxLayout(self._central_widget)
-        self.setCentralWidget(self._central_widget)
+        central_widget = QWidget()
+        central_widget.setObjectName("CentralWidget")
+        central_widget.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setCentralWidget(central_widget)
+
+        main_layout = QHBoxLayout(central_widget)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
 
         self.menu = CustomMenu()
-        self._menu_v_layout = QVBoxLayout(self.menu)
+        self.menu.setFixedWidth(self.SIDEBAR_WIDTH)
+
         self.body = CustomBody()
-        self._body_v_layout = QVBoxLayout(self.body)
 
-        self._main_layout.addWidget(self.menu)
-        self._main_layout.addWidget(self.body)
-
-        self._main_layout.setStretch(0, 1)
-        self._main_layout.setStretch(1, 6)
-
-        # self.setStyleSheet("""
-        #     #central_widget {
-        #         background-color: white;
-        #     }
-        # """)
+        main_layout.addWidget(self.menu)
+        main_layout.addWidget(self.body)

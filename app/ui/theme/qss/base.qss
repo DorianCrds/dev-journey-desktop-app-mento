@@ -1,19 +1,75 @@
 QWidget {
     background-color: #F6F8FB;
     color: #1F2A37;
-    font-family: 'Inter';
+    font-family: "Inter";
+    font-size: 14px;
+}
+
+QWidget#CentralWidget {
+    background-color: #F6F8FB;
+}
+
+QStackedWidget#ContentArea {
+    background-color: #F6F8FB;
+}
+
+*:focus {
+    outline: none;
+}
+
+QListWidget {
+    background: transparent;
+    border: none;
 }
 
 QScrollBar:vertical {
     width: 8px;
     background: transparent;
+    margin: 4px 0 4px 0;
 }
 
 QScrollBar::handle:vertical {
     background: #E3E8EF;
     border-radius: 4px;
+    min-height: 24px;
 }
 
 QScrollBar::handle:vertical:hover {
     background: #CED4DA;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+
+QScrollBar:horizontal {
+    height: 8px;
+    background: transparent;
+    margin: 0 4px 0 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #E3E8EF;
+    border-radius: 4px;
+    min-width: 24px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #CED4DA;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
 }

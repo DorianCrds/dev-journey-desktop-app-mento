@@ -1,57 +1,35 @@
-# app/ui//views/components/main_components/custom_menu.py
+# app/ui/views/components/main_components/custom_menu.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
-
 from app.ui.views.components.sub_components.custom_buttons import CustomMenuToolButton
 
 
 class CustomMenu(QWidget):
     def __init__(self):
         super().__init__()
+        self.setObjectName("Sidebar")
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
         self._setup_ui()
 
-        self.setStyleSheet(
-            """
-                #menu {
-                    border: 1px solid gray;
-                    border-radius: 7px;
-                }
-                
-                #app_name_label {
-                    border: 1px solid gray;
-                    border-left: none;
-                    border-top: none;
-                    border-right: none;
-                    padding: 10px;
-                }
-            """
-        )
-
     def _setup_ui(self) -> None:
-        self.setObjectName("menu")
-        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-
         self._main_v_layout = QVBoxLayout(self)
+        self._main_v_layout.setContentsMargins(16, 24, 16, 24)
+        self._main_v_layout.setSpacing(4)
 
-        self._title_label = QLabel("MENTO")
-        self._title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._title_label.setObjectName("app_name_label")
+        self._title_label = QLabel("Mento")
+        self._title_label.setObjectName("SidebarTitle")
+        self._title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.dashboard_button = CustomMenuToolButton()
-        self.dashboard_button.setText("Dashboard")
-        self.notions_button = CustomMenuToolButton()
-        self.notions_button.setText("Notions")
-        self.categories_button = CustomMenuToolButton()
-        self.categories_button.setText("Categories")
-        self.tags_button = CustomMenuToolButton()
-        self.tags_button.setText("Tags")
-        self.infos_button = CustomMenuToolButton()
-        self.infos_button.setText("Infos")
-        self.settings_button = CustomMenuToolButton()
-        self.settings_button.setText("Settings")
+        self.dashboard_button = CustomMenuToolButton("Dashboard")
+        self.notions_button = CustomMenuToolButton("Notions")
+        self.categories_button = CustomMenuToolButton("Categories")
+        self.tags_button = CustomMenuToolButton("Tags")
+        self.infos_button = CustomMenuToolButton("Infos")
+        self.settings_button = CustomMenuToolButton("Settings")
 
         self._main_v_layout.addWidget(self._title_label)
+        self._main_v_layout.addSpacing(16)
         self._main_v_layout.addWidget(self.dashboard_button)
         self._main_v_layout.addWidget(self.notions_button)
         self._main_v_layout.addWidget(self.categories_button)
@@ -59,5 +37,3 @@ class CustomMenu(QWidget):
         self._main_v_layout.addStretch()
         self._main_v_layout.addWidget(self.infos_button)
         self._main_v_layout.addWidget(self.settings_button)
-
-

@@ -13,22 +13,12 @@ from app.ui.views.pages.tags.tags_view import TagsView
 class CustomBody(QStackedWidget):
     def __init__(self):
         super().__init__()
+        self.setObjectName("ContentArea")
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
         self._setup_ui()
 
-        self.setStyleSheet(
-            """
-                #body {
-                    border: 1px solid gray;
-                    border-radius: 7px;
-                }
-            """
-        )
-
     def _setup_ui(self) -> None:
-        self.setObjectName("body")
-        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-
         self.dashboard_view = DashboardView()
         self.addWidget(self.dashboard_view)
 
