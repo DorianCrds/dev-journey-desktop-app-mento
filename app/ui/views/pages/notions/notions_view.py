@@ -1,4 +1,4 @@
-# app/views/pages/notions_view.py
+# app/ui//views/pages/notions_view.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy, QHBoxLayout
 

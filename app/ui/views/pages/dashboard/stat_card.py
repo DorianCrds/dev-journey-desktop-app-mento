@@ -1,4 +1,4 @@
-# app/views/pages/dashboard/stat_card.py
+# app/ui//views/pages/dashboard/stat_card.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QLabel
 

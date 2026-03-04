@@ -1,4 +1,4 @@
-# app/views/pages/notions/notions_card.py
+# app/ui//views/pages/notions/notions_card.py
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel
 
 from app.services.dto.notion_dto import NotionReadDTO

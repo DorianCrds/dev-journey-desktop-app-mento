@@ -1,4 +1,4 @@
-# app/views/pages/notions/notions_custom_list_widget.py
+# app/ui//views/pages/notions/notions_custom_list_widget.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget
 
 

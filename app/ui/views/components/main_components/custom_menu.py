@@ -1,4 +1,4 @@
-# app/views/components/main_components/custom_menu.py
+# app/ui//views/components/main_components/custom_menu.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 

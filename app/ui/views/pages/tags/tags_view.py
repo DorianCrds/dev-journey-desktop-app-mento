@@ -1,4 +1,4 @@
-# app/views/pages/tags/tags_view.py
+# app/ui//views/pages/tags/tags_view.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QStackedWidget, QLabel, QLineEdit, \
     QSizePolicy
 

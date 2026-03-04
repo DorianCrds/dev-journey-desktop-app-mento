@@ -1,4 +1,4 @@
-# app/views/components/sub_components/custom_buttons.py
+# app/ui//views/components/sub_components/custom_buttons.py
 from PySide6.QtWidgets import QToolButton, QSizePolicy
 
 

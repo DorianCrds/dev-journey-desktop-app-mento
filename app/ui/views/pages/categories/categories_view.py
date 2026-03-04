@@ -1,4 +1,4 @@
-# app/views/pages/categories/categories_view.py
+# app/ui//views/pages/categories/categories_view.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QSizePolicy, QVBoxLayout, QGridLayout, QListWidget, QLabel, QLineEdit, QTextEdit, \
     QFormLayout, QHBoxLayout

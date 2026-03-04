@@ -1,4 +1,4 @@
-# app/views/components/main_components/custom_body.py
+# app/ui/views/components/main_components/custom_body.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QStackedWidget
 

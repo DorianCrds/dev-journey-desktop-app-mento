@@ -1,4 +1,4 @@
-# app/views/pages/notions/notions_details_widget.py
+# app/ui//views/pages/notions/notions_details_widget.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTextEdit, QHBoxLayout
 
 from ui.views.components.sub_components.custom_texts import CustomPrimaryContentLabel
