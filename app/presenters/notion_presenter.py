@@ -8,8 +8,8 @@ from app.services.dto.notion_dto import NotionReadDTO
 from app.services.dto.tag_dto import TagDTO
 from app.services.notion_service import NotionService
 from app.services.tag_service import TagService
-from ui.views.pages.notions.notions_card import NotionCard
-from ui.views.pages.notions.notions_view import NotionsView
+from app.ui.views.pages.notions.notions_card import NotionCard
+from app.ui.views.pages.notions.notions_view import NotionsView
 
 
 class NotionPresenter:

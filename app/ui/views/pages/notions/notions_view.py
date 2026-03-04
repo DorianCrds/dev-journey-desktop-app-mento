@@ -2,11 +2,11 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QSizePolicy, QHBoxLayout
 
-from ui.views.pages.notions.notions_custom_list_widget import CustomNotionsListWidget
-from ui.views.pages.notions.notions_details_widget import NotionsDetailsWidget
-from ui.views.pages.notions.notions_form_page import NotionsFormPage
-from ui.views.components.sub_components.custom_buttons import CustomToolButton
-from ui.views.components.sub_components.custom_texts import CustomViewTitleLabel
+from app.ui.views.pages.notions.notions_custom_list_widget import CustomNotionsListWidget
+from app.ui.views.pages.notions.notions_details_widget import NotionsDetailsWidget
+from app.ui.views.pages.notions.notions_form_page import NotionsFormPage
+from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
+from app.ui.views.components.sub_components.custom_texts import CustomViewTitleLabel
 
 
 class NotionsView(QWidget):

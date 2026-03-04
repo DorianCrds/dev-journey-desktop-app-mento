@@ -2,12 +2,12 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QStackedWidget
 
-from ui.views.pages.categories.categories_view import CategoriesView
-from ui.views.pages.dashboard.dashboard_view import DashboardView
-from ui.views.infos_view import InfosView
-from ui.views.pages.notions.notions_view import NotionsView
-from ui.views.settings_view import SettingsView
-from ui.views.pages.tags.tags_view import TagsView
+from app.ui.views.pages.categories.categories_view import CategoriesView
+from app.ui.views.pages.dashboard.dashboard_view import DashboardView
+from app.ui.views.infos_view import InfosView
+from app.ui.views.pages.notions.notions_view import NotionsView
+from app.ui.views.settings_view import SettingsView
+from app.ui.views.pages.tags.tags_view import TagsView
 
 
 class CustomBody(QStackedWidget):

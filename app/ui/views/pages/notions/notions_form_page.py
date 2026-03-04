@@ -3,8 +3,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QLineEdit, QTextEdit, \
     QScrollArea, QCheckBox, QSizePolicy
 
-from ui.views.components.sub_components.custom_buttons import CustomToolButton
-from ui.views.components.sub_components.custom_texts import CustomFormErrorLabel
+from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
+from app.ui.views.components.sub_components.custom_texts import CustomFormErrorLabel
 
 
 class NotionsFormPage(QWidget):

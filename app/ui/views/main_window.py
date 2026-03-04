@@ -1,8 +1,8 @@
 # app/views/main_window.py
 from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
 
-from ui.views.components.main_components.custom_body import CustomBody
-from ui.views.components.main_components.custom_menu import CustomMenu
+from app.ui.views.components.main_components.custom_body import CustomBody
+from app.ui.views.components.main_components.custom_menu import CustomMenu
 
 
 class MainWindow(QMainWindow):

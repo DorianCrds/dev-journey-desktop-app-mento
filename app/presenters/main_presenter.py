@@ -12,7 +12,7 @@ from app.services.notion_service import NotionService
 from app.persistence.repositories.notion_repository import NotionRepository
 from app.persistence.db_connector import DbConnector
 from app.services.tag_service import TagService
-from ui.views.main_window import MainWindow
+from app.ui.views.main_window import MainWindow
 
 
 class MainPresenter:

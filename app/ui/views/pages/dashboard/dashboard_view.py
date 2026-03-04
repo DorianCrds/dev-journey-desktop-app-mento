@@ -1,7 +1,7 @@
 # app/ui//views/pages/dashboard_view.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 
-from ui.views.components.sub_components.custom_texts import CustomViewTitleLabel
+from app.ui.views.components.sub_components.custom_texts import CustomViewTitleLabel
 
 
 class DashboardView(QWidget):

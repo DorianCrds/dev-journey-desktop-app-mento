@@ -2,7 +2,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
-from ui.views.components.sub_components.custom_buttons import CustomMenuToolButton
+from app.ui.views.components.sub_components.custom_buttons import CustomMenuToolButton
 
 
 class CustomMenu(QWidget):

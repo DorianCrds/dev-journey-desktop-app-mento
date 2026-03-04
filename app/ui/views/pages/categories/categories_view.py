@@ -3,8 +3,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QSizePolicy, QVBoxLayout, QGridLayout, QListWidget, QLabel, QLineEdit, QTextEdit, \
     QFormLayout, QHBoxLayout
 
-from ui.views.components.sub_components.custom_buttons import CustomToolButton
-from ui.views.components.sub_components.custom_texts import CustomViewTitleLabel, CustomPrimaryContentLabel, CustomFormErrorLabel
+from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
+from app.ui.views.components.sub_components.custom_texts import CustomViewTitleLabel, CustomPrimaryContentLabel, CustomFormErrorLabel
 
 
 class CategoriesView(QWidget):
