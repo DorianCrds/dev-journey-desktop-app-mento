@@ -1,0 +1,34 @@
+QPushButton#primary {
+    background-color: #4C6EF5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 16px;
+    min-height: 36px;
+}
+
+QPushButton#primary:hover {
+    background-color: #3F5CE6;
+}
+
+QPushButton#primary:pressed {
+    background-color: #364FC7;
+}
+
+QPushButton#primary:disabled {
+    background-color: #E3E8EF;
+    color: #9AA7B4;
+}
+
+QPushButton#secondary {
+    background-color: white;
+    color: #1F2A37;
+    border: 1px solid #E3E8EF;
+    border-radius: 8px;
+    padding: 0 16px;
+    min-height: 36px;
+}
+
+QPushButton#secondary:hover {
+    background-color: #F0F4F9;
+}

@@ -1,0 +1,20 @@
+QWidget#Sidebar {
+    background-color: #F3F6FA;
+}
+
+QPushButton#sidebarItem {
+    background-color: transparent;
+    color: #5B6B7C;
+    border: none;
+    text-align: left;
+    padding: 12px;
+}
+
+QPushButton#sidebarItem:hover {
+    background-color: #EDF2F8;
+}
+
+QPushButton#sidebarItem:checked {
+    background-color: #E7F0FA;
+    color: #4C6EF5;
+}

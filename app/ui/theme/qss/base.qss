@@ -1,0 +1,19 @@
+QWidget {
+    background-color: #F6F8FB;
+    color: #1F2A37;
+    font-family: 'Inter';
+}
+
+QScrollBar:vertical {
+    width: 8px;
+    background: transparent;
+}
+
+QScrollBar::handle:vertical {
+    background: #E3E8EF;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #CED4DA;
+}

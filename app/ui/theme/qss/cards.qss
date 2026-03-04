@@ -1,0 +1,28 @@
+QWidget#NotionCard {
+    background-color: #FFFFFF;
+    border: 1px solid #E3E8EF;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+QWidget#NotionCard:hover {
+    background-color: #F9FBFE;
+}
+
+QLabel#status_aapprendre {
+    background-color: #E7F0FA;
+    color: #2F5C8F;
+    border-radius: 12px;
+    padding: 0 10px;
+    min-height: 22px;
+    font-size: 12px;
+}
+
+QLabel#status_acquise {
+    background-color: #E6F4EE;
+    color: #2E7D5A;
+    border-radius: 12px;
+    padding: 0 10px;
+    min-height: 22px;
+    font-size: 12px;
+}
