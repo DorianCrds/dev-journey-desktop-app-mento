@@ -32,3 +32,38 @@ QPushButton#secondary {
 QPushButton#secondary:hover {
     background-color: #F0F4F9;
 }
+
+QToolButton#primary {
+    background-color: #4C6EF5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 16px;
+    min-height: 36px;
+}
+
+QToolButton#primary:hover {
+    background-color: #3F5CE6;
+}
+
+QToolButton#primary:pressed {
+    background-color: #364FC7;
+}
+
+QToolButton#primary:disabled {
+    background-color: #E3E8EF;
+    color: #9AA7B4;
+}
+
+QToolButton#secondary {
+    background-color: white;
+    color: #1F2A37;
+    border: 1px solid #E3E8EF;
+    border-radius: 8px;
+    padding: 0 16px;
+    min-height: 36px;
+}
+
+QToolButton#secondary:hover {
+    background-color: #F0F4F9;
+}

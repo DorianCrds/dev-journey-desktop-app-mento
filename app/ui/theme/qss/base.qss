@@ -11,6 +11,7 @@ QWidget#CentralWidget {
 
 QStackedWidget#ContentArea {
     background-color: #F6F8FB;
+    padding: 32px;
 }
 
 *:focus {
@@ -20,6 +21,39 @@ QStackedWidget#ContentArea {
 QListWidget {
     background: transparent;
     border: none;
+    outline: none;
+}
+
+QListWidget::item {
+    background: transparent;
+    border: none;
+}
+
+QListWidget::item:selected {
+    background: transparent;
+}
+
+QListWidget::item:hover {
+    background: transparent;
+}
+
+QListWidget::viewport {
+    background: transparent;
+}
+
+QWidget#CardNotion {
+    background-color: #FFFFFF;
+    border: 1px solid #E3E8EF;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+QWidget#CardNotion:hover {
+    background-color: #F9FBFE;
+}
+
+QWidget#CardNotion:pressed {
+    background-color: #EDF2FA;
 }
 
 QScrollBar:vertical {
@@ -72,4 +106,24 @@ QScrollBar::sub-line:horizontal {
 QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: transparent;
+}
+
+QWidget#NotionFormWidget {
+    background-color: #FFFFFF;
+    border: 1px solid #E3E8EF;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+QWidget#NotionFormWidget QLabel {
+    background: transparent;
+    border: none;
+    color: #1F2A37;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+QWidget#NotionFormHeader {
+    background: transparent;
+    padding: 8px 16px;
 }

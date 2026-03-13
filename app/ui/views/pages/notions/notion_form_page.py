@@ -1,48 +1,30 @@
-# app/ui//views/pages/notions/notions_form_page.py
+# app/ui/views/pages/notions/notion_form_page.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QLineEdit, QTextEdit, \
-    QScrollArea, QCheckBox, QSizePolicy
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QCheckBox, QSizePolicy
 
 from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
+from app.ui.views.components.sub_components.custom_forms import CustomFormLineEdit, CustomFormComboBox, \
+    CustomFormTextEdit, CustomFormScrollArea
 from app.ui.views.components.sub_components.custom_texts import CustomFormErrorLabel
 
 
-class NotionsFormPage(QWidget):
+class NotionFormPage(QWidget):
     def __init__(self):
         super().__init__()
-        self.setObjectName("creation_form_page")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
         self.tag_checkboxes: list[QCheckBox] = []
 
         self._setup_ui()
 
-        self.setStyleSheet("""
-            #creation_form_page {
-                border: 2px solid red;
-            }
-            
-            #notion_form_header {
-                border: 2px solid orange;
-            }
-            
-            #notion_form_container {
-                border: 2px solid blue;
-            }
-            
-            #notion_form_widget {
-                border: 2px solid green;
-            }
-        """)
-
     def _setup_ui(self) -> None:
         self._main_v_layout = QVBoxLayout(self)
 
         self._header_widget = QWidget()
-        self._header_widget.setObjectName("notion_form_header")
+        self._header_widget.setObjectName("NotionFormHeader")
         self._header_h_layout = QHBoxLayout(self._header_widget)
 
-        self.back_button = CustomToolButton("< Back")
+        self.back_button = CustomToolButton("Back")
         self._header_h_layout.addWidget(self.back_button)
         self._header_h_layout.addStretch()
 
@@ -56,36 +38,44 @@ class NotionsFormPage(QWidget):
         self._form_container_layout.addStretch()
 
         self._form_widget = QWidget()
-        self._form_widget.setObjectName("notion_form_widget")
+        self._form_widget.setObjectName("NotionFormWidget")
+        self._form_widget.setMaximumWidth(640)
 
         self._form_layout = QFormLayout(self._form_widget)
+        self._form_layout.setVerticalSpacing(12)
+        self._form_layout.setHorizontalSpacing(16)
+        self._form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
+        self._form_layout.setFormAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.title_input = QLineEdit(placeholderText="Notion's name")
+        self.title_input = CustomFormLineEdit()
+        self.title_input.setPlaceholderText("Name of the notion")
 
         self.form_title_error = CustomFormErrorLabel("")
         self.form_title_error.hide()
 
-        self.category_input = QComboBox()
+        self.category_input = CustomFormComboBox()
         self.category_input.setPlaceholderText("Choose a category")
         self.category_input.setCurrentIndex(0)
         self.form_category_error = CustomFormErrorLabel("")
         self.form_category_error.hide()
 
-        self.tags_scroll_area = QScrollArea()
+        self.tags_scroll_area = CustomFormScrollArea()
         self.tags_scroll_area.setWidgetResizable(True)
-        self.tags_scroll_area.setMaximumHeight(150)
-        self.tags_scroll_area.setMinimumHeight(70)
+        self.tags_scroll_area.setMaximumHeight(180)
+        self.tags_scroll_area.setMinimumHeight(80)
 
         self._tags_container_widget = QWidget()
-        self._tags_container_widget.setObjectName("tags_container")
+        self._tags_container_widget.setObjectName("TagsContainer")
         self.tags_layout = QVBoxLayout(self._tags_container_widget)
         self.tags_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.tags_scroll_area.setWidget(self._tags_container_widget)
 
-        self.context_input = QTextEdit(placeholderText="Use case or situation related to this notion")
+        self.context_input = CustomFormTextEdit()
+        self.context_input.setPlaceholderText("Use case or situation related to this notion")
         self.context_input.setMaximumHeight(200)
-        self.description_input = QTextEdit(placeholderText="If acquired only : anything you have learned about this notion")
+        self.description_input = CustomFormTextEdit()
+        self.description_input.setPlaceholderText("If acquired only : anything you have learned about this notion")
         self.description_input.setMaximumHeight(200)
         self.save_button = CustomToolButton("Create Notion")
 

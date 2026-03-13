@@ -6,7 +6,7 @@ class ThemeManager:
     @staticmethod
     def load_qss(app: QApplication):
         base_path = os.path.join(os.path.dirname(__file__), "qss")
-        qss_files = ["base.qss", "buttons.qss", "cards.qss", "sidebar.qss"]
+        qss_files = ["base.qss", "buttons.qss", "cards.qss", "sidebar.qss", "texts.qss", "forms.qss"]
         qss_content = ""
         for file_name in qss_files:
             path = os.path.join(base_path, file_name)
