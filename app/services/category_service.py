@@ -2,7 +2,7 @@
 from app.domain.models.category import Category
 from app.persistence.mappers.category_mapper import dict_to_category
 from app.persistence.repositories.category_repository import CategoryRepository
-from app.services.dto.category_dto import CategoryDTO
+from app.services.dto.category_dto import CategoryDTO, CategoryReadDTO
 
 
 class CategoryService:
@@ -18,6 +18,13 @@ class CategoryService:
         if data is None:
             return None
         return dict_to_category(data)
+
+    def get_all_categories_for_display(self) -> list[CategoryReadDTO]:
+        rows = self._repo.get_all_categories()
+
+        return [
+            self._build_notion_read_dto(row) for row in rows
+        ]
 
     def create_category(self, title: str, description: str) -> Category:
         category = Category(
@@ -40,14 +47,30 @@ class CategoryService:
             description=category.description,
         )
 
-    def update_category(self, category: Category) -> None:
+    def update_category(self, category_id: int, title: str, description: str) -> None:
+        existing = self.get_category_by_id(category_id)
+
+        if existing is None:
+            raise ValueError(f"Category with id {category_id} not found")
+
+        existing.update_title(title)
+        existing.update_description(description)
+
         dto = CategoryDTO(
-            id=category.id,
-            title=category.title,
-            description=category.description,
+            id=existing.id,
+            title=existing.title,
+            description=existing.description,
         )
 
         self._repo.update_category(dto)
 
     def delete_category(self, category_id: int) -> None:
         self._repo.delete_category(category_id)
+
+    @staticmethod
+    def _build_notion_read_dto(row):
+        return CategoryReadDTO(
+            id=row["id"],
+            title=row["title"],
+            description=row["description"],
+        )

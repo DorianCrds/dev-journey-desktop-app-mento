@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
 from app.services.dto.notion_dto import NotionReadDTO
-from app.ui.views.components.sub_components.custom_texts import CustomTitleNotion, CustomStatusToLearn, \
+from app.ui.views.components.sub_components.custom_texts import CustomDocumentTitle, CustomStatusToLearn, \
     CustomStatusAcquired, CustomMetaInfo
 
 
@@ -18,7 +18,7 @@ class NotionCard(QWidget):
         self.notion = notion
 
         main_v_layout = QVBoxLayout(self)
-        self.title_label = CustomTitleNotion(self.notion.title)
+        self.title_label = CustomDocumentTitle(self.notion.title)
 
         if self.notion.status == "À apprendre":
             self.status_label = CustomStatusToLearn(self.notion.status)

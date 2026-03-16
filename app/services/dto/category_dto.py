@@ -7,3 +7,10 @@ class CategoryDTO:
     id: int
     title: str
     description: str
+
+@dataclass
+class CategoryReadDTO:
+    id: int
+    title: str
+    description: str
+    # notions_count: int

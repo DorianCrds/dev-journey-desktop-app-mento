@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 
 from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
 from app.ui.views.components.sub_components.custom_texts import (
-    CustomTitleNotion,
+    CustomDocumentTitle,
     CustomMetaInfo,
     CustomTextNormal,
 )
@@ -72,7 +72,7 @@ class NotionDetailPage(QWidget):
         self._title_row = QWidget()
         self._title_layout = QHBoxLayout(self._title_row)
 
-        self.title_value = CustomTitleNotion("")
+        self.title_value = CustomDocumentTitle("")
 
         self.status_container = QWidget()
         self.status_layout = QHBoxLayout(self.status_container)

@@ -10,10 +10,10 @@ class CustomTitleMain(QLabel):
         super().__init__(text)
         self.setObjectName("TitleMain")
 
-class CustomTitleNotion(QLabel):
+class CustomDocumentTitle(QLabel):
     def __init__(self, text: str):
         super().__init__(text)
-        self.setObjectName("TitleNotion")
+        self.setObjectName("DocumentTitle")
 
 class CustomStatusToLearn(QLabel):
     def __init__(self, text: str):

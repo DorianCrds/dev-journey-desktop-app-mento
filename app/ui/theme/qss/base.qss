@@ -41,21 +41,6 @@ QListWidget::viewport {
     background: transparent;
 }
 
-QWidget#CardNotion {
-    background-color: #FFFFFF;
-    border: 1px solid #E3E8EF;
-    border-radius: 10px;
-    padding: 16px;
-}
-
-QWidget#CardNotion:hover {
-    background-color: #F9FBFE;
-}
-
-QWidget#CardNotion:pressed {
-    background-color: #EDF2FA;
-}
-
 QScrollBar:vertical {
     width: 8px;
     background: transparent;

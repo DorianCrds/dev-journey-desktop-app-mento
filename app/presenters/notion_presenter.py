@@ -300,7 +300,7 @@ class NotionPresenter:
             self._fill_form_with_notion(notion)
 
         self._validate_form()
-        self._view.notions_stacked_widget.setCurrentIndex(2)
+        self._view.notions_stacked_widget.setCurrentIndex(self.FORM_PAGE)
 
     def _populate_form_combobox(self) -> None:
         categories = self._category_service.get_all_categories()

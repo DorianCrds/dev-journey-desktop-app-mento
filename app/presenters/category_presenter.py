@@ -1,155 +1,223 @@
 # app/presenters/category_presenter.py
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QListWidgetItem, QMessageBox
+from PySide6.QtWidgets import QMessageBox
 
-from app.domain.models.category import Category
+from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
+from app.services.dto.category_dto import CategoryReadDTO
 from app.ui.views.pages.categories.categories_card import CategoryCard
 from app.ui.views.pages.categories.categories_view import CategoriesView
 
 
 class CategoryPresenter:
+    LIST_PAGE = 0
+    FORM_PAGE = 1
+
     def __init__(self, view: CategoriesView, category_service: CategoryService):
         self._view = view
         self._service = category_service
 
-        self._editing_category: Category | None = None
+        self._form_mode = FormMode.CREATE
+        self._editing_category: CategoryReadDTO | None = None
 
         self._connect_signals()
         self.load_categories()
 
     def _connect_signals(self) -> None:
-        self._view.categories_list_widget.itemSelectionChanged.connect(self._on_selection_changed)
-        self._view.categories_form_button.clicked.connect(self._on_form_button_clicked)
+        # List
+        self._view.categories_list_page.add_category_button.clicked.connect(self._on_add_button_clicked)
+        self._view.categories_list_page.edit_category_button.clicked.connect(self._on_edit_button_clicked)
+        self._view.categories_list_page.delete_category_button.clicked.connect(self._on_delete_button_clicked)
 
-        self._view.form_categories_title_input.textChanged.connect(lambda: self._view.form_categories_title_error.hide())
-        self._view.form_categories_description_input.textChanged.connect(lambda: self._view.form_categories_description_error.hide())
+        # Form
+        self._view.category_form_page.back_button.clicked.connect(self._on_form_back_button_clicked)
+        self._view.category_form_page.save_button.clicked.connect(self._on_form_button_clicked)
 
-        self._view.edit_category_button.clicked.connect(self._on_edit_button_clicked)
-        self._view.delete_category_button.clicked.connect(self._on_delete_button_clicked)
+        self._view.category_form_page.title_input.textChanged.connect(self._validate_form)
+        self._view.category_form_page.description_input.textChanged.connect(self._validate_form)
+
 
     ###############################
     ##### Buttons connections #####
     ###############################
 
-    def _on_edit_button_clicked(self) -> None:
-        selected_item = self._view.categories_list_widget.currentItem()
+    def _on_add_button_clicked(self):
+        self._open_form(FormMode.CREATE)
 
-        if not selected_item:
+    def _on_form_back_button_clicked(self):
+        self._reset_form()
+        self._view.categories_stacked_widget.setCurrentIndex(self.LIST_PAGE)
+
+    def _on_form_button_clicked(self):
+        form = self._view.category_form_page
+
+        title = form.title_input.text().strip()
+        description = form.description_input.toPlainText().strip()
+
+        if not self._validate_and_show_errors(title, description):
             return
 
-        category = selected_item.data(Qt.ItemDataRole.UserRole)
+        if self._form_mode == FormMode.CREATE:
+            self._service.create_category(
+                title,
+                description
+            )
 
-        self._editing_category = category
+        elif self._form_mode == FormMode.EDIT and self._editing_category:
+            self._service.update_category(
+                self._editing_category.id,
+                title,
+                description
+            )
 
-        self._view.form_categories_title_input.setText(category.title)
-        self._view.form_categories_description_input.setText(category.description)
+        self._view.categories_stacked_widget.setCurrentIndex(self.LIST_PAGE)
 
-        self._view.categories_form_button.setText("Update category")
+    def _on_edit_button_clicked(self) -> None:
+        if not self._editing_category:
+            return
+
+        self._open_form(FormMode.EDIT, self._editing_category)
 
     def _on_delete_button_clicked(self) -> None:
-        selected_item = self._view.categories_list_widget.currentItem()
-
-        if not selected_item:
+        if not self._editing_category:
             return
 
-        category = selected_item.data(Qt.ItemDataRole.UserRole)
+        category = self._editing_category
 
         reply = QMessageBox.question(self._view,"Delete category", f"Are you sure you want to delete the category:\n\n'{category.title}' ?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
 
         if reply == QMessageBox.StandardButton.Yes:
             self._service.delete_category(category.id)
 
-            if self._editing_category and self._editing_category.id == category.id:
-                self._reset_form()
-
             self.load_categories()
 
-    def _on_form_button_clicked(self) -> None:
-        title = self._view.form_categories_title_input.text().strip()
-        description = self._view.form_categories_description_input.toPlainText().strip()
 
-        self._view.form_categories_title_error.hide()
-        self._view.form_categories_description_error.hide()
-
-        has_error = False
-
-        if not title:
-            self._view.form_categories_title_error.setText("Title is required.")
-            self._view.form_categories_title_error.show()
-            has_error = True
-
-        if not description:
-            self._view.form_categories_description_error.setText("Description is required.")
-            self._view.form_categories_description_error.show()
-            has_error = True
-
-        if has_error:
-            return
-
-        if self._editing_category is None:
-            self._service.create_category(title, description)
-        else:
-            self._editing_category._title = title
-            self._editing_category._description = description
-            self._service.update_category(self._editing_category)
-
-        self._reset_form()
-
-        self.load_categories()
-
-    #######################
-    ##### List widget #####
-    #######################
+    ###########################
+    ##### Categories List #####
+    ###########################
 
     def load_categories(self) -> None:
-        self._view.categories_list_widget.clear()
-        categories = self._service.get_all_categories()
+        cards_layout = self._view.categories_list_page.cards_layout
+
+        while cards_layout.count() > 1:
+            item = cards_layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
+        categories = self._service.get_all_categories_for_display()
 
         for category in categories:
             self._add_card(category)
 
-        if self._view.categories_list_widget.count() > 0:
-            self._view.categories_list_widget.setFocus()
-            self._view.categories_list_widget.setCurrentRow(0)
+        self._editing_category = None
 
-        self._view.delete_category_button.setEnabled(False)
-        self._view.edit_category_button.setEnabled(False)
+        self._view.categories_list_page.delete_category_button.setEnabled(False)
+        self._view.categories_list_page.edit_category_button.setEnabled(False)
 
-    def _add_card(self, category: Category) -> None:
-        item = QListWidgetItem()
-
-        item.setData(Qt.ItemDataRole.UserRole, category)
-
+    def _add_card(self, category: CategoryReadDTO) -> None:
         card = CategoryCard(category)
 
-        item.setSizeHint(card.sizeHint())
+        card.clicked.connect(self._on_card_clicked)
 
-        self._view.categories_list_widget.addItem(item)
-        self._view.categories_list_widget.setItemWidget(item, card)
+        self._view.categories_list_page.cards_layout.insertWidget(
+            self._view.categories_list_page.cards_layout.count() - 1,
+            card
+        )
 
-    def _on_selection_changed(self) -> None:
-        selected_items = self._view.categories_list_widget.selectedItems()
+    def _on_card_clicked(self, clicked_card):
+        layout = self._view.categories_list_page.cards_layout
 
-        if not selected_items:
-            return
+        clicked_was_expanded = clicked_card.expanded
+        selection = None
 
-        self._view.delete_category_button.setEnabled(bool(selected_items))
-        self._view.edit_category_button.setEnabled(bool(selected_items))
+        for i in range(layout.count()):
+            widget = layout.itemAt(i).widget()
 
-        item = selected_items[0]
+            if isinstance(widget, CategoryCard):
 
-        category = item.data(Qt.ItemDataRole.UserRole)
+                if widget == clicked_card:
+                    new_state = not clicked_was_expanded
+                    widget.set_selected(new_state)
 
-        self._view.category_detail_title_value.setText(category.title)
-        self._view.category_detail_description_value.setText(category.description)
+                    if new_state:
+                        selection = widget.category
+                else:
+                    widget.set_selected(False)
+
+        self._editing_category = selection
+
+        self._update_buttons_state()
+
+    def _update_buttons_state(self):
+
+        enabled = self._editing_category is not None
+
+        self._view.categories_list_page.edit_category_button.setEnabled(enabled)
+        self._view.categories_list_page.delete_category_button.setEnabled(enabled)
 
     #################################
     ##### Reusable Form methods #####
     #################################
 
+    def _open_form(self, mode: FormMode, category: CategoryReadDTO | None = None) -> None:
+        self._form_mode = mode
+        self._editing_category = category
+
+        form = self._view.category_form_page
+
+        if mode == FormMode.CREATE:
+            form.save_button.setText("Create Category")
+            self._reset_form_fields()
+
+        elif mode == FormMode.EDIT and category:
+            form.save_button.setText("Update Category")
+            form.title_input.setText(category.title)
+            form.description_input.setText(category.description)
+
+        self._validate_form()
+        self._view.categories_stacked_widget.setCurrentIndex(self.FORM_PAGE)
+
     def _reset_form(self) -> None:
         self._editing_category = None
-        self._view.form_categories_title_input.clear()
-        self._view.form_categories_description_input.clear()
-        self._view.categories_form_button.setText("Save category")
+
+        form = self._view.category_form_page
+        form.title_input.clear()
+        form.description_input.clear()
+        form.save_button.setText("Save category")
+
+    def _validate_form(self):
+        form = self._view.category_form_page
+
+        title_valid = bool(form.title_input.text().strip())
+        description_valid = bool(form.description_input.toPlainText().strip())
+
+        form.save_button.setEnabled(title_valid and description_valid)
+
+    def _validate_and_show_errors(self, title, description) -> bool:
+        form = self._view.category_form_page
+
+        form.form_title_error.hide()
+        form.form_description_error.hide()
+
+        valid = True
+
+        if not title:
+            form.form_title_error.setText("Title is required.")
+            form.form_title_error.show()
+            valid = False
+
+        if not description:
+            form.form_description_error.setText("Description is required.")
+            form.form_description_error.show()
+            valid = False
+
+        return valid
+
+    def _reset_form_fields(self) -> None:
+        form = self._view.category_form_page
+
+        form.title_input.clear()
+        form.description_input.clear()
+
+        form.form_title_error.hide()
+        form.form_description_error.hide()

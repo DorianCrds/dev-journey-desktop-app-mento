@@ -1,12 +1,17 @@
-QWidget#NotionCard {
+QWidget#CardNotion, QWidget#CardCategory {
     background-color: #FFFFFF;
     border: 1px solid #E3E8EF;
     border-radius: 10px;
     padding: 16px;
 }
 
-QWidget#NotionCard:hover {
+QWidget#CardNotion:hover, QWidget#CardCategory:hover {
     background-color: #F9FBFE;
+}
+
+QWidget#CardCategory[selected="true"] {
+    background-color: #EEF4FF;
+    border: 1px solid #5B8DEF;
 }
 
 QLabel#status_aapprendre {
