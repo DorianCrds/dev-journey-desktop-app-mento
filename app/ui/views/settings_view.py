@@ -1,18 +1,13 @@
 # app/views/settings_view.py
-from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from app.ui.views.components.sub_components.custom_texts import CustomViewTitleLabel
+from app.ui.views.components.main_components.basic_view import BasicView
 
 
-class SettingsView(QWidget):
+class SettingsView(BasicView):
     def __init__(self):
-        super().__init__()
+        super().__init__("Apply your settings")
 
         self._setup_ui()
 
     def _setup_ui(self):
-        self._main_v_layout = QVBoxLayout(self)
-
-        self._view_label = CustomViewTitleLabel("Settings view")
-        self._main_v_layout.addWidget(self._view_label)
-        self._main_v_layout.addStretch()
+        pass

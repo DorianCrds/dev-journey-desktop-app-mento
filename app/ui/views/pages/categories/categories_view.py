@@ -1,25 +1,19 @@
 # app/ui/views/pages/categories/categories_view.py
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QSizePolicy, QVBoxLayout, QStackedWidget
 
-from app.ui.views.components.sub_components.custom_texts import CustomTitleMain
+from PySide6.QtWidgets import QStackedWidget
+
+from app.ui.views.components.main_components.basic_view import BasicView
 from app.ui.views.pages.categories.categories_list_page import CategoriesListPage
 from app.ui.views.pages.categories.category_form_page import CategoryFormPage
 
 
-class CategoriesView(QWidget):
+class CategoriesView(BasicView):
     def __init__(self):
-        super().__init__()
-        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        super().__init__("Manage Categories")
 
-        self._setupt_ui()
+        self._setup_ui()
 
-    def _setupt_ui(self) -> None:
-        layout = QVBoxLayout(self)
-
-        title = CustomTitleMain("Manage Categories")
-
+    def _setup_ui(self):
         self.categories_stacked_widget = QStackedWidget()
 
         self.categories_list_page = CategoriesListPage()
@@ -28,5 +22,4 @@ class CategoriesView(QWidget):
         self.categories_stacked_widget.addWidget(self.categories_list_page)
         self.categories_stacked_widget.addWidget(self.category_form_page)
 
-        layout.addWidget(title)
-        layout.addWidget(self.categories_stacked_widget)
+        self.content_layout.addWidget(self.categories_stacked_widget)

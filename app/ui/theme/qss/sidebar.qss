@@ -4,7 +4,7 @@ QWidget#Sidebar {
 }
 
 QLabel#SidebarTitle {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: #1F2A37;
     padding-bottom: 8px;
@@ -16,7 +16,7 @@ QToolButton#SidebarItem {
     border: none;
     border-radius: 8px;
     text-align: left;
-    padding: 8px 12px;
+    padding: 10px 12px;
     font-size: 14px;
 }
 

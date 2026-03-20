@@ -34,4 +34,4 @@ class MainWindow(QMainWindow):
         self.body = CustomBody()
 
         main_layout.addWidget(self.menu)
-        main_layout.addWidget(self.body)
+        main_layout.addWidget(self.body, 1)
