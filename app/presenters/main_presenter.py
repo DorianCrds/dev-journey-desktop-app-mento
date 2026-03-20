@@ -64,6 +64,7 @@ class MainPresenter:
         self._view.menu.tags_button.clicked.connect(self._tags_menu_button_clicked)
         self._view.menu.infos_button.clicked.connect(self._infos_menu_button_clicked)
         self._view.menu.settings_button.clicked.connect(self._settings_menu_button_clicked)
+        self._view.body.tags_view.refresh_notions_required.connect(self._on_notions_view_refresh_required)
 
     def _dashboard_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(0)
@@ -83,3 +84,6 @@ class MainPresenter:
 
     def _settings_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(5)
+
+    def _on_notions_view_refresh_required(self) -> None:
+        self._notion_presenter.refresh_view()

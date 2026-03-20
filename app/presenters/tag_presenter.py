@@ -121,6 +121,8 @@ class TagPresenter:
         self._remove_input_card()
         self._add_card(dto)
 
+        self._view.refresh_notions_required.emit()
+
     def _cancel_input(self):
         self._remove_input_card()
 
@@ -148,6 +150,8 @@ class TagPresenter:
         card.title_label.setText(updated.title)
 
         card.set_edit_mode(False)
+
+        self._view.refresh_notions_required.emit()
 
     @staticmethod
     def _cancel_edit(card: TagCard):

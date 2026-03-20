@@ -1,12 +1,14 @@
 # app/ui/views/pages/tags/tags_view.py
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QScrollArea
 
-from app.ui.views.components.sub_components.custom_buttons import CustomToolButton, CustomIconMediumToolButton
+from app.ui.views.components.sub_components.custom_buttons import CustomIconMediumToolButton
 from app.ui.views.components.sub_components.custom_texts import CustomTitleMain
 
 
 class TagsView(QWidget):
+    refresh_notions_required = Signal()
+
     def __init__(self):
         super().__init__()
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)

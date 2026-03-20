@@ -397,3 +397,8 @@ class NotionPresenter:
 
         form.form_title_error.hide()
         form.form_category_error.hide()
+
+    def refresh_view(self) -> None:
+        self.load_notions()
+        self._clear_detail_view()
+        self._view.notions_stacked_widget.setCurrentIndex(self.LIST_PAGE)
