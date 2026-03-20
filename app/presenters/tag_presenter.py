@@ -1,11 +1,10 @@
 # app/presenters/tag_presenter.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QListWidgetItem, QMessageBox
+from PySide6.QtWidgets import QMessageBox
 
-from app.domain.models.tag import Tag
-from app.presenters.form_mode_enum import FormMode
+from app.services.dto.tag_dto import TagDTO
 from app.services.tag_service import TagService
-from app.ui.views.pages.tags.tags_card import TagCard
+from app.ui.views.pages.tags.tags_card import TagCard, TagInputCard
 from app.ui.views.pages.tags.tags_view import TagsView
 
 
@@ -14,160 +13,163 @@ class TagPresenter:
         self._view = view
         self._service = tag_service
 
-        self._form_mode = FormMode.CREATE
-        self._editing_tag: Tag | None = None
-
         self._connect_signals()
         self.load_tags()
 
     def _connect_signals(self) -> None:
         self._view.add_tag_button.clicked.connect(self._on_add_button_clicked)
-        self._view.edit_tag_button.clicked.connect(self._on_edit_button_clicked)
-        self._view.delete_tag_button.clicked.connect(self._on_delete_button_clicked)
-        self._view.tags_back_button.clicked.connect(self._on_back_button_clicked)
-        self._view.tags_form_button.clicked.connect(self._on_form_button_clicked)
-
-        self._view.tags_list_widget.itemSelectionChanged.connect(self._on_selection_changed)
-
-        self._view.tag_name_input.textChanged.connect(self._validate_form)
 
     ###############################
     ##### Buttons connections #####
     ###############################
 
     def _on_add_button_clicked(self) -> None:
-        self._open_form(FormMode.CREATE)
+        self._show_tag_input()
 
-    def _on_edit_button_clicked(self) -> None:
-        selected_item = self._view.tags_list_widget.currentItem()
-        if not selected_item:
-            return
-
-        tag = selected_item.data(Qt.ItemDataRole.UserRole)
-        self._open_form(FormMode.EDIT, tag)
-
-    def _on_delete_button_clicked(self) -> None:
-        selected_item = self._view.tags_list_widget.currentItem()
-        if not selected_item:
-            return
-
-        tag = selected_item.data(Qt.ItemDataRole.UserRole)
-        reply = QMessageBox.question(self._view, "Delete tag",
-                                     f"Are you sure you want to delete the tag:\n\n'{tag.title}' ?",
-                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                                     QMessageBox.StandardButton.No)
-
-        if reply == QMessageBox.StandardButton.Yes:
-            self._service.delete_tag(tag.id)
-
-            self.load_tags()
-
-    def _on_back_button_clicked(self) -> None:
-        self._view.tag_name_input.clear()
-        self._view.form_tag_name_error.hide()
-        self._view.tags_form_button.setEnabled(False)
-
-        self._view.tags_stacked_widget.setCurrentIndex(0)
-
-    def _on_form_button_clicked(self) -> None:
-        title = self._view.tag_name_input.text().strip()
-
-        if not title:
-            self._view.form_tag_name_error.setText("Title is required.")
-            self._view.form_tag_name_error.show()
-            return
-
-        if self._form_mode == FormMode.CREATE:
-            self._service.create_tag(title)
-
-        elif self._form_mode == FormMode.EDIT and self._editing_tag:
-            self._editing_tag.update_title(title)
-
-            self._service.update_tag(self._editing_tag)
-
-        self._after_submit()
-
-    #######################
-    ##### List widget #####
-    #######################
+    #################
+    ##### Cards #####
+    #################
 
     def load_tags(self) -> None:
-        self._view.tags_list_widget.clear()
-        tags = self._service.get_all_tags()
+        cards_layout = self._view.cards_layout
+
+        while cards_layout.count():
+            item = cards_layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
+        tags = self._service.get_all_tags_for_display()
 
         for tag in tags:
             self._add_card(tag)
 
-        if self._view.tags_list_widget.count() > 0:
-            self._view.tags_list_widget.setFocus()
-            self._view.tags_list_widget.setCurrentRow(0)
+        cards_layout.addStretch()
 
-        self._update_details_and_options()
-
-    def _add_card(self, tag: Tag) -> None:
-        item = QListWidgetItem()
-
-        item.setData(Qt.ItemDataRole.UserRole, tag)
-
+    def _add_card(self, tag: TagDTO) -> None:
         card = TagCard(tag)
 
-        item.setSizeHint(card.sizeHint())
+        card.edit_button.clicked.connect(lambda: self._start_edit(card))
+        card.delete_button.clicked.connect(lambda: self._delete_tag(card))
 
-        self._view.tags_list_widget.addItem(item)
-        self._view.tags_list_widget.setItemWidget(item, card)
+        card.title_label.mouseDoubleClickEvent = lambda e: self._start_edit(card)
 
-    def _on_selection_changed(self) -> None:
-        selected_items = self._view.tags_list_widget.selectedItems()
+        self._connect_edit_signals(card)
 
-        if not selected_items:
-            self._update_details_and_options()
+        self._view.cards_layout.insertWidget(
+            self._view.cards_layout.count() - 1,
+            card
+        )
+
+    def _connect_edit_signals(self, card: TagCard):
+        card.title_input.returnPressed.connect(lambda: self._save_edit(card))
+        card.title_input.editingFinished.connect(lambda: self._on_edit_focus_out(card))
+
+        original_key_press = card.title_input.keyPressEvent
+
+        def custom_key_press(event):
+            if event.key() == Qt.Key.Key_Escape:
+                self._cancel_edit(card)
+            else:
+                original_key_press(event)
+
+        card.title_input.keyPressEvent = custom_key_press
+
+    def _show_tag_input(self) -> None:
+        if hasattr(self, "input_card") and self.input_card:
             return
 
-        tag = selected_items[0].data(Qt.ItemDataRole.UserRole)
+        self.input_card = TagInputCard()
 
-        self._view.value.setText(tag.title)
+        self._view.cards_layout.insertWidget(
+            self._view.cards_layout.count() - 1,
+            self.input_card
+        )
 
-        self._update_details_and_options()
+        self._connect_input_card_signals()
 
-    def _update_details_and_options(self) -> None:
-        has_selection = bool(self._view.tags_list_widget.selectedItems())
-        if not has_selection:
-            self._view.value.setText("")
-        self._view.edit_tag_button.setEnabled(has_selection)
-        self._view.delete_tag_button.setEnabled(has_selection)
+        self.input_card.input.setFocus()
 
-    #################################
-    ##### Reusable Form methods #####
-    #################################
+    def _connect_input_card_signals(self):
+        ic = self.input_card
 
-    def _open_form(self, mode: FormMode, tag: Tag | None = None) -> None:
-        self._form_mode = mode
-        self._editing_tag = tag
+        ic.input.returnPressed.connect(self._create_tag)
+        ic.save_button.clicked.connect(self._create_tag)
+        ic.cancel_button.clicked.connect(self._cancel_input)
 
-        if mode == FormMode.CREATE:
-            self._view.tags_form_button.setText("Create Tag")
-            self._reset_form_fields()
+        original_key_press = ic.input.keyPressEvent
 
-        elif mode == FormMode.EDIT and tag:
-            self._view.tags_form_button.setText("Update Tag")
-            self._view.tag_name_input.setText(tag.title)
+        def custom_key_press(event):
+            if event.key() == Qt.Key.Key_Escape:
+                self._cancel_input()
+            else:
+                original_key_press(event)
 
-        self._validate_form()
-        self._view.tags_stacked_widget.setCurrentIndex(1)
+        ic.input.keyPressEvent = custom_key_press
 
-    def _validate_form(self) -> None:
-        title_valid = bool(self._view.tag_name_input.text().strip())
-        self._view.tags_form_button.setEnabled(title_valid)
+    def _create_tag(self):
+        title = self.input_card.input.text().strip()
 
-    def _after_submit(self) -> None:
-        self._form_mode = FormMode.CREATE
-        self._editing_tag = None
+        if not title:
+            self._cancel_input()
+            return
 
-        self._reset_form_fields()
+        tag = self._service.create_tag(title)
 
-        self.load_tags()
-        self._view.tags_stacked_widget.setCurrentIndex(0)
+        dto = self._service.get_tag_for_display(tag.id)
 
-    def _reset_form_fields(self) -> None:
-        self._view.tag_name_input.clear()
-        self._view.form_tag_name_error.hide()
+        self._remove_input_card()
+        self._add_card(dto)
+
+    def _cancel_input(self):
+        self._remove_input_card()
+
+    def _remove_input_card(self):
+        if self.input_card:
+            self.input_card.deleteLater()
+            self.input_card = None
+
+    @staticmethod
+    def _start_edit(card: TagCard):
+        card.set_edit_mode(True)
+
+    def _save_edit(self, card: TagCard):
+        new_title = card.title_input.text().strip()
+
+        if not new_title:
+            self._cancel_edit(card)
+            return
+
+        self._service.update_tag(card.tag.id, new_title)
+
+        updated = self._service.get_tag_for_display(card.tag.id)
+
+        card.tag = updated
+        card.title_label.setText(updated.title)
+
+        card.set_edit_mode(False)
+
+    @staticmethod
+    def _cancel_edit(card: TagCard):
+        card.title_input.setText(card.tag.title)
+        card.set_edit_mode(False)
+
+    def _on_edit_focus_out(self, card: TagCard):
+        if card.title_input.text().strip():
+            self._save_edit(card)
+        else:
+            self._cancel_edit(card)
+
+    def _delete_tag(self, card: TagCard):
+        reply = QMessageBox.question(
+            self._view,
+            "Delete Tag",
+            f"Are you sure you want to delete:\n\n'{card.tag.title}' ?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            self._service.delete_tag(card.tag.id)
+
+            card.deleteLater()

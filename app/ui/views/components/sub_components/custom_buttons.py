@@ -1,6 +1,7 @@
 # app/ui/views/components/sub_components/custom_buttons.py
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QToolButton, QSizePolicy, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
 
 
 class CustomMenuToolButton(QToolButton):
@@ -37,3 +38,27 @@ class CustomPushButton(QPushButton):
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.setAttribute(Qt.WidgetAttribute.WA_Hover, True)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+class CustomIconSmallToolButton(QToolButton):
+    def __init__(self, icon_path: str):
+        super().__init__()
+        self.setObjectName("primarySmallIcon")
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.setAttribute(Qt.WidgetAttribute.WA_Hover, True)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        self.setIcon(QIcon(icon_path))
+        self.setIconSize(QSize(16, 16))
+
+        self.setFixedSize(28, 28)
+
+class CustomIconMediumToolButton(QToolButton):
+    def __init__(self, icon_path: str):
+        super().__init__()
+        self.setObjectName("primaryMediumIcon")
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.setAttribute(Qt.WidgetAttribute.WA_Hover, True)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        self.setIcon(QIcon(icon_path))
+        self.setIconSize(QSize(24, 24))

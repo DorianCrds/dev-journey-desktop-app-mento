@@ -1,11 +1,11 @@
-QWidget#CardNotion, QWidget#CardCategory {
+QWidget#CardNotion, QWidget#CardCategory, QWidget#CardTag {
     background-color: #FFFFFF;
     border: 1px solid #E3E8EF;
     border-radius: 10px;
     padding: 16px;
 }
 
-QWidget#CardNotion:hover, QWidget#CardCategory:hover {
+QWidget#CardNotion:hover, QWidget#CardCategory:hover, QWidget#CardTag:hover {
     background-color: #F9FBFE;
 }
 
