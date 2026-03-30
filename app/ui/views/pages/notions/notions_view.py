@@ -29,3 +29,4 @@ class NotionsView(BasicView):
         self.notions_stacked_widget.addWidget(self.notion_form_page)
 
         self.content_layout.addWidget(self.notions_stacked_widget)
+        self.content_layout.setSpacing(0)

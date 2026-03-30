@@ -18,6 +18,7 @@ class NotionCard(QWidget):
         self.notion = notion
 
         main_v_layout = QVBoxLayout(self)
+
         self.title_label = CustomDocumentTitle(self.notion.title)
 
         if self.notion.status == "À apprendre":
@@ -29,12 +30,17 @@ class NotionCard(QWidget):
         first_line_layout.addWidget(self.title_label)
         first_line_layout.addStretch()
         first_line_layout.addWidget(self.status_label)
+        first_line_layout.setSpacing(8)
 
         self.category_label = CustomMetaInfo(self.notion.category_title)
 
         second_line_layout = QHBoxLayout()
         second_line_layout.addWidget(self.category_label)
         second_line_layout.addStretch()
+        second_line_layout.setSpacing(8)
 
         main_v_layout.addLayout(first_line_layout)
         main_v_layout.addLayout(second_line_layout)
+
+        main_v_layout.setSpacing(8)
+        main_v_layout.setContentsMargins(8, 8, 8, 8)

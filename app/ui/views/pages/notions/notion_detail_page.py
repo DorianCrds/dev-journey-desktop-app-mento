@@ -44,7 +44,11 @@ class NotionDetailPage(QWidget):
         self._header_layout.addWidget(self.edit_button)
         self._header_layout.addWidget(self.delete_button)
 
+        self._header_layout.setContentsMargins(0, 0, 0, 0)
+        self._header_layout.setSpacing(8)
+
         self._main_layout.addWidget(self._header_widget)
+        self._main_layout.addSpacing(8)
 
         ########################################
         ##### CONTENT CONTAINER (CENTERED) #####
@@ -93,6 +97,7 @@ class NotionDetailPage(QWidget):
 
         self._category_section = QWidget()
         self._category_layout = QVBoxLayout(self._category_section)
+        self._category_layout.setSpacing(4)
 
         self.category_label = CustomMetaInfo("Category")
         self.category_value = CustomTextNormal("")
@@ -108,14 +113,14 @@ class NotionDetailPage(QWidget):
 
         self._tags_section = QWidget()
         self._tags_layout_container = QVBoxLayout(self._tags_section)
+        self._tags_layout_container.setSpacing(4)
 
         self.tags_label = CustomMetaInfo("Tags")
 
         self.tags_widget = QWidget()
         self.tags_layout = QHBoxLayout(self.tags_widget)
         self.tags_layout.setSpacing(8)
-
-        self.tags_layout.addStretch()
+        self.tags_layout.setContentsMargins(0, 0, 0, 0)
 
         self._tags_layout_container.addWidget(self.tags_label)
         self._tags_layout_container.addWidget(self.tags_widget)
@@ -128,6 +133,7 @@ class NotionDetailPage(QWidget):
 
         self._context_section = QWidget()
         self._context_layout = QVBoxLayout(self._context_section)
+        self._context_layout.setSpacing(4)
 
         self.context_label = CustomMetaInfo("Context")
         self.context_value = CustomTextNormal("")
@@ -144,6 +150,7 @@ class NotionDetailPage(QWidget):
 
         self._description_section = QWidget()
         self._description_layout = QVBoxLayout(self._description_section)
+        self._description_layout.setSpacing(4)
 
         self.description_label = CustomMetaInfo("Description")
         self.description_value = CustomTextNormal("")
@@ -163,3 +170,6 @@ class NotionDetailPage(QWidget):
 
         self._main_layout.addWidget(self._content_container)
         self._main_layout.addStretch()
+
+        self._main_layout.setSpacing(24)
+        self._main_layout.setContentsMargins(0, 0, 0, 0)

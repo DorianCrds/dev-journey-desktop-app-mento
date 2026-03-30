@@ -31,4 +31,3 @@ class BasicView(QWidget):
 
         self._main_layout.addWidget(self.title_label)
         self._main_layout.addWidget(self.content_widget)
-        self._main_layout.addStretch()

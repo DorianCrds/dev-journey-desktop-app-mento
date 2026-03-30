@@ -19,10 +19,14 @@ class NotionFormPage(QWidget):
 
     def _setup_ui(self) -> None:
         self._main_v_layout = QVBoxLayout(self)
+        self._main_v_layout.setSpacing(24)
+        self._main_v_layout.setContentsMargins(0, 0, 0, 0)
 
         self._header_widget = QWidget()
         self._header_widget.setObjectName("NotionFormHeader")
         self._header_h_layout = QHBoxLayout(self._header_widget)
+        self._header_h_layout.setContentsMargins(0, 0, 0, 0)
+        self._header_h_layout.setSpacing(8)
 
         self.back_button = CustomToolButton("Back")
         self._header_h_layout.addWidget(self.back_button)
@@ -34,6 +38,8 @@ class NotionFormPage(QWidget):
         self._form_container.setObjectName("notion_form_container")
         self._form_container.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self._form_container_layout = QHBoxLayout(self._form_container)
+        self._form_container_layout.setContentsMargins(0, 0, 0, 0)
+        self._form_container_layout.setSpacing(0)
 
         self._form_container_layout.addStretch()
 
@@ -42,7 +48,7 @@ class NotionFormPage(QWidget):
         self._form_widget.setMaximumWidth(640)
 
         self._form_layout = QFormLayout(self._form_widget)
-        self._form_layout.setVerticalSpacing(12)
+        self._form_layout.setVerticalSpacing(16)
         self._form_layout.setHorizontalSpacing(16)
         self._form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
         self._form_layout.setFormAlignment(Qt.AlignmentFlag.AlignTop)
