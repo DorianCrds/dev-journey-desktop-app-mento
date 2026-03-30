@@ -19,7 +19,7 @@ class TagsView(BasicView):
         tags_page = QWidget()
         tags_page_layout = QVBoxLayout(tags_page)
         tags_page_layout.setContentsMargins(0, 0, 0, 0)
-        tags_page_layout.setSpacing(16)
+        tags_page_layout.setSpacing(24)
 
         header = QWidget()
         header_layout = QHBoxLayout(header)

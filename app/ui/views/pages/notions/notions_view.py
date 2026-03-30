@@ -19,6 +19,7 @@ class NotionsView(BasicView):
 
     def _setup_ui(self):
         self.notions_stacked_widget = QStackedWidget()
+        self.notions_stacked_widget.setContentsMargins(0, 0, 0, 0)
 
         self.notions_list_page = NotionsListPage()
         self.notion_detail_page = NotionDetailPage()

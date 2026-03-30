@@ -27,9 +27,9 @@ class NotionsListPage(QWidget):
         header_layout.addStretch()
 
         self.list_widget = QListWidget()
-        self.list_widget.setSpacing(12)
+        self.list_widget.setSpacing(8)
+        self.list_widget.setContentsMargins(0, 0, 0, 0)
         self.list_widget.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
         layout.addWidget(header)
-        layout.addSpacing(8)
         layout.addWidget(self.list_widget)

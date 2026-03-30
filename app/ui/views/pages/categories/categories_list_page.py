@@ -14,9 +14,13 @@ class CategoriesListPage(QWidget):
 
     def _setup_ui(self) -> None:
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(24)
 
         header = QWidget()
         header_layout = QHBoxLayout(header)
+        header_layout.setContentsMargins(0, 0, 0, 0)
+        header_layout.setSpacing(8)
 
         self.add_category_button = CustomToolButton("Add")
         self.edit_category_button = CustomToolButton("Edit")

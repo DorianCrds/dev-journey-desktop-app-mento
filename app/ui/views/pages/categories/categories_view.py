@@ -15,6 +15,7 @@ class CategoriesView(BasicView):
 
     def _setup_ui(self):
         self.categories_stacked_widget = QStackedWidget()
+        self.categories_stacked_widget.setContentsMargins(0, 0, 0, 0)
 
         self.categories_list_page = CategoriesListPage()
         self.category_form_page = CategoryFormPage()
