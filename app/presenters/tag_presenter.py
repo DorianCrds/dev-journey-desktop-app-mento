@@ -177,3 +177,5 @@ class TagPresenter:
             self._service.delete_tag(card.tag.id)
 
             card.deleteLater()
+
+        self._view.refresh_notions_required.emit()
