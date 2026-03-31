@@ -17,7 +17,7 @@ class TagPresenter:
         self.load_tags()
 
     def _connect_signals(self) -> None:
-        self._view.add_tag_button.clicked.connect(self._on_add_button_clicked)
+        self._view.header.add_button.clicked.connect(self._on_add_button_clicked)
 
     ###############################
     ##### Buttons connections #####

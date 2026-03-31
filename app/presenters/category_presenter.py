@@ -24,9 +24,9 @@ class CategoryPresenter:
 
     def _connect_signals(self) -> None:
         # List
-        self._view.categories_list_page.add_category_button.clicked.connect(self._on_add_button_clicked)
-        self._view.categories_list_page.edit_category_button.clicked.connect(self._on_edit_button_clicked)
-        self._view.categories_list_page.delete_category_button.clicked.connect(self._on_delete_button_clicked)
+        self._view.categories_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
+        self._view.categories_list_page.header.edit_button.clicked.connect(self._on_edit_button_clicked)
+        self._view.categories_list_page.header.delete_button.clicked.connect(self._on_delete_button_clicked)
 
         # Form
         self._view.category_form_page.back_button.clicked.connect(self._on_form_back_button_clicked)
@@ -111,8 +111,8 @@ class CategoryPresenter:
 
         self._editing_category = None
 
-        self._view.categories_list_page.delete_category_button.setEnabled(False)
-        self._view.categories_list_page.edit_category_button.setEnabled(False)
+        self._view.categories_list_page.header.delete_button.setEnabled(False)
+        self._view.categories_list_page.header.edit_button.setEnabled(False)
 
     def _add_card(self, category: CategoryReadDTO) -> None:
         card = CategoryCard(category)
@@ -152,8 +152,8 @@ class CategoryPresenter:
 
         enabled = self._editing_category is not None
 
-        self._view.categories_list_page.edit_category_button.setEnabled(enabled)
-        self._view.categories_list_page.delete_category_button.setEnabled(enabled)
+        self._view.categories_list_page.header.edit_button.setEnabled(enabled)
+        self._view.categories_list_page.header.delete_button.setEnabled(enabled)
 
     #################################
     ##### Reusable Form methods #####

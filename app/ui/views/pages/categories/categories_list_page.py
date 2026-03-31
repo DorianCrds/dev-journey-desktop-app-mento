@@ -1,8 +1,8 @@
 # app/ui/views/pages/categories/categories_list_page.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QScrollArea
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea
 
-from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
+from app.ui.views.components.sub_components.list_page_header import PageActionsHeader
 
 
 class CategoriesListPage(QWidget):
@@ -17,19 +17,10 @@ class CategoriesListPage(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(24)
 
-        header = QWidget()
-        header_layout = QHBoxLayout(header)
-        header_layout.setContentsMargins(0, 0, 0, 0)
-        header_layout.setSpacing(8)
-
-        self.add_category_button = CustomToolButton("Add")
-        self.edit_category_button = CustomToolButton("Edit")
-        self.delete_category_button = CustomToolButton("Delete")
-
-        header_layout.addWidget(self.add_category_button)
-        header_layout.addWidget(self.edit_category_button)
-        header_layout.addWidget(self.delete_category_button)
-        header_layout.addStretch()
+        self.header = PageActionsHeader()
+        self.header.add_button.show()
+        self.header.edit_button.show()
+        self.header.delete_button.show()
 
         self._scroll_area = QScrollArea()
         self._scroll_area.setWidgetResizable(True)
@@ -43,5 +34,5 @@ class CategoriesListPage(QWidget):
 
         self._scroll_area.setWidget(self._cards_container)
 
-        layout.addWidget(header)
+        layout.addWidget(self.header)
         layout.addWidget(self._scroll_area)

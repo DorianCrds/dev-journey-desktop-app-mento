@@ -34,7 +34,7 @@ class NotionPresenter:
 
     def _connect_signals(self) -> None:
         # List
-        self._view.notions_list_page.add_notion_button.clicked.connect(self._on_add_button_clicked)
+        self._view.notions_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
         self._view.notions_list_page.list_widget.itemClicked.connect(self._on_card_clicked)
 
         # Detail

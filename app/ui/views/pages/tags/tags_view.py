@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QScrollArea
 
 from app.ui.views.components.main_components.basic_view import BasicView
 from app.ui.views.components.sub_components.custom_buttons import CustomIconMediumToolButton
+from app.ui.views.components.sub_components.list_page_header import PageActionsHeader
 
 
 class TagsView(BasicView):
@@ -21,14 +22,8 @@ class TagsView(BasicView):
         tags_page_layout.setContentsMargins(0, 0, 0, 0)
         tags_page_layout.setSpacing(24)
 
-        header = QWidget()
-        header_layout = QHBoxLayout(header)
-        header_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.add_tag_button = CustomIconMediumToolButton("assets/icons/plus.svg")
-
-        header_layout.addWidget(self.add_tag_button)
-        header_layout.addStretch()
+        self.header = PageActionsHeader()
+        self.header.add_button.show()
 
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
@@ -42,7 +37,7 @@ class TagsView(BasicView):
 
         scroll_area.setWidget(self._cards_container)
 
-        tags_page_layout.addWidget(header)
+        tags_page_layout.addWidget(self.header)
         tags_page_layout.addWidget(scroll_area)
 
         self.content_layout.addWidget(tags_page)
