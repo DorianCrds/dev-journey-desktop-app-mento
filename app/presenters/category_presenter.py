@@ -69,6 +69,8 @@ class CategoryPresenter:
                 description
             )
 
+        self.load_categories()
+
         self._view.categories_stacked_widget.setCurrentIndex(self.LIST_PAGE)
 
     def _on_edit_button_clicked(self) -> None:
