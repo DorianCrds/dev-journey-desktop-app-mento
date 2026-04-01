@@ -1,5 +1,5 @@
 # app/ui/views/pages/notions/notion_card.py
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
 from app.services.dto.notion_dto import NotionReadDTO
@@ -8,6 +8,9 @@ from app.ui.views.components.sub_components.custom_texts import CustomDocumentTi
 
 
 class NotionCard(QWidget):
+
+    clicked = Signal(object)
+
     def __init__(self, notion: NotionReadDTO):
         super().__init__()
         self.setObjectName("CardNotion")
@@ -44,3 +47,6 @@ class NotionCard(QWidget):
 
         main_v_layout.setSpacing(8)
         main_v_layout.setContentsMargins(8, 8, 8, 8)
+
+    def mousePressEvent(self, event):
+        self.clicked.emit(self)

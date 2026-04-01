@@ -1,6 +1,5 @@
 # app/presenters/notion_presenter.py
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QListWidgetItem, QMessageBox
+from PySide6.QtWidgets import QMessageBox
 
 from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
@@ -35,7 +34,6 @@ class NotionPresenter:
     def _connect_signals(self) -> None:
         # List
         self._view.notions_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
-        self._view.notions_list_page.list_widget.itemClicked.connect(self._on_card_clicked)
 
         # Detail
         self._view.notion_detail_page.header_widget.back_button.clicked.connect(self._on_detail_back_clicked)
@@ -55,28 +53,34 @@ class NotionPresenter:
     #########################################
 
     def load_notions(self) -> None:
-        self._view.notions_list_page.list_widget.clear()
+        cards_layout = self._view.notions_list_page.scroll_area.cards_layout
+
+        while cards_layout.count() > 1:
+            item = cards_layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
         notions = self._notion_service.get_all_notions_for_display()
 
         for notion in notions:
             self._add_card(notion)
 
-        if self._view.notions_list_page.list_widget.count() > 0:
-            self._view.notions_list_page.list_widget.setCurrentRow(0)
+        self._editing_notion = None
 
     def _add_card(self, notion: NotionReadDTO) -> None:
-        item = QListWidgetItem()
-        item.setData(Qt.ItemDataRole.UserRole, notion)
-
         card = NotionCard(notion)
-        item.setSizeHint(card.sizeHint())
 
-        self._view.notions_list_page.list_widget.addItem(item)
-        self._view.notions_list_page.list_widget.setItemWidget(item, card)
+        card.clicked.connect(self._on_card_clicked)
 
-    def _on_card_clicked(self, item: QListWidgetItem) -> None:
+        self._view.notions_list_page.scroll_area.cards_layout.insertWidget(
+            self._view.notions_list_page.scroll_area.cards_layout.count() - 1,
+            card
+        )
 
-        notion: NotionReadDTO = item.data(Qt.ItemDataRole.UserRole)
+    def _on_card_clicked(self, clicked_card: NotionCard) -> None:
+
+        notion: NotionReadDTO = clicked_card.notion
 
         self._show_notion_details(notion)
 

@@ -2,6 +2,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea
 
+from app.ui.views.components.sub_components.custom_cards_scroll_area import CustomCardsScrollArea
 from app.ui.views.components.sub_components.custom_headers import PageActionsHeader
 
 
@@ -15,21 +16,11 @@ class CategoriesListPage(QWidget):
     def _setup_ui(self) -> None:
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(24)
+        layout.setSpacing(16)
 
         self.header = PageActionsHeader(create_mode=True, edit_mode=True, delete_mode=True)
 
-        self._scroll_area = QScrollArea()
-        self._scroll_area.setWidgetResizable(True)
-        self._scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
-
-        self._cards_container = QWidget()
-        self.cards_layout = QVBoxLayout(self._cards_container)
-        self.cards_layout.setSpacing(8)
-        self.cards_layout.setContentsMargins(0, 0, 0, 0)
-        self.cards_layout.addStretch()
-
-        self._scroll_area.setWidget(self._cards_container)
+        self.scroll_area = CustomCardsScrollArea()
 
         layout.addWidget(self.header)
-        layout.addWidget(self._scroll_area)
+        layout.addWidget(self.scroll_area)

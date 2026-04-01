@@ -31,7 +31,7 @@ class TagPresenter:
     #################
 
     def load_tags(self) -> None:
-        cards_layout = self._view.cards_layout
+        cards_layout = self._view.scroll_area.cards_layout
 
         while cards_layout.count():
             item = cards_layout.takeAt(0)
@@ -56,8 +56,8 @@ class TagPresenter:
 
         self._connect_edit_signals(card)
 
-        self._view.cards_layout.insertWidget(
-            self._view.cards_layout.count() - 1,
+        self._view.scroll_area.cards_layout.insertWidget(
+            self._view.scroll_area.cards_layout.count() - 1,
             card
         )
 
@@ -81,8 +81,8 @@ class TagPresenter:
 
         self.input_card = TagInputCard()
 
-        self._view.cards_layout.insertWidget(
-            self._view.cards_layout.count() - 1,
+        self._view.scroll_area.cards_layout.insertWidget(
+            self._view.scroll_area.cards_layout.count() - 1,
             self.input_card
         )
 

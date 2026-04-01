@@ -96,7 +96,7 @@ class CategoryPresenter:
     ###########################
 
     def load_categories(self) -> None:
-        cards_layout = self._view.categories_list_page.cards_layout
+        cards_layout = self._view.categories_list_page.scroll_area.cards_layout
 
         while cards_layout.count() > 1:
             item = cards_layout.takeAt(0)
@@ -119,13 +119,13 @@ class CategoryPresenter:
 
         card.clicked.connect(self._on_card_clicked)
 
-        self._view.categories_list_page.cards_layout.insertWidget(
-            self._view.categories_list_page.cards_layout.count() - 1,
+        self._view.categories_list_page.scroll_area.cards_layout.insertWidget(
+            self._view.categories_list_page.scroll_area.cards_layout.count() - 1,
             card
         )
 
     def _on_card_clicked(self, clicked_card):
-        layout = self._view.categories_list_page.cards_layout
+        layout = self._view.categories_list_page.scroll_area.cards_layout
 
         clicked_was_expanded = clicked_card.expanded
         selection = None

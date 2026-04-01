@@ -2,6 +2,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QListWidget
 
+from app.ui.views.components.sub_components.custom_cards_scroll_area import CustomCardsScrollArea
 from app.ui.views.components.sub_components.custom_headers import PageActionsHeader
 
 
@@ -19,11 +20,7 @@ class NotionsListPage(QWidget):
 
         self.header = PageActionsHeader(create_mode=True)
 
-        # TODO: remove QListWidget
-        self.list_widget = QListWidget()
-        self.list_widget.setSpacing(8)
-        self.list_widget.setContentsMargins(0, 0, 0, 0)
-        self.list_widget.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.scroll_area = CustomCardsScrollArea()
 
         layout.addWidget(self.header)
-        layout.addWidget(self.list_widget)
+        layout.addWidget(self.scroll_area)
