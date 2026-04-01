@@ -1,4 +1,4 @@
-QWidget#CardNotion, QWidget#CardCategory, QWidget#CardTag {
+QWidget#CardNotion, QWidget#CardCategory, QWidget#CardTag, QWidget#CardStat {
     background-color: #FFFFFF;
     border: 1px solid #E3E8EF;
     border-radius: 10px;

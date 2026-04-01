@@ -45,3 +45,19 @@ QLabel#TagLabel {
     padding: 4px 10px;
     border-radius: 12px;
 }
+
+QLabel#StatValue {
+    background: transparent;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1F2A37;
+    padding-bottom: 8px;
+}
+
+QLabel#StatName {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #5B6B7C;
+}
