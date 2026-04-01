@@ -2,7 +2,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QListWidget
 
-from app.ui.views.components.sub_components.list_page_header import PageActionsHeader
+from app.ui.views.components.sub_components.custom_headers import PageActionsHeader
 
 
 class NotionsListPage(QWidget):
@@ -17,8 +17,7 @@ class NotionsListPage(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(16)
 
-        self.header = PageActionsHeader()
-        self.header.add_button.show()
+        self.header = PageActionsHeader(create_mode=True)
 
         # TODO: remove QListWidget
         self.list_widget = QListWidget()

@@ -2,7 +2,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea
 
-from app.ui.views.components.sub_components.list_page_header import PageActionsHeader
+from app.ui.views.components.sub_components.custom_headers import PageActionsHeader
 
 
 class CategoriesListPage(QWidget):
@@ -17,10 +17,7 @@ class CategoriesListPage(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(24)
 
-        self.header = PageActionsHeader()
-        self.header.add_button.show()
-        self.header.edit_button.show()
-        self.header.delete_button.show()
+        self.header = PageActionsHeader(create_mode=True, edit_mode=True, delete_mode=True)
 
         self._scroll_area = QScrollArea()
         self._scroll_area.setWidgetResizable(True)

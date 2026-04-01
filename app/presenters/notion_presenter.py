@@ -38,12 +38,12 @@ class NotionPresenter:
         self._view.notions_list_page.list_widget.itemClicked.connect(self._on_card_clicked)
 
         # Detail
-        self._view.notion_detail_page.back_button.clicked.connect(self._on_detail_back_clicked)
-        self._view.notion_detail_page.edit_button.clicked.connect(self._on_edit_button_clicked)
-        self._view.notion_detail_page.delete_button.clicked.connect(self._on_delete_button_clicked)
+        self._view.notion_detail_page.header_widget.back_button.clicked.connect(self._on_detail_back_clicked)
+        self._view.notion_detail_page.header_widget.edit_button.clicked.connect(self._on_edit_button_clicked)
+        self._view.notion_detail_page.header_widget.delete_button.clicked.connect(self._on_delete_button_clicked)
 
         # Form
-        self._view.notion_form_page.back_button.clicked.connect(self._on_form_back_clicked)
+        self._view.notion_form_page.header_widget.back_button.clicked.connect(self._on_form_back_clicked)
         self._view.notion_form_page.save_button.clicked.connect(self._on_form_button_clicked)
 
         self._view.notion_form_page.title_input.textChanged.connect(self._validate_form)

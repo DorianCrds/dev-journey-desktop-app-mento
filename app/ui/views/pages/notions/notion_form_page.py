@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QC
 from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
 from app.ui.views.components.sub_components.custom_forms import CustomFormLineEdit, CustomFormComboBox, \
     CustomFormTextEdit, CustomFormScrollArea
+from app.ui.views.components.sub_components.custom_headers import PageNavHeader
 from app.ui.views.components.sub_components.custom_texts import CustomFormErrorLabel
 
 
@@ -22,17 +23,10 @@ class NotionFormPage(QWidget):
         self._main_v_layout.setSpacing(24)
         self._main_v_layout.setContentsMargins(0, 0, 0, 0)
 
-        self._header_widget = QWidget()
-        self._header_widget.setObjectName("NotionFormHeader")
-        self._header_h_layout = QHBoxLayout(self._header_widget)
-        self._header_h_layout.setContentsMargins(0, 0, 0, 0)
-        self._header_h_layout.setSpacing(8)
+        self.header_widget = PageNavHeader()
+        self.header_widget.setObjectName("NotionFormHeader")
 
-        self.back_button = CustomToolButton("Back")
-        self._header_h_layout.addWidget(self.back_button)
-        self._header_h_layout.addStretch()
-
-        self._main_v_layout.addWidget(self._header_widget)
+        self._main_v_layout.addWidget(self.header_widget)
 
         self._form_container = QWidget()
         self._form_container.setObjectName("notion_form_container")
