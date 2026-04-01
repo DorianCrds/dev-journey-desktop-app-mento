@@ -1,6 +1,6 @@
 # app/ui/views/pages/categories/categories_card.py
-from PySide6.QtCore import Qt, Signal, QPropertyAnimation, QEasingCurve
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QSizePolicy
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
 
 from app.services.dto.category_dto import CategoryReadDTO
 from app.ui.views.components.sub_components.arrow_indicator import ArrowIndicator

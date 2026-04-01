@@ -7,7 +7,6 @@ from PySide6.QtWidgets import (
     QLabel,
 )
 
-from app.ui.views.components.sub_components.custom_buttons import CustomToolButton
 from app.ui.views.components.sub_components.custom_headers import PageNavHeader
 from app.ui.views.components.sub_components.custom_texts import (
     CustomDocumentTitle,
@@ -33,20 +32,9 @@ class NotionDetailPage(QWidget):
         ##### HEADER #####
         ##################
 
-        self.header_widget = PageNavHeader(edit_mode=True, delete_mode= True)
-        self._header_layout = QHBoxLayout(self.header_widget)
-
-        self.back_button = CustomToolButton("Back")
-        self.edit_button = CustomToolButton("Edit")
-        self.delete_button = CustomToolButton("Delete")
-
-        self._header_layout.addWidget(self.back_button)
-        self._header_layout.addStretch()
-        self._header_layout.addWidget(self.edit_button)
-        self._header_layout.addWidget(self.delete_button)
-
-        self._header_layout.setContentsMargins(0, 0, 0, 0)
-        self._header_layout.setSpacing(8)
+        self.header_widget = PageNavHeader()
+        self.header_widget.edit_button.show()
+        self.header_widget.delete_button.show()
 
         self._main_layout.addWidget(self.header_widget)
         self._main_layout.addSpacing(8)

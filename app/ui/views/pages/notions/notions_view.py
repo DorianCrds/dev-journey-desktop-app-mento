@@ -4,9 +4,9 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QStackedWidget, QSizePolicy
 
 from app.ui.views.components.main_components.basic_view import BasicView
+from app.ui.views.components.sub_components.custom_list_page import CustomListPage
 from app.ui.views.pages.notions.notion_detail_page import NotionDetailPage
 from app.ui.views.pages.notions.notion_form_page import NotionFormPage
-from app.ui.views.pages.notions.notions_list_page import NotionsListPage
 
 
 class NotionsView(BasicView):
@@ -21,7 +21,8 @@ class NotionsView(BasicView):
         self.notions_stacked_widget = QStackedWidget()
         self.notions_stacked_widget.setContentsMargins(0, 0, 0, 0)
 
-        self.notions_list_page = NotionsListPage()
+        self.notions_list_page = CustomListPage()
+        self.notions_list_page.header.add_button.show()
         self.notion_detail_page = NotionDetailPage()
         self.notion_form_page = NotionFormPage()
 
