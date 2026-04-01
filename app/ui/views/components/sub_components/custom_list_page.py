@@ -12,7 +12,7 @@ class CustomListPage(QWidget):
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(8)
+        layout.setSpacing(24)
 
         self.header = PageActionsHeader()
 
