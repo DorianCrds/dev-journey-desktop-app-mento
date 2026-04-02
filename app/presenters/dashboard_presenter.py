@@ -38,6 +38,7 @@ class DashboardPresenter:
 
         self._build_stat_cards(dashboard_data)
         self._build_pie_chart(dashboard_data)
+        # TODO: limit 5 bars
         self._build_bar_chart(dashboard_data)
 
     def _show_empty_state(self) -> None:
@@ -77,6 +78,8 @@ class DashboardPresenter:
 
         def on_hovered(slice, state):
             slice.setExploded(state)
+            slice.setBorderColor("#FFFFFF")
+            slice.setBorderWidth(2)
 
         pie_series.hovered.connect(on_hovered)
 
