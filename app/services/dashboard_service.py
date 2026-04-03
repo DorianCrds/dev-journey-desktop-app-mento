@@ -48,7 +48,20 @@ class DashboardService:
                 )
             )
 
+        top_categories = self._get_top_categories(categories_progress)
+
         return DashboardDTO(
             global_stats=global_stats,
             categories_progress=categories_progress,
+            top_categories=top_categories
         )
+
+    @staticmethod
+    def _get_top_categories(categories: list[CategoryProgressDTO], limit: int = 5):
+        sorted_categories = sorted(
+            categories,
+            key=lambda c: c.total,
+            reverse=True
+        )
+
+        return sorted_categories[:limit]

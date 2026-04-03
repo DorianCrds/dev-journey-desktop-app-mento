@@ -101,7 +101,7 @@ class DashboardPresenter:
         self._view.dashboard_charts_h_layout.addWidget(pie_chart_view, 1)
 
     def _build_bar_chart(self, dashboard_data) -> None:
-        categories_progress = dashboard_data.categories_progress
+        categories_progress = dashboard_data.top_categories
 
         categories = []
         values = []
@@ -110,7 +110,7 @@ class DashboardPresenter:
             categories.append(cat.category_title)
             values.append(cat.percent)
 
-        bar_set = QBarSet("Progression %")
+        bar_set = QBarSet("Progression % (top 5 notions count)")
         bar_set.append(values)
 
         bar_set.setColor(Colors.STATUS_ACQUIRED_CHART_BG)

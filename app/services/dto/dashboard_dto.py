@@ -23,3 +23,4 @@ class CategoryProgressDTO:
 class DashboardDTO:
     global_stats: GlobalStatsDTO
     categories_progress: List[CategoryProgressDTO]
+    top_categories: List[CategoryProgressDTO]
