@@ -1,4 +1,4 @@
-# app/services/caterory_service.py
+# app/services/category_service.py
 from app.domain.models.category import Category
 from app.persistence.mappers.category_mapper import dict_to_category
 from app.persistence.repositories.category_repository import CategoryRepository

@@ -88,9 +88,16 @@ class CategoryPresenter:
         reply = QMessageBox.question(self._view,"Delete category", f"Are you sure you want to delete the category:\n\n'{category.title}' ?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
 
         if reply == QMessageBox.StandardButton.Yes:
-            self._service.delete_category(category.id)
-
-            self.load_categories()
+            try:
+                self._service.delete_category(category.id)
+            except ValueError as e:
+                QMessageBox.critical(
+                    self._view,
+                    "Cannot delete category",
+                    str(e)  # "Impossible to delete used category."
+                )
+            else:
+                self.load_categories()
 
 
     ###########################
