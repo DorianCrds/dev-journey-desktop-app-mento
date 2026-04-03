@@ -1,33 +1,35 @@
 # app/ui/views/pages/tags/tags_card.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QSizePolicy, QLineEdit
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QLineEdit
 
-from app.services.dto.tag_dto import TagDTO
-from app.ui.views.components.sub_components.custom_buttons import CustomToolButton, CustomIconSmallToolButton
-from app.ui.views.components.sub_components.custom_texts import CustomDocumentTitle
+from app.services.dto.tag_dto import TagReadDTO
+from app.ui.views.components.sub_components.custom_buttons import CustomIconSmallToolButton
+from app.ui.views.components.sub_components.custom_texts import CustomDocumentTitle, CustomPrimaryPill
 
 
 class TagCard(QWidget):
-    def __init__(self, tag: TagDTO):
+    def __init__(self, tag: TagReadDTO):
         super().__init__()
         self.setObjectName("CardTag")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setAttribute(Qt.WidgetAttribute.WA_Hover, True)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Maximum)
-        self.setMinimumHeight(50)
+        self.setMinimumHeight(48)
 
         self.tag = tag
 
         self._main_h_layout = QHBoxLayout(self)
 
         self.title_label = CustomDocumentTitle(self.tag.title)
+        self.count_label = CustomPrimaryPill(str(self.tag.notions_count))
 
         self.title_input = QLineEdit(self.tag.title)
         self.title_input.hide()
 
         self._main_h_layout.addWidget(self.title_label)
         self._main_h_layout.addWidget(self.title_input)
+        self._main_h_layout.addWidget(self.count_label)
         self._main_h_layout.addStretch()
 
         self.edit_button = CustomIconSmallToolButton("assets/icons/pencil.svg")

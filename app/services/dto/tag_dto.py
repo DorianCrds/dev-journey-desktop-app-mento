@@ -6,3 +6,9 @@ from dataclasses import dataclass
 class TagDTO:
     id: int
     title: str
+
+@dataclass
+class TagReadDTO:
+    id: int
+    title: str
+    notions_count: int = 0

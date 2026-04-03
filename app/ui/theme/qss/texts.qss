@@ -31,6 +31,15 @@ QLabel#StatusAcquired {
     border-radius: 12px;
 }
 
+QLabel#PrimaryPill {
+    background-color: #EEF2FF;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4C6EF5;
+    padding: 6px 10px;
+    border-radius: 12px;
+}
+
 QLabel#MetaInfo {
     background: transparent;
     border: none;

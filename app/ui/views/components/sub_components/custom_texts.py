@@ -14,6 +14,8 @@ class CustomDocumentTitle(QLabel):
     def __init__(self, text: str):
         super().__init__(text)
         self.setObjectName("DocumentTitle")
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 class CustomStatusToLearn(QLabel):
     def __init__(self, text: str):
@@ -27,6 +29,14 @@ class CustomStatusAcquired(QLabel):
     def __init__(self, text: str):
         super().__init__(text)
         self.setObjectName("StatusAcquired")
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+class CustomPrimaryPill(QLabel):
+    def __init__(self, text: str):
+        super().__init__(text)
+        self.setObjectName("PrimaryPill")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
