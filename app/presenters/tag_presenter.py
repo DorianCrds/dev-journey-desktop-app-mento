@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMessageBox
 
 from app.core.events import AppEvents
-from app.services.dto.tag_dto import TagDTO
+from app.services.dto.tag_dto import TagReadDTO
 from app.services.tag_service import TagService
 from app.ui.views.pages.tags.tags_card import TagCard, TagInputCard
 from app.ui.views.pages.tags.tags_view import TagsView
@@ -53,7 +53,7 @@ class TagPresenter:
 
         cards_layout.addStretch()
 
-    def _add_card(self, tag: TagDTO) -> None:
+    def _add_card(self, tag: TagReadDTO) -> None:
         card = TagCard(tag)
 
         card.edit_button.clicked.connect(lambda: self._start_edit(card))

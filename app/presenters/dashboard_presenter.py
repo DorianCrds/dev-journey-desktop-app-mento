@@ -42,7 +42,6 @@ class DashboardPresenter:
 
         self._build_stat_cards(dashboard_data)
         self._build_pie_chart(dashboard_data)
-        # TODO: limit 5 bars
         self._build_bar_chart(dashboard_data)
 
     def _show_empty_state(self) -> None:
