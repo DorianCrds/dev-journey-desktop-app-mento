@@ -12,6 +12,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush
 from PySide6.QtWidgets import QLabel, QSizePolicy
 
+from app.core.events import AppEvents
 from app.services.dashboard_service import DashboardService
 from app.ui.theme.colors import Colors
 from app.ui.theme.typography import Typography
@@ -20,9 +21,12 @@ from app.ui.views.pages.dashboard.stat_card import StatCard
 
 
 class DashboardPresenter:
-    def __init__(self, view: DashboardView, dashboard_service: DashboardService):
+    def __init__(self, view: DashboardView, events: AppEvents, dashboard_service: DashboardService):
         self._view = view
+        self._events = events
         self._service = dashboard_service
+
+        self._events.dashboard_changed.connect(self.load_datas)
 
         self.load_datas()
 

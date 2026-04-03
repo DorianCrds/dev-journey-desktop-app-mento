@@ -2,6 +2,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMessageBox
 
+from app.core.events import AppEvents
 from app.services.dto.tag_dto import TagDTO
 from app.services.tag_service import TagService
 from app.ui.views.pages.tags.tags_card import TagCard, TagInputCard
@@ -9,15 +10,21 @@ from app.ui.views.pages.tags.tags_view import TagsView
 
 
 class TagPresenter:
-    def __init__(self, view: TagsView, tag_service: TagService):
+    def __init__(self, view: TagsView, events: AppEvents, tag_service: TagService):
         self._view = view
+        self._events = events
         self._service = tag_service
 
         self._connect_signals()
         self.load_tags()
 
     def _connect_signals(self) -> None:
+        self._events.tags_changed.connect(self.load_tags)
         self._view.tags_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
+
+    def _emit_events(self):
+        self._events.tags_changed.emit()
+        self._events.notions_changed.emit()
 
     ###############################
     ##### Buttons connections #####
@@ -121,7 +128,7 @@ class TagPresenter:
         self._remove_input_card()
         self._add_card(dto)
 
-        self._view.refresh_notions_required.emit()
+        self._emit_events()
 
     def _cancel_input(self):
         self._remove_input_card()
@@ -151,7 +158,7 @@ class TagPresenter:
 
         card.set_edit_mode(False)
 
-        self._view.refresh_notions_required.emit()
+        self._emit_events()
 
     @staticmethod
     def _cancel_edit(card: TagCard):
@@ -178,4 +185,4 @@ class TagPresenter:
 
             card.deleteLater()
 
-        self._view.refresh_notions_required.emit()
+        self._emit_events()

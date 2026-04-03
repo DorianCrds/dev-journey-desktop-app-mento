@@ -1,6 +1,7 @@
 # app/presenters/category_presenter.py
 from PySide6.QtWidgets import QMessageBox
 
+from app.core.events import AppEvents
 from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
 from app.services.dto.category_dto import CategoryReadDTO
@@ -12,8 +13,9 @@ class CategoryPresenter:
     LIST_PAGE = 0
     FORM_PAGE = 1
 
-    def __init__(self, view: CategoriesView, category_service: CategoryService):
+    def __init__(self, view: CategoriesView, events: AppEvents, category_service: CategoryService):
         self._view = view
+        self._events = events
         self._service = category_service
 
         self._form_mode = FormMode.CREATE
@@ -23,6 +25,8 @@ class CategoryPresenter:
         self.load_categories()
 
     def _connect_signals(self) -> None:
+        self._events.categories_changed.connect(self.load_categories)
+
         # List
         self._view.categories_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
         self._view.categories_list_page.header.edit_button.clicked.connect(self._on_edit_button_clicked)
@@ -35,6 +39,10 @@ class CategoryPresenter:
         self._view.category_form_page.title_input.textChanged.connect(self._validate_form)
         self._view.category_form_page.description_input.textChanged.connect(self._validate_form)
 
+    def _emit_events(self):
+        self._events.categories_changed.emit()
+        self._events.notions_changed.emit()
+        self._events.dashboard_changed.emit()
 
     ###############################
     ##### Buttons connections #####
@@ -69,7 +77,7 @@ class CategoryPresenter:
                 description
             )
 
-        self.load_categories()
+        self._emit_events()
 
         self._view.categories_stacked_widget.setCurrentIndex(self.LIST_PAGE)
 
@@ -97,8 +105,7 @@ class CategoryPresenter:
                     str(e)  # "Impossible to delete used category."
                 )
             else:
-                self.load_categories()
-
+                self._emit_events()
 
     ###########################
     ##### Categories List #####

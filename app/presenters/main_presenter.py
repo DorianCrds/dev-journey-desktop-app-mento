@@ -1,4 +1,5 @@
 # app/presenters/main_presenter.py
+from app.core.events import events
 from app.persistence.repositories.category_repository import CategoryRepository
 from app.persistence.repositories.dashboard_repository import DashboardRepository
 from app.persistence.repositories.tag_repository import TagRepository
@@ -18,6 +19,7 @@ from app.ui.views.main_window import MainWindow
 class MainPresenter:
     def __init__(self, main_view: MainWindow):
         self._view = main_view
+        self._events = events
 
         self._setup_connections()
 
@@ -37,11 +39,13 @@ class MainPresenter:
 
         self._dashboard_presenter = DashboardPresenter(
             view=self._view.body.dashboard_view,
+            events=events,
             dashboard_service=dashboard_service
         )
 
         self._notion_presenter = NotionPresenter(
             view=self._view.body.notions_view,
+            events=events,
             notion_service=notion_service,
             category_service=category_service,
             tag_service=tag_service,
@@ -49,11 +53,13 @@ class MainPresenter:
 
         self._category_presenter = CategoryPresenter(
             view=self._view.body.categories_view,
+            events=events,
             category_service=category_service,
         )
 
         self._tag_presenter = TagPresenter(
             view=self._view.body.tags_view,
+            events=events,
             tag_service=tag_service,
         )
 
@@ -64,7 +70,6 @@ class MainPresenter:
         self._view.menu.tags_button.clicked.connect(self._tags_menu_button_clicked)
         self._view.menu.infos_button.clicked.connect(self._infos_menu_button_clicked)
         self._view.menu.settings_button.clicked.connect(self._settings_menu_button_clicked)
-        self._view.body.tags_view.refresh_notions_required.connect(self._on_notions_view_refresh_required)
 
     def _dashboard_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(0)
@@ -84,6 +89,3 @@ class MainPresenter:
 
     def _settings_menu_button_clicked(self) -> None:
         self._view.body.setCurrentIndex(5)
-
-    def _on_notions_view_refresh_required(self) -> None:
-        self._notion_presenter.refresh_view()

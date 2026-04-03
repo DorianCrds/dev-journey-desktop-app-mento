@@ -1,6 +1,7 @@
 # app/presenters/notion_presenter.py
 from PySide6.QtWidgets import QMessageBox
 
+from app.core.events import AppEvents
 from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
 from app.services.dto.notion_dto import NotionReadDTO
@@ -19,8 +20,9 @@ class NotionPresenter:
     DETAIL_PAGE = 1
     FORM_PAGE = 2
 
-    def __init__(self, view: NotionsView, notion_service: NotionService, category_service: CategoryService, tag_service: TagService):
+    def __init__(self, view: NotionsView, events: AppEvents, notion_service: NotionService, category_service: CategoryService, tag_service: TagService):
         self._view = view
+        self._events = events
         self._notion_service = notion_service
         self._category_service = category_service
         self._tag_service = tag_service
@@ -32,6 +34,8 @@ class NotionPresenter:
         self.load_notions()
 
     def _connect_signals(self) -> None:
+        self._events.notions_changed.connect(self.refresh_view)
+
         # List
         self._view.notions_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
 
@@ -47,6 +51,11 @@ class NotionPresenter:
         self._view.notion_form_page.title_input.textChanged.connect(self._validate_form)
         self._view.notion_form_page.category_input.currentIndexChanged.connect(self._validate_form)
 
+    def _emit_events(self):
+        self._events.notions_changed.emit()
+        self._events.categories_changed.emit()
+        self._events.tags_changed.emit()
+        self._events.dashboard_changed.emit()
 
     #########################################
     ##### Notions list widget's methods #####
@@ -120,9 +129,9 @@ class NotionPresenter:
         if reply == QMessageBox.StandardButton.Yes:
             self._notion_service.delete_notion(notion.id)
 
-            self.load_notions()
-
             self._view.notions_stacked_widget.setCurrentIndex(self.LIST_PAGE)
+
+            self._emit_events()
 
     def _on_form_button_clicked(self) -> None:
         form = self._view.notion_form_page
@@ -160,6 +169,8 @@ class NotionPresenter:
             created_notion_id = self._editing_notion.id
 
         self._after_submit(created_notion_id)
+
+        self._emit_events()
 
     def _on_form_back_clicked(self) -> None:
         self._reset_form()
@@ -380,8 +391,6 @@ class NotionPresenter:
 
     def _after_submit(self, notion_id: int | None) -> None:
         self._form_mode = FormMode.CREATE
-
-        self.load_notions()
 
         if notion_id:
             notion = self._notion_service.get_notion_for_display(notion_id)
