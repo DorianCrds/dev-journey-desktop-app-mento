@@ -20,10 +20,10 @@ class CategoryService:
         return dict_to_category(data)
 
     def get_all_categories_for_display(self) -> list[CategoryReadDTO]:
-        rows = self._repo.get_all_categories()
+        rows = self._repo.get_all_categories_with_counts()
 
         return [
-            self._build_notion_read_dto(row) for row in rows
+            self._build_category_read_dto(row) for row in rows
         ]
 
     def create_category(self, title: str, description: str) -> Category:
@@ -68,9 +68,11 @@ class CategoryService:
         self._repo.delete_category(category_id)
 
     @staticmethod
-    def _build_notion_read_dto(row):
+    def _build_category_read_dto(row):
         return CategoryReadDTO(
             id=row["id"],
             title=row["title"],
             description=row["description"],
+            to_learn_count=row.get("to_learn_count", 0),
+            acquired_count=row.get("acquired_count", 0),
         )

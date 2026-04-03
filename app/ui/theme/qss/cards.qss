@@ -10,7 +10,7 @@ QWidget#CardNotion:hover, QWidget#CardCategory:hover, QWidget#CardTag:hover {
 }
 
 QWidget#CardCategory[selected="true"] {
-    background-color: #EEF4FF;
+    background-color: #F5F8FF;
     border: 1px solid #5B8DEF;
 }
 

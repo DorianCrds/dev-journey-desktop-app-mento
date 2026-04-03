@@ -4,7 +4,8 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
 
 from app.services.dto.category_dto import CategoryReadDTO
 from app.ui.views.components.sub_components.arrow_indicator import ArrowIndicator
-from app.ui.views.components.sub_components.custom_texts import CustomDocumentTitle, CustomMetaInfo
+from app.ui.views.components.sub_components.custom_texts import CustomDocumentTitle, CustomMetaInfo, \
+    CustomStatusToLearn, CustomStatusAcquired
 
 
 class CategoryCard(QWidget):
@@ -27,7 +28,11 @@ class CategoryCard(QWidget):
         self.first_line_layout = QHBoxLayout()
 
         self.title_label = CustomDocumentTitle(self.category.title)
+        self.to_learn_label = CustomStatusToLearn(str(self.category.to_learn_count))
+        self.acquired_label = CustomStatusAcquired(str(self.category.acquired_count))
         self.first_line_layout.addWidget(self.title_label)
+        self.first_line_layout.addWidget(self.to_learn_label)
+        self.first_line_layout.addWidget(self.acquired_label)
         self.first_line_layout.addStretch()
 
         self.arrow_icon = ArrowIndicator()

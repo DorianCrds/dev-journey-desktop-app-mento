@@ -11,24 +11,37 @@ class CategoryRepository:
         query = "SELECT * FROM categories"
         return self._db_connector.fetch_all(query)
 
+    def get_all_categories_with_counts(self) -> list[dict]:
+        query = """
+                SELECT c.id, \
+                       c.title, \
+                       c.description, \
+                       SUM(CASE WHEN n.status = 'À apprendre' THEN 1 ELSE 0 END) AS to_learn_count, \
+                       SUM(CASE WHEN n.status = 'Acquise' THEN 1 ELSE 0 END)     AS acquired_count
+                FROM categories c
+                         LEFT JOIN notions n ON c.id = n.category_id
+                GROUP BY c.id \
+                """
+        return self._db_connector.fetch_all(query)
+
     def get_category_by_id(self, category_id: int) -> dict:
         query = "SELECT * FROM categories WHERE id = ?"
         return self._db_connector.fetch_one(query,(category_id,))
 
     def create_category(self, dto: CategoryDTO) -> int:
         query = """
-            INSERT INTO categories (title, description)
-            VALUES (?, ?)
-        """
+                INSERT INTO categories (title, description)
+                VALUES (?, ?) \
+                """
         return self._db_connector.execute(query, (dto.title, dto.description))
 
     def update_category(self, dto: CategoryDTO) -> int | None:
         query = """
-            UPDATE categories
-            SET title = ?,
-                description = ?
-            WHERE id = ?
-        """
+                UPDATE categories
+                SET title = ?,
+                    description = ?
+                WHERE id = ? \
+                """
 
         return self._db_connector.execute(query, (dto.title, dto.description, dto.id))
 

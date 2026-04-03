@@ -13,4 +13,5 @@ class CategoryReadDTO:
     id: int
     title: str
     description: str
-    # notions_count: int
+    to_learn_count: int = 0
+    acquired_count: int = 0
