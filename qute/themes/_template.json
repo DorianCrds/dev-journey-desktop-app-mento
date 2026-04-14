@@ -1,0 +1,45 @@
+{
+  "colors": {
+    "background": {
+      "app": "#",
+      "sidebar": "#",
+      "sidebar_hover": "#",
+      "sidebar_checked": "#",
+      "item": "#",
+      "item_hover": "#",
+      "item_selected": "#",
+      "input": "#",
+      "scroll_bar": "#",
+      "scroll_bar_hover": "#",
+      "button": "#",
+      "button_hover": "#",
+      "button_pressed": "#",
+      "button_disabled": "#",
+      "to_learn": "#",
+      "acquired": "#",
+      "pill": "#"
+    },
+    "text": {
+      "primary": "#",
+      "secondary": "#",
+      "secondary_active": "#",
+      "disabled": "#",
+      "danger": "#",
+      "button": "#",
+      "to_learn": "#",
+      "acquired": "#"
+    },
+    "border": {
+      "default": "#",
+      "strong": "#",
+      "focused": "#"
+    },
+    "state": {
+      "indicator_ckecked": "#"
+    },
+    "charts": {
+      "to_learn": "#",
+      "acquired": "#"
+    }
+  }
+}

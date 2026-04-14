@@ -8,11 +8,11 @@ from app.services.dto.notion_dto import NotionReadDTO
 from app.services.dto.tag_dto import TagDTO
 from app.services.notion_service import NotionService
 from app.services.tag_service import TagService
-from app.ui.views.components.sub_components.custom_forms import CustomFormCheckBox
-from app.ui.views.components.sub_components.custom_texts import CustomStatusToLearn, CustomStatusAcquired, \
+from app.views.components.sub_components.custom_forms import CustomFormCheckBox
+from app.views.components.sub_components.custom_texts import CustomStatusToLearn, CustomStatusAcquired, \
     CustomTagLabel
-from app.ui.views.pages.notions.notion_card import NotionCard
-from app.ui.views.pages.notions.notions_view import NotionsView
+from app.views.pages.notions.notion_card import NotionCard
+from app.views.pages.notions.notions_view import NotionsView
 
 
 class NotionPresenter:

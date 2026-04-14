@@ -1,0 +1,45 @@
+{
+  "colors": {
+    "background": {
+      "app": "#F6F8FB",
+      "sidebar": "#F3F6FA",
+      "sidebar_hover": "#EDF2F8",
+      "sidebar_checked": "#E7F0FA",
+      "item": "#FFFFFF",
+      "item_hover": "#F9FBFE",
+      "item_selected": "#F5F8FF",
+      "input": "#F0F4F9",
+      "scroll_bar": "#E3E8EF",
+      "scroll_bar_hover": "#CED4DA",
+      "button": "#4C6EF5",
+      "button_hover": "#3F5CE6",
+      "button_pressed": "#364FC7",
+      "button_disabled": "#E3E8EF",
+      "to_learn": "#E7F0FA",
+      "acquired": "#E6F4EE",
+      "pill": "#EEF2FF"
+    },
+    "text": {
+      "primary": "#1F2A37",
+      "secondary": "#5B6B7C",
+      "secondary_active": "#4C6EF5",
+      "disabled": "#9AA7B4",
+      "danger": "#E5484D",
+      "button": "#FFFFFF",
+      "to_learn": "#2F5C8F",
+      "acquired": "#2E7D5A"
+    },
+    "border": {
+      "default": "#E3E8EF",
+      "strong": "#5B8DEF",
+      "focused": "#4C6EF5"
+    },
+    "state": {
+      "indicator_ckecked": "#4C6EF5"
+    },
+    "charts": {
+      "to_learn": "#C5DCF5",
+      "acquired": "#C3E3D2"
+    }
+  }
+}

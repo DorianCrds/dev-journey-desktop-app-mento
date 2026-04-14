@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QMessageBox
 from app.core.events import AppEvents
 from app.services.dto.tag_dto import TagReadDTO
 from app.services.tag_service import TagService
-from app.ui.views.pages.tags.tags_card import TagCard, TagInputCard
-from app.ui.views.pages.tags.tags_view import TagsView
+from app.views.pages.tags.tags_card import TagCard, TagInputCard
+from app.views.pages.tags.tags_view import TagsView
 
 
 class TagPresenter:

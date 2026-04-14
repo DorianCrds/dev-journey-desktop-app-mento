@@ -5,8 +5,8 @@ from app.core.events import AppEvents
 from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
 from app.services.dto.category_dto import CategoryReadDTO
-from app.ui.views.pages.categories.categories_card import CategoryCard
-from app.ui.views.pages.categories.categories_view import CategoriesView
+from app.views.pages.categories.categories_card import CategoryCard
+from app.views.pages.categories.categories_view import CategoriesView
 
 
 class CategoryPresenter:

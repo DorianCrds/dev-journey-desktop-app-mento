@@ -14,10 +14,10 @@ from PySide6.QtWidgets import QLabel, QSizePolicy
 
 from app.core.events import AppEvents
 from app.services.dashboard_service import DashboardService
-from app.ui.theme.colors import Colors
-from app.ui.theme.typography import Typography
-from app.ui.views.pages.dashboard.dashboard_view import DashboardView
-from app.ui.views.pages.dashboard.stat_card import StatCard
+from app.views.pages.dashboard.dashboard_view import DashboardView
+from app.views.pages.dashboard.stat_card import StatCard
+from qute.manager.theme_manager import ThemeManager
+from qute.design_system.typography import Typography
 
 
 class DashboardPresenter:
@@ -74,10 +74,10 @@ class DashboardPresenter:
         pie_series.append("Acquired", global_stats.acquired)
         pie_series.append("To learn", global_stats.to_learn)
 
-        pie_series.slices()[0].setBrush(QBrush(Colors.STATUS_ACQUIRED_CHART_BG))
+        pie_series.slices()[0].setBrush(QBrush(ThemeManager.instance().get_color("charts.acquired")))
         pie_series.slices()[0].setLabelColor(Qt.GlobalColor.black)
 
-        pie_series.slices()[1].setBrush(QBrush(Colors.STATUS_TOLEARN_CHART_BG))
+        pie_series.slices()[1].setBrush(QBrush(ThemeManager.instance().get_color("charts.to_learn")))
 
         def on_hovered(slice, state):
             slice.setExploded(state)
@@ -90,11 +90,11 @@ class DashboardPresenter:
         pie_chart.addSeries(pie_series)
 
         pie_chart.setTitle("Overall distribution")
-        pie_chart.setTitleFont(Typography.get_font(Typography.TEXT_NORMAL, Typography.MEDIUM))
+        pie_chart.setTitleFont(Typography.from_preset("body_md"))
 
         pie_chart.setAnimationOptions(QChart.AnimationOption.SeriesAnimations)
 
-        pie_chart.legend().setFont(Typography.get_font(Typography.META, Typography.REGULAR))
+        pie_chart.legend().setFont(Typography.from_preset("meta"))
 
         pie_chart_view = QChartView(pie_chart)
         pie_chart_view.setMinimumHeight(400)
@@ -116,7 +116,7 @@ class DashboardPresenter:
         bar_set = QBarSet("Progression % (top 5 notions count)")
         bar_set.append(values)
 
-        bar_set.setColor(Colors.STATUS_ACQUIRED_CHART_BG)
+        bar_set.setColor(ThemeManager.instance().get_color("charts.acquired"))
 
         bar_series = QBarSeries()
         bar_series.append(bar_set)
@@ -124,8 +124,8 @@ class DashboardPresenter:
         bar_chart = QChart()
         bar_chart.addSeries(bar_series)
         bar_chart.setTitle("Progression by categories")
-        bar_chart.setTitleFont(Typography.get_font(Typography.TEXT_NORMAL, Typography.MEDIUM))
-        bar_chart.legend().setFont(Typography.get_font(Typography.META, Typography.REGULAR))
+        bar_chart.setTitleFont(Typography.from_preset("body_md"))
+        bar_chart.legend().setFont(Typography.from_preset("meta"))
 
         bar_chart.setAnimationOptions(QChart.AnimationOption.SeriesAnimations)
 
@@ -135,15 +135,15 @@ class DashboardPresenter:
         axis_y = QValueAxis()
         axis_y.setRange(0, 100)
 
-        axis_x.setLabelsColor(Colors.TEXT_SECONDARY)
-        axis_y.setLabelsColor(Colors.TEXT_SECONDARY)
+        axis_x.setLabelsColor(ThemeManager.instance().get_color("text.secondary"))
+        axis_y.setLabelsColor(ThemeManager.instance().get_color("text.secondary"))
 
         axis_x.setLabelsFont(
-            Typography.get_font(Typography.META, Typography.REGULAR)
+            Typography.from_preset("meta")
         )
 
         axis_y.setLabelsFont(
-            Typography.get_font(Typography.META, Typography.REGULAR)
+            Typography.from_preset("meta")
         )
 
         axis_x.setGridLineVisible(False)
