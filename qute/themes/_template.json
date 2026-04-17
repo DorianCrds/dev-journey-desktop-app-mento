@@ -38,6 +38,7 @@
       "indicator_ckecked": "#"
     },
     "charts": {
+      "background": "#",
       "to_learn": "#",
       "acquired": "#"
     }

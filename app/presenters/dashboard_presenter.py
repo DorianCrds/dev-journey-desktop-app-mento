@@ -75,18 +75,32 @@ class DashboardPresenter:
         pie_series.append("To learn", global_stats.to_learn)
 
         pie_series.slices()[0].setBrush(QBrush(ThemeManager.instance().get_color("charts.acquired")))
-        pie_series.slices()[0].setLabelColor(Qt.GlobalColor.black)
 
         pie_series.slices()[1].setBrush(QBrush(ThemeManager.instance().get_color("charts.to_learn")))
 
         def on_hovered(slice, state):
             slice.setExploded(state)
-            slice.setBorderColor("#FFFFFF")
-            slice.setBorderWidth(2)
 
         pie_series.hovered.connect(on_hovered)
 
         pie_chart = QChart()
+
+        chart_bg = ThemeManager.instance().get_color("charts.background")
+        title_color = ThemeManager.instance().get_color("text.primary")
+        legend_color = ThemeManager.instance().get_color("text.secondary")
+
+        pie_chart.setTitleBrush(QBrush(title_color))
+
+        legend = pie_chart.legend()
+        legend.setFont(Typography.from_preset("meta"))
+        legend.setLabelColor(legend_color)
+
+        pie_chart.setBackgroundVisible(True)
+        pie_chart.setBackgroundBrush(QBrush(chart_bg))
+
+        pie_chart.setPlotAreaBackgroundVisible(True)
+        pie_chart.setPlotAreaBackgroundBrush(QBrush(chart_bg))
+
         pie_chart.addSeries(pie_series)
 
         pie_chart.setTitle("Overall distribution")
@@ -122,6 +136,23 @@ class DashboardPresenter:
         bar_series.append(bar_set)
 
         bar_chart = QChart()
+        chart_bg = ThemeManager.instance().get_color("charts.background")
+        title_color = ThemeManager.instance().get_color("text.primary")
+        secondary_color = ThemeManager.instance().get_color("text.secondary")
+        border_color = ThemeManager.instance().get_color("border.default")
+
+        bar_chart.setTitleBrush(QBrush(title_color))
+
+        legend = bar_chart.legend()
+        legend.setFont(Typography.from_preset("meta"))
+        legend.setLabelColor(secondary_color)
+
+        bar_chart.setBackgroundVisible(True)
+        bar_chart.setBackgroundBrush(QBrush(chart_bg))
+
+        bar_chart.setPlotAreaBackgroundVisible(True)
+        bar_chart.setPlotAreaBackgroundBrush(QBrush(chart_bg))
+
         bar_chart.addSeries(bar_series)
         bar_chart.setTitle("Progression by categories")
         bar_chart.setTitleFont(Typography.from_preset("body_md"))
@@ -135,8 +166,10 @@ class DashboardPresenter:
         axis_y = QValueAxis()
         axis_y.setRange(0, 100)
 
-        axis_x.setLabelsColor(ThemeManager.instance().get_color("text.secondary"))
-        axis_y.setLabelsColor(ThemeManager.instance().get_color("text.secondary"))
+        axis_x.setLabelsColor(secondary_color)
+        axis_x.setLinePenColor(secondary_color)
+        axis_y.setLabelsColor(secondary_color)
+        axis_y.setLinePenColor(secondary_color)
 
         axis_x.setLabelsFont(
             Typography.from_preset("meta")
@@ -147,7 +180,7 @@ class DashboardPresenter:
         )
 
         axis_x.setGridLineVisible(False)
-        axis_y.setGridLineColor(Qt.GlobalColor.lightGray)
+        axis_y.setGridLineColor(border_color)
 
         bar_chart.addAxis(axis_x, Qt.AlignmentFlag.AlignBottom)
         bar_chart.addAxis(axis_y, Qt.AlignmentFlag.AlignLeft)
