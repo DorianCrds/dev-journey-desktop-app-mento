@@ -44,3 +44,29 @@ QCheckBox#FormCheckBox::indicator:checked {
     background-color: {{ colors.background.button }};
     border: 1px solid {{ colors.background.button }};
 }
+
+QRadioButton#RadioButton {
+    background: transparent;
+    font-size: {{ typography.BODY_SM }}px;
+    color: {{ colors.text.primary }};
+    spacing: {{ spacing.SM }}px;
+}
+
+QRadioButton#RadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: {{ radius.LG }}px;
+
+    border: 1px solid {{ colors.border.default }};
+    background: {{ colors.background.item }};
+}
+
+QRadioButton#RadioButton::indicator:hover {
+    border: 1px solid {{ colors.border.focused }};
+    background: {{ colors.background.input }};
+}
+
+QRadioButton#RadioButton::indicator:checked {
+    border: 1px solid {{ colors.background.button }};
+    background: {{ colors.background.button }};
+}

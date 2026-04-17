@@ -1,6 +1,7 @@
 # qute/widgets/theme_radio_group.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QRadioButton, QButtonGroup
 from qute.core.signals import theme_signals
+from qute.manager.theme_manager import ThemeManager
 
 
 class ThemeRadioGroup(QWidget):
@@ -13,7 +14,7 @@ class ThemeRadioGroup(QWidget):
         group = QButtonGroup(self)
 
         for theme in themes:
-            radio = QRadioButton(theme)
+            radio = CustomRadioButton(theme.capitalize())
             self._radios[theme] = radio
 
             group.addButton(radio)
@@ -25,6 +26,16 @@ class ThemeRadioGroup(QWidget):
 
         theme_signals.theme_applied.connect(self._sync)
 
+        current_theme = ThemeManager.instance().get_current_theme()
+        if current_theme:
+            self._sync(current_theme)
+
     def _sync(self, theme_name):
         if theme_name in self._radios:
             self._radios[theme_name].setChecked(True)
+
+
+class CustomRadioButton(QRadioButton):
+    def __init__(self, text: str):
+        super().__init__(text)
+        self.setObjectName("RadioButton")
