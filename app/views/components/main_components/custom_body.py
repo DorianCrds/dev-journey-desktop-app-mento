@@ -1,4 +1,4 @@
-# app/ui/views/components/main_components/custom_body.py
+# app/views/components/main_components/custom_body.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QStackedWidget
 
@@ -37,4 +37,4 @@ class CustomBody(QStackedWidget):
         self.settings_view = SettingsView()
         self.addWidget(self.settings_view)
 
-        self.setCurrentIndex(1)
+        self.setCurrentIndex(0)

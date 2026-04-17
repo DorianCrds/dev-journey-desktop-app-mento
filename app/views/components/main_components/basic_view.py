@@ -1,9 +1,10 @@
-# app/ui/views/components/main_components/basic_view.py
+# app/views/components/main_components/basic_view.py
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QSizePolicy
 
 from app.views.components.sub_components.custom_texts import CustomTitleMain
+from qute.design_system.spacing import Spacing
 
 
 class BasicView(QWidget):
@@ -20,14 +21,14 @@ class BasicView(QWidget):
     def _setup_base_ui(self) -> None:
         self._main_layout = QVBoxLayout(self)
         self._main_layout.setContentsMargins(0, 0, 0, 0)
-        self._main_layout.setSpacing(24)
+        self._main_layout.setSpacing(Spacing.LG)
 
         self.title_label = CustomTitleMain(self._title_text)
 
         self.content_widget = QWidget()
         self.content_layout = QVBoxLayout(self.content_widget)
         self.content_layout.setContentsMargins(0, 0, 0, 0)
-        self.content_layout.setSpacing(16)
+        self.content_layout.setSpacing(Spacing.MD)
 
         self._main_layout.addWidget(self.title_label)
         self._main_layout.addWidget(self.content_widget)

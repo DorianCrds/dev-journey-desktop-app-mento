@@ -1,4 +1,4 @@
-# app/ui/views/pages/tags/tags_card.py
+# app/views/pages/tags/tags_card.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QLineEdit
 

@@ -1,7 +1,8 @@
-# app/ui/views/components/main_components/custom_menu.py
+# app/views/components/main_components/custom_menu.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 from app.views.components.sub_components.custom_buttons import CustomMenuToolButton
+from qute.design_system.spacing import Spacing
 
 
 class CustomMenu(QWidget):
@@ -14,8 +15,8 @@ class CustomMenu(QWidget):
 
     def _setup_ui(self) -> None:
         self._main_v_layout = QVBoxLayout(self)
-        self._main_v_layout.setContentsMargins(16, 24, 16, 24)
-        self._main_v_layout.setSpacing(8)
+        self._main_v_layout.setContentsMargins(Spacing.MD, Spacing.LG, Spacing.MD, Spacing.LG)
+        self._main_v_layout.setSpacing(Spacing.SM)
 
         self._title_label = QLabel("Mento")
         self._title_label.setObjectName("SidebarTitle")
@@ -29,7 +30,7 @@ class CustomMenu(QWidget):
         self.settings_button = CustomMenuToolButton("Settings")
 
         self._main_v_layout.addWidget(self._title_label)
-        self._main_v_layout.addSpacing(24)
+        self._main_v_layout.addSpacing(Spacing.LG)
         self._main_v_layout.addWidget(self.dashboard_button)
         self._main_v_layout.addWidget(self.notions_button)
         self._main_v_layout.addWidget(self.categories_button)

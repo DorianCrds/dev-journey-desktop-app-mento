@@ -1,17 +1,17 @@
 QWidget {
-    background-color: #F6F8FB;
-    color: #1F2A37;
-    font-family: "Inter";
-    font-size: 14px;
+    background-color: {{ colors.background.app }};
+    color: {{ colors.text.primary }};
+    font-family: "{{ typography.FONT_FAMILY }}";
+    font-size: {{ typography.BODY_MD }}px;
 }
 
 QWidget#CentralWidget {
-    background-color: #F6F8FB;
+    background-color: {{ colors.background.app }};
 }
 
 QStackedWidget#ContentArea {
-    background-color: #F6F8FB;
-    padding: 32px;
+    background-color: {{ colors.background.app }};
+    padding: {{ spacing.XL }}px;
 }
 
 *:focus {
@@ -21,17 +21,17 @@ QStackedWidget#ContentArea {
 QScrollBar:vertical {
     width: 8px;
     background: transparent;
-    margin: 4px 0 4px 0;
+    margin: {{ spacing.XS }}px 0 {{ spacing.XS }}px 0;
 }
 
 QScrollBar::handle:vertical {
-    background: #E3E8EF;
-    border-radius: 4px;
+    background: {{ colors.background.scroll_bar }};
+    border-radius: {{ spacing.XS }}px;
     min-height: 24px;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #CED4DA;
+    background: {{ colors.background.scroll_bar_hover }};
 }
 
 QScrollBar::add-line:vertical,
@@ -47,17 +47,17 @@ QScrollBar::sub-page:vertical {
 QScrollBar:horizontal {
     height: 8px;
     background: transparent;
-    margin: 0 4px 0 4px;
+    margin: 0 {{ spacing.XS }}px 0 {{ spacing.XS }}px;
 }
 
 QScrollBar::handle:horizontal {
-    background: #E3E8EF;
-    border-radius: 4px;
+    background: {{ colors.background.scroll_bar }};
+    border-radius: {{ spacing.XS }}px;
     min-width: 24px;
 }
 
 QScrollBar::handle:horizontal:hover {
-    background: #CED4DA;
+    background: {{ colors.background.scroll_bar_hover }};
 }
 
 QScrollBar::add-line:horizontal,
@@ -71,21 +71,20 @@ QScrollBar::sub-page:horizontal {
 }
 
 QWidget#NotionFormWidget {
-    background-color: #FFFFFF;
-    border: 1px solid #E3E8EF;
-    border-radius: 12px;
-    padding: 24px;
+    background-color: {{ colors.background.item }};
+    border: 1px solid {{ colors.border.default }};
+    border-radius: {{ radius.XXL }}px;
 }
 
 QWidget#NotionFormWidget QLabel {
     background: transparent;
     border: none;
-    color: #1F2A37;
-    font-size: 14px;
-    font-weight: 500;
+    color: {{ colors.text.primary }};
+    font-size: {{ typography.BODY_MD }}px;
+    font-weight: {{ typography.MEDIUM }};
 }
 
 QWidget#NotionFormHeader {
     background: transparent;
-    padding: 8px 16px;
+    padding: {{ spacing.SM }}px {{ spacing.MD }}px;
 }

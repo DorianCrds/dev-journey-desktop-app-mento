@@ -9,12 +9,5 @@ class Radius:
     XL = 10
     XXL = 14
 
-    # Use cases
-    INPUT = LG
-    BUTTON = LG
-    CARD = XL
-    TAG = XXL
-    MODAL = XL
-
-    # Full rounded (chips, badges…)
-    FULL = 999
+    # Specifics
+    PILLS = 12

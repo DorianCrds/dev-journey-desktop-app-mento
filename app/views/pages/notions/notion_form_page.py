@@ -7,6 +7,7 @@ from app.views.components.sub_components.custom_forms import CustomFormLineEdit,
     CustomFormTextEdit, CustomFormScrollArea
 from app.views.components.sub_components.custom_headers import PageNavHeader
 from app.views.components.sub_components.custom_texts import CustomFormErrorLabel
+from qute.design_system.spacing import Spacing
 
 
 class NotionFormPage(QWidget):
@@ -20,7 +21,7 @@ class NotionFormPage(QWidget):
 
     def _setup_ui(self) -> None:
         self._main_v_layout = QVBoxLayout(self)
-        self._main_v_layout.setSpacing(24)
+        self._main_v_layout.setSpacing(Spacing.LG)
         self._main_v_layout.setContentsMargins(0, 0, 0, 0)
 
         self.header_widget = PageNavHeader()
@@ -42,8 +43,9 @@ class NotionFormPage(QWidget):
         self._form_widget.setMaximumWidth(640)
 
         self._form_layout = QFormLayout(self._form_widget)
-        self._form_layout.setVerticalSpacing(16)
-        self._form_layout.setHorizontalSpacing(16)
+        self._form_layout.setVerticalSpacing(Spacing.V_FORM)
+        self._form_layout.setHorizontalSpacing(Spacing.MD)
+        self._form_layout.setContentsMargins(Spacing.LG, Spacing.LG, Spacing.LG, Spacing.LG)
         self._form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
         self._form_layout.setFormAlignment(Qt.AlignmentFlag.AlignTop)
 

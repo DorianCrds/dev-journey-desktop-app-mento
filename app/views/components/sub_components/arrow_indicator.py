@@ -1,4 +1,4 @@
-# app/ui/views/components/sub_components/arrow_indicator.py
+# app/views/components/sub_components/arrow_indicator.py
 from PySide6.QtCore import Property, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPainter, QPen
 from PySide6.QtWidgets import QWidget

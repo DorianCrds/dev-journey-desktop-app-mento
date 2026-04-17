@@ -1,7 +1,8 @@
-# app/ui/views/pages/dashboard_view.py
+# app/views/pages/dashboard_view.py
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 
 from app.views.components.main_components.basic_view import BasicView
+from qute.design_system.spacing import Spacing
 
 
 class DashboardView(BasicView):
@@ -12,7 +13,7 @@ class DashboardView(BasicView):
 
     def _setup_ui(self):
         self.dashboard_cards_layout = QHBoxLayout()
-        self.dashboard_cards_layout.setContentsMargins(16, 0, 16, 0)
+        self.dashboard_cards_layout.setContentsMargins(Spacing.MD, 0, Spacing.MD, 0)
 
         self._dashboard_charts_container = QWidget()
         self.dashboard_charts_h_layout = QHBoxLayout(self._dashboard_charts_container)

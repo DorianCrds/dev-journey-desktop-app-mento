@@ -1,4 +1,4 @@
-# app/ui/views/pages/tags/tags_view.py
+# app/views/pages/tags/tags_view.py
 from app.views.components.main_components.basic_view import BasicView
 from app.views.components.sub_components.custom_list_page import CustomListPage
 

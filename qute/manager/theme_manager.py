@@ -178,6 +178,8 @@ class ThemeManager:
                 radius=Radius
             ) + "\n"
 
+        print(qss)
+
         return qss
 
     def load_fonts(self):

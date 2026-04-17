@@ -25,9 +25,9 @@ class Typography:
     # Body
     # -------------------------
     BODY_LG = 15
-    BODY = 14
     BODY_MD = 14
-    BODY_SM = 13
+    BODY_SM = 12
+    BODY_XS = 9
 
     # -------------------------
     # UI / Meta
@@ -62,7 +62,6 @@ class Typography:
 
         # Body
         "body_lg": (BODY_LG, REGULAR),
-        "body": (BODY, REGULAR),
         "body_md": (BODY_MD, MEDIUM),
         "body_sm": (BODY_SM, REGULAR),
 

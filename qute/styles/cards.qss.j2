@@ -1,33 +1,15 @@
 QWidget#CardNotion, QWidget#CardCategory, QWidget#CardTag, QWidget#CardStat {
-    background-color: #FFFFFF;
-    border: 1px solid #E3E8EF;
-    border-radius: 10px;
-    padding: 16px;
+    background-color: {{ colors.background.item }};
+    border: 1px solid {{ colors.border.default }};
+    border-radius: {{ radius.XL }}px;
+    padding: {{ spacing.MD }}px;
 }
 
 QWidget#CardNotion:hover, QWidget#CardCategory:hover, QWidget#CardTag:hover {
-    background-color: #F9FBFE;
+    background-color: {{ colors.background.item_hover }};
 }
 
 QWidget#CardCategory[selected="true"] {
-    background-color: #F5F8FF;
-    border: 1px solid #5B8DEF;
-}
-
-QLabel#status_aapprendre {
-    background-color: #E7F0FA;
-    color: #2F5C8F;
-    border-radius: 12px;
-    padding: 0 10px;
-    min-height: 22px;
-    font-size: 12px;
-}
-
-QLabel#status_acquise {
-    background-color: #E6F4EE;
-    color: #2E7D5A;
-    border-radius: 12px;
-    padding: 0 10px;
-    min-height: 22px;
-    font-size: 12px;
+    background-color: {{ colors.background.item_selected }};
+    border: 1px solid {{ colors.border.strong }};
 }

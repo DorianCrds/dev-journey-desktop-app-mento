@@ -1,4 +1,4 @@
-# app/ui/views/components/sub_components/custom_texts.py
+# app/views/components/sub_components/custom_texts.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QSizePolicy
 from qute.design_system.typography import Typography

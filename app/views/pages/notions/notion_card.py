@@ -1,10 +1,11 @@
-# app/ui/views/pages/notions/notion_card.py
+# app/views/pages/notions/notion_card.py
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
 from app.services.dto.notion_dto import NotionReadDTO
 from app.views.components.sub_components.custom_texts import CustomDocumentTitle, CustomStatusToLearn, \
     CustomStatusAcquired, CustomMetaInfo
+from qute.design_system.spacing import Spacing
 
 
 class NotionCard(QWidget):
@@ -33,20 +34,20 @@ class NotionCard(QWidget):
         first_line_layout.addWidget(self.title_label)
         first_line_layout.addStretch()
         first_line_layout.addWidget(self.status_label)
-        first_line_layout.setSpacing(8)
+        first_line_layout.setSpacing(Spacing.SM)
 
         self.category_label = CustomMetaInfo(self.notion.category_title)
 
         second_line_layout = QHBoxLayout()
         second_line_layout.addWidget(self.category_label)
         second_line_layout.addStretch()
-        second_line_layout.setSpacing(8)
+        second_line_layout.setSpacing(Spacing.SM)
 
         main_v_layout.addLayout(first_line_layout)
         main_v_layout.addLayout(second_line_layout)
 
-        main_v_layout.setSpacing(8)
-        main_v_layout.setContentsMargins(8, 8, 8, 8)
+        main_v_layout.setSpacing(Spacing.SM)
+        main_v_layout.setContentsMargins(Spacing.SM, Spacing.SM, Spacing.SM, Spacing.SM)
 
     def mousePressEvent(self, event):
         self.clicked.emit(self)

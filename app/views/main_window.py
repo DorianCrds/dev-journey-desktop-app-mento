@@ -1,4 +1,4 @@
-# app/ui/views/main_window.py
+# app/views/main_window.py
 from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout
 from PySide6.QtCore import Qt
 

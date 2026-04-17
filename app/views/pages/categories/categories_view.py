@@ -1,4 +1,4 @@
-# app/ui/views/pages/categories/categories_view.py
+# app/views/pages/categories/categories_view.py
 
 from PySide6.QtWidgets import QStackedWidget
 

@@ -1,5 +1,7 @@
-# app/ui/views/components/sub_components/custom_forms.py
+# app/views/components/sub_components/custom_forms.py
 from PySide6.QtWidgets import QLineEdit, QComboBox, QTextEdit, QScrollArea, QCheckBox
+
+from qute.design_system.spacing import Spacing
 
 
 class CustomFormLineEdit(QLineEdit):

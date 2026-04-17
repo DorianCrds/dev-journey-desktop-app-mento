@@ -1,26 +1,25 @@
 QLineEdit#FormLineEdit,
 QComboBox#FormComboBox,
 QTextEdit#FormTextEdit {
-    background-color: #F0F4F9;
-    border: 1px solid #E3E8EF;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 14px;
-    color: #1F2A37;
+    background-color: {{ colors.background.input }};
+    border: 1px solid {{ colors.border.default }};
+    border-radius: {{ radius.LG }}px;
+    padding: {{ spacing.SM }}px {{ spacing.INPUT_MD }}px;
+    font-size: {{ typography.BODY_MD }}px;
+    color: {{ colors.text.primary }};
 }
 
 QLineEdit#FormLineEdit:focus,
 QComboBox#FormComboBox:focus,
 QTextEdit#FormTextEdit:focus {
-    border: 1px solid #4C6EF5;
-    background-color: #FFFFFF;
+    border: 1px solid {{ colors.border.focused }};
+    background-color: {{ colors.background.item }};
 }
 
 QScrollArea#FormScrollArea {
-    border: 1px solid #E3E8EF;
-    border-radius: 8px;
-    background-color: #F0F4F9;
-    padding: 4px;
+    border: 1px solid {{ colors.border.default }};
+    border-radius: {{ radius.LG }}px;
+    background-color: {{ colors.background.input }};
 }
 
 QWidget#TagsContainer {
@@ -29,20 +28,19 @@ QWidget#TagsContainer {
 
 QCheckBox#FormCheckBox {
     background: transparent;
-    spacing: 6px;
-    font-size: 13px;
-    color: #1F2A37;
+    font-size: {{ typography.BODY_SM }}px;
+    color: {{ colors.text.primary }};
 }
 
 QCheckBox#FormCheckBox::indicator {
     width: 16px;
     height: 16px;
-    border-radius: 4px;
-    border: 1px solid #E3E8EF;
-    background: #FFFFFF;
+    border-radius: {{ radius.SM }}px;
+    border: 1px solid {{ colors.border.default }};
+    background: {{ colors.background.item }};
 }
 
 QCheckBox#FormCheckBox::indicator:checked {
-    background-color: #4C6EF5;
-    border: 1px solid #4C6EF5;
+    background-color: {{ colors.background.button }};
+    border: 1px solid {{ colors.background.button }};
 }

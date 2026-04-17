@@ -1,37 +1,37 @@
 QToolButton#primary {
-    background-color: #4C6EF5;
-    color: white;
+    background-color: {{ colors.background.button }};
+    color: {{ colors.text.button }};
     border: none;
-    border-radius: 8px;
-    padding: 0 16px;
+    border-radius: {{ radius.LG }}px;
+    padding: 0 {{ spacing.MD }}px;
     min-height: 36px;
 }
 
 QToolButton#primarySmallIcon {
-    background-color: #4C6EF5;
-    color: white;
+    background-color: {{ colors.background.button }};
+    color: {{ colors.text.button }};
     border: none;
-    border-radius: 8px;
-    padding: 6px;
+    border-radius: {{ radius.LG }}px;
+    padding: {{ spacing.ICON }}px;
 }
 
 QToolButton#primaryMediumIcon {
-    background-color: #4C6EF5;
-    color: white;
+    background-color: {{ colors.background.button }};
+    color: {{ colors.text.button }};
     border: none;
-    border-radius: 8px;
-    padding: 6px;
+    border-radius: {{ radius.LG }}px;
+    padding: {{ spacing.ICON }}px;
 }
 
 QToolButton#primary:hover, QToolButton#primarySmallIcon:hover, QToolButton#primaryMediumIcon:hover {
-    background-color: #3F5CE6;
+    background-color: {{ colors.background.button_hover }};
 }
 
 QToolButton#primary:pressed, QToolButton#primarySmallIcon:pressed, QToolButton#primaryMediumIcon:pressed {
-    background-color: #364FC7;
+    background-color: {{ colors.background.button_pressed }};
 }
 
 QToolButton#primary:disabled, QToolButton#primarySmallIcon:disabled, QToolButton#primaryMediumIcon:disabled {
-    background-color: #E3E8EF;
-    color: #9AA7B4;
+    background-color: {{ colors.background.button_disabled }};
+    color: {{ colors.text.disabled }};
 }

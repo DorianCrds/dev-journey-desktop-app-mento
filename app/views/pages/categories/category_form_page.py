@@ -1,10 +1,11 @@
-# app/ui/views/pages/categories/category_form_page.py
+# app/views/pages/categories/category_form_page.py
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy, QFormLayout
 
 from app.views.components.sub_components.custom_buttons import CustomToolButton
 from app.views.components.sub_components.custom_forms import CustomFormLineEdit, CustomFormTextEdit
 from app.views.components.sub_components.custom_texts import CustomFormErrorLabel
+from qute.design_system.spacing import Spacing
 
 
 class CategoryFormPage(QWidget):
@@ -40,8 +41,8 @@ class CategoryFormPage(QWidget):
         self._form_widget.setMaximumWidth(640)
 
         self._form_layout = QFormLayout(self._form_widget)
-        self._form_layout.setVerticalSpacing(12)
-        self._form_layout.setHorizontalSpacing(16)
+        self._form_layout.setVerticalSpacing(Spacing.V_FORM)
+        self._form_layout.setHorizontalSpacing(Spacing.MD)
         self._form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
         self._form_layout.setFormAlignment(Qt.AlignmentFlag.AlignTop)
 
