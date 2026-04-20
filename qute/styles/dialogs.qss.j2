@@ -1,0 +1,47 @@
+QDialog#Dialog {
+    background-color: {{ colors.background.item }};
+    border: 1px solid {{ colors.border.default }};
+    border-radius: {{ radius.XL }}px;
+}
+
+QLabel#DialogTitle {
+    background-color: transparent;
+    font-size: {{ typography.BODY_MD }}px;
+    font-weight: {{ typography.SEMI_BOLD }};
+    color: {{ colors.text.primary }};
+}
+
+QLabel#DialogMessage {
+    background-color: transparent;
+    font-size: {{ typography.BODY_SM }}px;
+    color: {{ colors.text.primary }};
+    padding-top: {{ spacing.XS }}px;
+}
+
+QWidget#DialogButtonsContainer {
+    background-color: transparent;
+}
+
+QPushButton#DialogButton_accept {
+    background-color: {{ colors.buttons.primary.background }};
+    color: {{ colors.buttons.primary.text }};
+    border: 1px solid {{ colors.buttons.primary.border }};
+    border-radius: {{ radius.MD }}px;
+    padding: {{ spacing.SM }}px {{ spacing.MD }}px;
+}
+
+QPushButton#DialogButton_accept:hover {
+    background-color: {{ colors.buttons.primary.hover_bg }};
+}
+
+QPushButton#DialogButton_reject {
+    background-color: {{ colors.buttons.secondary.background }};
+    color: {{ colors.buttons.secondary.text }};
+    border: 1px solid {{ colors.buttons.secondary.border }};
+    border-radius: {{ radius.MD }}px;
+    padding: {{ spacing.SM }}px {{ spacing.MD }}px;
+}
+
+QPushButton#DialogButton_reject:hover {
+    background-color: {{ colors.buttons.secondary.hover_bg }};
+}

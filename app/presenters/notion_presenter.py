@@ -1,5 +1,4 @@
 # app/presenters/notion_presenter.py
-from PySide6.QtWidgets import QMessageBox
 
 from app.core.events import AppEvents
 from app.presenters.form_mode_enum import FormMode
@@ -8,6 +7,7 @@ from app.services.dto.notion_dto import NotionReadDTO
 from app.services.dto.tag_dto import TagDTO
 from app.services.notion_service import NotionService
 from app.services.tag_service import TagService
+from app.views.components.sub_components.custom_dialogs import CustomDialog
 from app.views.components.sub_components.custom_forms import CustomFormCheckBox
 from app.views.components.sub_components.custom_texts import CustomStatusToLearn, CustomStatusAcquired, \
     CustomTagLabel
@@ -118,15 +118,11 @@ class NotionPresenter:
         if not notion:
             return
 
-        reply = QMessageBox.question(
+        if CustomDialog.confirm(
             self._view,
             "Delete notion",
             f"Are you sure you want to delete:\n\n'{notion.title}' ?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-
-        if reply == QMessageBox.StandardButton.Yes:
+        ):
             self._notion_service.delete_notion(notion.id)
 
             self._view.notions_stacked_widget.setCurrentIndex(self.LIST_PAGE)

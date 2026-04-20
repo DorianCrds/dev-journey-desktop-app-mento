@@ -1,10 +1,10 @@
 # app/presenters/tag_presenter.py
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMessageBox
 
 from app.core.events import AppEvents
 from app.services.dto.tag_dto import TagReadDTO
 from app.services.tag_service import TagService
+from app.views.components.sub_components.custom_dialogs import CustomDialog
 from app.views.pages.tags.tags_card import TagCard, TagInputCard
 from app.views.pages.tags.tags_view import TagsView
 
@@ -172,15 +172,12 @@ class TagPresenter:
             self._cancel_edit(card)
 
     def _delete_tag(self, card: TagCard):
-        reply = QMessageBox.question(
+
+        if CustomDialog.confirm(
             self._view,
             "Delete Tag",
             f"Are you sure you want to delete:\n\n'{card.tag.title}' ?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-
-        if reply == QMessageBox.StandardButton.Yes:
+        ):
             self._service.delete_tag(card.tag.id)
 
             card.deleteLater()

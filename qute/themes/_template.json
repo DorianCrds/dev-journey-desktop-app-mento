@@ -11,10 +11,6 @@
       "input": "#",
       "scroll_bar": "#",
       "scroll_bar_hover": "#",
-      "button": "#",
-      "button_hover": "#",
-      "button_pressed": "#",
-      "button_disabled": "#",
       "to_learn": "#",
       "acquired": "#",
       "pill": "#"
@@ -25,7 +21,6 @@
       "secondary_active": "#",
       "disabled": "#",
       "danger": "#",
-      "button": "#",
       "to_learn": "#",
       "acquired": "#"
     },
@@ -41,6 +36,22 @@
       "background": "#",
       "to_learn": "#",
       "acquired": "#"
+    },
+    "buttons": {
+      "primary": {
+        "background": "#",
+        "pressed_bg": "#",
+        "disabled_bg": "#",
+        "hover_bg": "#",
+        "border": "#",
+        "text": "#"
+      },
+      "secondary": {
+        "background": "#",
+        "hover_bg": "#",
+        "border": "#",
+        "text": "#"
+      }
     }
   }
 }

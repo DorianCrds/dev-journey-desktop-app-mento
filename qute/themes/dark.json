@@ -11,10 +11,6 @@
       "input": "#1A222C",
       "scroll_bar": "#2A3440",
       "scroll_bar_hover": "#3A4654",
-      "button": "#4C6EF5",
-      "button_hover": "#3F5CE6",
-      "button_pressed": "#364FC7",
-      "button_disabled": "#2A3440",
       "to_learn": "#1E2D3F",
       "acquired": "#1F3A33",
       "pill": "#202A36"
@@ -25,7 +21,6 @@
       "secondary_active": "#7C97FF",
       "disabled": "#6B7785",
       "danger": "#FF6B6B",
-      "button": "#FFFFFF",
       "to_learn": "#7FB3FF",
       "acquired": "#6FCF97"
     },
@@ -41,6 +36,22 @@
       "background": "#161C23",
       "to_learn": "#3A5872",
       "acquired": "#3E6B5A"
+    },
+    "buttons": {
+      "primary": {
+        "background": "#4C6EF5",
+        "pressed_bg": "#364FC7",
+        "disabled_bg": "#2A3440",
+        "hover_bg": "#3F5CE6",
+        "border": "#4C6EF5",
+        "text": "#FFFFFF"
+      },
+      "secondary": {
+        "background": "#1A222C",
+        "hover_bg": "#212B36",
+        "border": "#2A3440",
+        "text": "#E6EDF3"
+      }
     }
   }
 }

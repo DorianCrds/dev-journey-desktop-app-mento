@@ -1,10 +1,10 @@
 # app/presenters/category_presenter.py
-from PySide6.QtWidgets import QMessageBox
 
 from app.core.events import AppEvents
 from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
 from app.services.dto.category_dto import CategoryReadDTO
+from app.views.components.sub_components.custom_dialogs import CustomDialog
 from app.views.pages.categories.categories_card import CategoryCard
 from app.views.pages.categories.categories_view import CategoriesView
 
@@ -93,16 +93,18 @@ class CategoryPresenter:
 
         category = self._editing_category
 
-        reply = QMessageBox.question(self._view,"Delete category", f"Are you sure you want to delete the category:\n\n'{category.title}' ?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
-
-        if reply == QMessageBox.StandardButton.Yes:
+        if CustomDialog.confirm(
+                self._view,
+                "Delete category",
+                f"Are you sure you want to delete:\n\n'{category.title}' ?"
+        ):
             try:
                 self._service.delete_category(category.id)
             except ValueError as e:
-                QMessageBox.critical(
+                CustomDialog.error(
                     self._view,
                     "Cannot delete category",
-                    str(e)  # "Impossible to delete used category."
+                    str(e)
                 )
             else:
                 self._emit_events()
