@@ -1,10 +1,12 @@
 # app/main.py
 import sys
 
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
 from app.presenters.main_presenter import MainPresenter
 from app.utils.logger import logger
+from app.utils.path import resource_path
 from app.views.main_window import MainWindow
 from qute.manager.theme_manager import ThemeManager
 
@@ -15,6 +17,8 @@ def main():
     theme_manager = ThemeManager.instance(app)
 
     main_view = MainWindow()
+
+    main_view.setWindowIcon(QIcon(resource_path("assets/logo/brain.ico")))
     main_presenter = MainPresenter(main_view)
     main_view.show()
 
