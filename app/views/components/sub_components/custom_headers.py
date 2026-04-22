@@ -2,6 +2,7 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 
 from app.views.components.sub_components.custom_buttons import CustomToolButton
+from app.views.components.sub_components.custom_forms import CustomSearchLineEdit
 from qute.design_system.spacing import Spacing
 
 
@@ -26,10 +27,15 @@ class PageActionsHeader(CustomPageHeader):
     def __init__(self):
         super().__init__()
 
+        self.search_input = CustomSearchLineEdit()
+        self.search_input.setFixedWidth(250)
+        self.search_input.hide()
+
         self.layout.addWidget(self.add_button)
         self.layout.addWidget(self.edit_button)
         self.layout.addWidget(self.delete_button)
         self.layout.addStretch()
+        self.layout.addWidget(self.search_input)
 
 
 class PageNavHeader(CustomPageHeader):

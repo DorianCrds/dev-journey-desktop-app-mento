@@ -1,4 +1,5 @@
 # app/presenters/notion_presenter.py
+from PySide6.QtCore import QTimer
 
 from app.core.events import AppEvents
 from app.presenters.form_mode_enum import FormMode
@@ -30,6 +31,13 @@ class NotionPresenter:
         self._form_mode = FormMode.CREATE
         self._editing_notion: NotionReadDTO | None = None
 
+        self._current_search_query: str = ""
+        self._search_timer = QTimer()
+        self._search_timer.setInterval(300)
+        self._search_timer.setSingleShot(True)
+
+        self._search_timer.timeout.connect(self._apply_search)
+
         self._connect_signals()
         self.load_notions()
 
@@ -38,6 +46,7 @@ class NotionPresenter:
 
         # List
         self._view.notions_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
+        self._view.notions_list_page.header.search_input.textChanged.connect(self._on_search_text_changed)
 
         # Detail
         self._view.notion_detail_page.header_widget.back_button.clicked.connect(self._on_detail_back_clicked)
@@ -62,20 +71,8 @@ class NotionPresenter:
     #########################################
 
     def load_notions(self) -> None:
-        cards_layout = self._view.notions_list_page.scroll_area.cards_layout
-
-        while cards_layout.count() > 1:
-            item = cards_layout.takeAt(0)
-            widget = item.widget()
-            if widget:
-                widget.deleteLater()
-
-        notions = self._notion_service.get_all_notions_for_display()
-
-        for notion in notions:
-            self._add_card(notion)
-
-        self._editing_notion = None
+        self._current_search_query = ""
+        self._load_notions_with_filter()
 
     def _add_card(self, notion: NotionReadDTO) -> None:
         card = NotionCard(notion)
@@ -408,6 +405,38 @@ class NotionPresenter:
         form.form_category_error.hide()
 
     def refresh_view(self) -> None:
-        self.load_notions()
+        self._load_notions_with_filter()
         self._clear_detail_view()
         self._view.notions_stacked_widget.setCurrentIndex(self.LIST_PAGE)
+
+    ##################
+    ##### Search #####
+    ##################
+
+    def search_notions(self, query: str) -> None:
+        self._current_search_query = query
+        self._load_notions_with_filter()
+
+    def _load_notions_with_filter(self) -> None:
+        cards_layout = self._view.notions_list_page.scroll_area.cards_layout
+
+        while cards_layout.count() > 1:
+            item = cards_layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
+        notions = self._notion_service.search_notions_for_display(self._current_search_query)
+
+        for notion in notions:
+            self._add_card(notion)
+
+        self._editing_notion = None
+
+    def _on_search_text_changed(self, text: str) -> None:
+        self._pending_search_query = text
+        self._search_timer.start()
+
+    def _apply_search(self) -> None:
+        query = getattr(self, "_pending_search_query", "")
+        self.search_notions(query)

@@ -166,6 +166,24 @@ class NotionService:
 
         return tags_map
 
+    ##################
+    ##### Search #####
+    ##################
+
+    def search_notions_for_display(self, query: str) -> list[NotionReadDTO]:
+
+        if not query.strip():
+            return self.get_all_notions_for_display()
+
+        rows = self._repo.search_notions(query)
+
+        tags_map = self._load_tags_for_notions(rows)
+
+        return [
+            self._build_notion_read_dto(row, tags_map.get(row["id"], []))
+            for row in rows
+        ]
+
     #######################
     ##### DTO Builder #####
     #######################

@@ -70,3 +70,21 @@ QRadioButton#RadioButton::indicator:checked {
     border: 1px solid {{ colors.buttons.primary.background }};
     background: {{ colors.buttons.primary.background }};
 }
+
+QLineEdit#SearchLineEdit {
+    background-color: {{ colors.background.input }};
+    border: 1px solid {{ colors.border.default }};
+    border-radius: {{ radius.LG }}px;
+    padding: {{ spacing.XS }}px {{ spacing.SM }}px;
+    font-size: {{ typography.BODY_SM }}px;
+    color: {{ colors.text.primary }};
+}
+
+QLineEdit#SearchLineEdit:focus {
+    border: 1px solid {{ colors.border.focused }};
+    background-color: {{ colors.background.item }};
+}
+
+QLineEdit#SearchLineEdit::placeholder {
+    color: {{ colors.text.secondary }};
+}

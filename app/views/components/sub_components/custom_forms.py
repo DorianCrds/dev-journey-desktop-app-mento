@@ -1,8 +1,6 @@
 # app/views/components/sub_components/custom_forms.py
 from PySide6.QtWidgets import QLineEdit, QComboBox, QTextEdit, QScrollArea, QCheckBox
 
-from qute.design_system.spacing import Spacing
-
 
 class CustomFormLineEdit(QLineEdit):
     def __init__(self):
@@ -28,3 +26,10 @@ class CustomFormCheckBox(QCheckBox):
     def __init__(self, text: str):
         super().__init__(text)
         self.setObjectName("FormCheckBox")
+
+class CustomSearchLineEdit(QLineEdit):
+    def __init__(self):
+        super().__init__()
+        self.setObjectName("SearchLineEdit")
+        self.setPlaceholderText("Search notions...")
+        self.setClearButtonEnabled(True)
