@@ -23,6 +23,7 @@ class NotionsView(BasicView):
 
         self.notions_list_page = CustomListPage()
         self.notions_list_page.header.add_button.show()
+        self.notions_list_page.header.category_filter.show()
         self.notions_list_page.header.search_input.show()
         self.notion_detail_page = NotionDetailPage()
         self.notion_form_page = NotionFormPage()

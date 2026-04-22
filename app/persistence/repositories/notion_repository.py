@@ -81,17 +81,31 @@ class NotionRepository:
         for tag_id in tag_ids:
             self._db_connector.execute(insert_query, (notion_id, tag_id))
 
-    def search_notions(self, query: str) -> list[dict]:
-        query_sql = """
-                    SELECT n.*,
-                           c.title AS category_title
-                    FROM notions n
-                             JOIN categories c ON c.id = n.category_id
-                    WHERE LOWER(n.title) LIKE ?
-                       OR LOWER(n.description) LIKE ?
-                    ORDER BY n.title ASC \
-                    """
+    def search_notions(self, query: str, category_id: int | None) -> list[dict]:
+        base_query = """
+                     SELECT n.*,
+                            c.title AS category_title
+                     FROM notions n
+                              JOIN categories c ON c.id = n.category_id
+                     WHERE 1 = 1 \
+                     """
 
-        search_term = f"%{query.lower()}%"
+        params = []
 
-        return self._db_connector.fetch_all(query_sql, (search_term, search_term))
+        if query.strip():
+            base_query += """
+                AND (
+                    LOWER(n.title) LIKE ?
+                    OR LOWER(n.description) LIKE ?
+                )
+            """
+            search_term = f"%{query.lower()}%"
+            params.extend([search_term, search_term])
+
+        if category_id is not None:
+            base_query += " AND n.category_id = ?"
+            params.append(category_id)
+
+        base_query += " ORDER BY n.title ASC"
+
+        return self._db_connector.fetch_all(base_query, tuple(params))

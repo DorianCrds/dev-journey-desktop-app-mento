@@ -88,3 +88,17 @@ QLineEdit#SearchLineEdit:focus {
 QLineEdit#SearchLineEdit::placeholder {
     color: {{ colors.text.secondary }};
 }
+
+QComboBox#FilterComboBox {
+    background-color: {{ colors.background.input }};
+    border: 1px solid {{ colors.border.default }};
+    border-radius: {{ radius.LG }}px;
+    padding: {{ spacing.XS }}px {{ spacing.SM }}px;
+    font-size: {{ typography.BODY_SM }}px;
+    color: {{ colors.text.primary }};
+}
+
+QComboBox#FilterComboBox:focus {
+    border: 1px solid {{ colors.border.focused }};
+    background-color: {{ colors.background.item }};
+}

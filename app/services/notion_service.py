@@ -170,12 +170,13 @@ class NotionService:
     ##### Search #####
     ##################
 
-    def search_notions_for_display(self, query: str) -> list[NotionReadDTO]:
+    def search_notions_for_display(
+            self,
+            query: str,
+            category_id: int | None = None
+    ) -> list[NotionReadDTO]:
 
-        if not query.strip():
-            return self.get_all_notions_for_display()
-
-        rows = self._repo.search_notions(query)
+        rows = self._repo.search_notions(query, category_id)
 
         tags_map = self._load_tags_for_notions(rows)
 

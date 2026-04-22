@@ -33,3 +33,8 @@ class CustomSearchLineEdit(QLineEdit):
         self.setObjectName("SearchLineEdit")
         self.setPlaceholderText("Search notions...")
         self.setClearButtonEnabled(True)
+
+class CustomFilterComboBox(QComboBox):
+    def __init__(self):
+        super().__init__()
+        self.setObjectName("FilterComboBox")

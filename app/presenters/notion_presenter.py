@@ -36,9 +36,12 @@ class NotionPresenter:
         self._search_timer.setInterval(300)
         self._search_timer.setSingleShot(True)
 
+        self._current_category_id: int | None = None
+
         self._search_timer.timeout.connect(self._apply_search)
 
         self._connect_signals()
+        self._populate_category_filter()
         self.load_notions()
 
     def _connect_signals(self) -> None:
@@ -47,6 +50,9 @@ class NotionPresenter:
         # List
         self._view.notions_list_page.header.add_button.clicked.connect(self._on_add_button_clicked)
         self._view.notions_list_page.header.search_input.textChanged.connect(self._on_search_text_changed)
+        self._view.notions_list_page.header.category_filter.currentIndexChanged.connect(
+            self._on_category_filter_changed
+        )
 
         # Detail
         self._view.notion_detail_page.header_widget.back_button.clicked.connect(self._on_detail_back_clicked)
@@ -72,6 +78,7 @@ class NotionPresenter:
 
     def load_notions(self) -> None:
         self._current_search_query = ""
+        self._current_category_id = None
         self._load_notions_with_filter()
 
     def _add_card(self, notion: NotionReadDTO) -> None:
@@ -91,6 +98,21 @@ class NotionPresenter:
         self._show_notion_details(notion)
 
         self._view.notions_stacked_widget.setCurrentIndex(self.DETAIL_PAGE)
+
+    def _populate_category_filter(self) -> None:
+        combo = self._view.notions_list_page.header.category_filter
+
+        combo.blockSignals(True)
+        combo.clear()
+
+        combo.addItem("All categories", None)
+
+        categories = self._category_service.get_all_categories()
+
+        for category in categories:
+            combo.addItem(category.title, category.id)
+
+        combo.blockSignals(False)
 
     ###############################
     ##### Buttons connections #####
@@ -406,12 +428,13 @@ class NotionPresenter:
 
     def refresh_view(self) -> None:
         self._load_notions_with_filter()
+        self._populate_category_filter()
         self._clear_detail_view()
         self._view.notions_stacked_widget.setCurrentIndex(self.LIST_PAGE)
 
-    ##################
-    ##### Search #####
-    ##################
+    ############################
+    ##### Search / Filters #####
+    ############################
 
     def search_notions(self, query: str) -> None:
         self._current_search_query = query
@@ -426,8 +449,10 @@ class NotionPresenter:
             if widget:
                 widget.deleteLater()
 
-        notions = self._notion_service.search_notions_for_display(self._current_search_query)
-
+        notions = self._notion_service.search_notions_for_display(
+            query=self._current_search_query,
+            category_id=self._current_category_id
+        )
         for notion in notions:
             self._add_card(notion)
 
@@ -440,3 +465,13 @@ class NotionPresenter:
     def _apply_search(self) -> None:
         query = getattr(self, "_pending_search_query", "")
         self.search_notions(query)
+
+    def filter_by_category(self, category_id: int | None) -> None:
+        self._current_category_id = category_id
+        self._load_notions_with_filter()
+
+    def _on_category_filter_changed(self, index: int) -> None:
+        combo = self._view.notions_list_page.header.category_filter
+        category_id = combo.itemData(index)
+
+        self.filter_by_category(category_id)
