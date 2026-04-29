@@ -13,6 +13,7 @@ class CustomPageHeader(QWidget):
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(Spacing.MD, 0, Spacing.MD, 0)
         self.layout.setSpacing(Spacing.SM)
+        self.setMinimumHeight(50)
 
         self.add_button = CustomToolButton("Add")
         self.edit_button = CustomToolButton("Edit")
