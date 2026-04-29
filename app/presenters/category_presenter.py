@@ -5,6 +5,7 @@ from app.presenters.form_mode_enum import FormMode
 from app.services.category_service import CategoryService
 from app.services.dto.category_dto import CategoryReadDTO
 from app.views.components.sub_components.custom_dialogs import CustomDialog
+from app.views.components.sub_components.empty_state_widget import EmptyStateWidget
 from app.views.pages.categories.categories_card import CategoryCard
 from app.views.pages.categories.categories_view import CategoriesView
 
@@ -116,13 +117,19 @@ class CategoryPresenter:
     def load_categories(self) -> None:
         cards_layout = self._view.categories_list_page.scroll_area.cards_layout
 
-        while cards_layout.count() > 1:
+        while cards_layout.count():
             item = cards_layout.takeAt(0)
             widget = item.widget()
             if widget:
                 widget.deleteLater()
 
         categories = self._service.get_all_categories_for_display()
+
+        if not categories:
+            empty_state = EmptyStateWidget()
+            empty_state.title_label.setText("No existing Categories")
+            empty_state.subtitle_label.setText("Create your first Category")
+            self._view.categories_list_page.scroll_area.cards_layout.addWidget(empty_state)
 
         for category in categories:
             self._add_card(category)
@@ -131,6 +138,8 @@ class CategoryPresenter:
 
         self._view.categories_list_page.header.delete_button.setEnabled(False)
         self._view.categories_list_page.header.edit_button.setEnabled(False)
+
+        cards_layout.addStretch()
 
     def _add_card(self, category: CategoryReadDTO) -> None:
         card = CategoryCard(category)

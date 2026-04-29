@@ -7,10 +7,10 @@ from PySide6.QtCharts import (
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush
-from PySide6.QtWidgets import QLabel
 
 from app.core.events import AppEvents
 from app.services.dashboard_service import DashboardService
+from app.views.components.sub_components.empty_state_widget import EmptyStateWidget
 from app.views.pages.dashboard.dashboard_view import DashboardView
 from app.views.pages.dashboard.stat_card import StatCard
 from qute.manager.theme_manager import ThemeManager
@@ -46,14 +46,10 @@ class DashboardPresenter:
         self.load_datas()
 
     def _show_empty_state(self) -> None:
-        empty_card = StatCard("Dashboard", "No Notion saved.")
+        empty_card = EmptyStateWidget()
+        empty_card.title_label.setText("No notions yet")
+        empty_card.subtitle_label.setText("Start by creating your first notion to organize your knowledge.")
         self._view.dashboard_cards_layout.addWidget(empty_card)
-
-        message = QLabel("Add notions to access your statistics.")
-        message.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        message.setStyleSheet("font-size: 16px; padding: 40px;")
-
-        self._view.dashboard_charts_h_layout.addWidget(message)
 
     def _build_stat_cards(self, dashboard_data) -> None:
         global_stats = dashboard_data.global_stats

@@ -5,6 +5,7 @@ from app.core.events import AppEvents
 from app.services.dto.tag_dto import TagReadDTO
 from app.services.tag_service import TagService
 from app.views.components.sub_components.custom_dialogs import CustomDialog
+from app.views.components.sub_components.empty_state_widget import EmptyStateWidget
 from app.views.pages.tags.tags_card import TagCard, TagInputCard
 from app.views.pages.tags.tags_view import TagsView
 
@@ -47,6 +48,12 @@ class TagPresenter:
                 widget.deleteLater()
 
         tags = self._service.get_all_tags_for_display()
+
+        if not tags:
+            empty_state = EmptyStateWidget()
+            empty_state.title_label.setText("No existing Tags")
+            empty_state.subtitle_label.setText("Create your first Tag")
+            self._view.tags_list_page.scroll_area.cards_layout.addWidget(empty_state)
 
         for tag in tags:
             self._add_card(tag)

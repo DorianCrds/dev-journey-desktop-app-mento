@@ -12,6 +12,7 @@ from app.views.components.sub_components.custom_dialogs import CustomDialog
 from app.views.components.sub_components.custom_forms import CustomFormCheckBox
 from app.views.components.sub_components.custom_texts import CustomStatusToLearn, CustomStatusAcquired, \
     CustomTagLabel
+from app.views.components.sub_components.empty_state_widget import EmptyStateWidget
 from app.views.pages.notions.notion_card import NotionCard
 from app.views.pages.notions.notions_view import NotionsView
 
@@ -443,7 +444,7 @@ class NotionPresenter:
     def _load_notions_with_filter(self) -> None:
         cards_layout = self._view.notions_list_page.scroll_area.cards_layout
 
-        while cards_layout.count() > 1:
+        while cards_layout.count():
             item = cards_layout.takeAt(0)
             widget = item.widget()
             if widget:
@@ -453,10 +454,19 @@ class NotionPresenter:
             query=self._current_search_query,
             category_id=self._current_category_id
         )
+
+        if not notions:
+            empty_state = EmptyStateWidget()
+            empty_state.title_label.setText("No Notions found")
+            empty_state.subtitle_label.setText("There are no existing Notion or matching with filters")
+            self._view.notions_list_page.scroll_area.cards_layout.addWidget(empty_state)
+
         for notion in notions:
             self._add_card(notion)
 
         self._editing_notion = None
+
+        cards_layout.addStretch()
 
     def _on_search_text_changed(self, text: str) -> None:
         self._pending_search_query = text
