@@ -27,7 +27,7 @@ class SettingsView(BasicView):
 
         description = CustomTextNormal("Choose the appearance of the application.")
         description.setFont(Typography.from_preset("meta"))
-        description.setObjectName("TextSecondary")
+        description.setObjectName("TextNormal")
 
         self.theme_radio_group = ThemeRadioGroup(
             ThemeManager.instance().available_themes()

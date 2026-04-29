@@ -26,7 +26,7 @@ class CustomMenu(QWidget):
         self.notions_button = CustomMenuToolButton("Notions")
         self.categories_button = CustomMenuToolButton("Categories")
         self.tags_button = CustomMenuToolButton("Tags")
-        self.infos_button = CustomMenuToolButton("Infos")
+        self.getting_started_button = CustomMenuToolButton("Start Here")
         self.settings_button = CustomMenuToolButton("Settings")
 
         self._main_v_layout.addWidget(self._title_label)
@@ -36,5 +36,5 @@ class CustomMenu(QWidget):
         self._main_v_layout.addWidget(self.categories_button)
         self._main_v_layout.addWidget(self.tags_button)
         self._main_v_layout.addStretch()
-        self._main_v_layout.addWidget(self.infos_button)
+        self._main_v_layout.addWidget(self.getting_started_button)
         self._main_v_layout.addWidget(self.settings_button)
