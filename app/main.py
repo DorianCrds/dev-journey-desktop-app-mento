@@ -18,7 +18,10 @@ def main():
 
     main_view = MainWindow()
 
-    main_view.setWindowIcon(QIcon(resource_path("assets/logo/brain.ico")))
+    icon_path = resource_path("assets/logo/brain.ico")
+    icon = QIcon(str(icon_path))
+    app.setWindowIcon(icon)
+    main_view.setWindowIcon(icon)
     main_presenter = MainPresenter(main_view)
     main_view.show()
 

@@ -1,6 +1,13 @@
 .idea
+.vscode/
 .venv
 __pycache__/
 *.pyc
 mento.db
 database/seeder.sql
+build/
+dist/
+*.spec.bak
+*.egg-info/
+installer/output/
+installer/*.exe
