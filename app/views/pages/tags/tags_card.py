@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSizePolicy, QLineEdit
 
 from app.services.dto.tag_dto import TagReadDTO
+from app.utils.path import resource_path
 from app.views.components.sub_components.custom_buttons import CustomIconSmallToolButton
 from app.views.components.sub_components.custom_texts import CustomDocumentTitle, CustomPrimaryPill
 
@@ -32,8 +33,8 @@ class TagCard(QWidget):
         self._main_h_layout.addWidget(self.count_label)
         self._main_h_layout.addStretch()
 
-        self.edit_button = CustomIconSmallToolButton("assets/icons/pencil.svg")
-        self.delete_button = CustomIconSmallToolButton("assets/icons/trash.svg")
+        self.edit_button = CustomIconSmallToolButton(str(resource_path("assets/icons/pencil.svg")))
+        self.delete_button = CustomIconSmallToolButton(str(resource_path("assets/icons/trash.svg")))
 
         self._main_h_layout.addWidget(self.edit_button)
         self._main_h_layout.addWidget(self.delete_button)
@@ -72,8 +73,8 @@ class TagInputCard(QWidget):
         self.input = QLineEdit()
         self.input.setPlaceholderText("New tag...")
 
-        self.save_button = CustomIconSmallToolButton("assets/icons/check.svg")
-        self.cancel_button = CustomIconSmallToolButton("assets/icons/x.svg")
+        self.save_button = CustomIconSmallToolButton(str(resource_path("assets/icons/check.svg")))
+        self.cancel_button = CustomIconSmallToolButton(str(resource_path("assets/icons/x.svg")))
 
         layout.addWidget(self.input)
         layout.addWidget(self.save_button)
