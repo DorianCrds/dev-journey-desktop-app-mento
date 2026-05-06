@@ -17,6 +17,7 @@ a = Analysis(
         ("qute/styles", "qute/styles"),
         ("qute/assets/fonts", "qute/assets/fonts"),
         ("assets", "assets"),
+        ("database", "database"),
     ],
     hiddenimports=[],
     hookspath=[],
